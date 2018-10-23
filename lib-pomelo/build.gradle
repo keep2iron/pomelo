@@ -8,9 +8,6 @@ android {
     defaultConfig {
         minSdkVersion versions.build.min_sdk
         targetSdkVersion versions.build.target_sdk
-
-        versionCode 1
-        versionName "1.0"
     }
 
     dataBinding {
@@ -24,7 +21,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

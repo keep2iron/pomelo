@@ -27,7 +27,8 @@ dependencies {
     implementation deps.support.app_compat
     implementation deps.support.constraint_layout
 
-    implementation project(':lib-pomelo')
+//    implementation project(':lib-pomelo')
+    api 'com.github.keep2iron:pomelo:0.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
