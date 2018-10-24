@@ -3,7 +3,7 @@
  * Copyright (c) 2017. All rights reserved.
  */
 
-package io.github.keep2iron.network
+package io.github.keep2iron.pomelo
 
 import java.util.HashMap
 import java.util.LinkedHashMap
@@ -11,7 +11,6 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 
 import android.text.TextUtils.isEmpty
-import io.github.keep2iron.pomelo.IResponseStatus
 import io.github.keep2iron.pomelo.convert.CustomConvertFactory
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 
