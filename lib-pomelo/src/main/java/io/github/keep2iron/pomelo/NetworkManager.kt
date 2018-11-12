@@ -12,6 +12,8 @@ import retrofit2.Retrofit
 
 import android.text.TextUtils.isEmpty
 import io.github.keep2iron.pomelo.convert.CustomConvertFactory
+import retrofit2.CallAdapter
+import retrofit2.Converter
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 
 
@@ -50,10 +52,16 @@ class NetworkManager private constructor() {
 
         private var mNetworkClient: NetworkManager = NetworkManager()
         private var mRetrofitBuilderMap = HashMap<String, Retrofit.Builder>()
+
+        init {
+            val retrofitBuilder = Retrofit.Builder().baseUrl(defaultUrl)
+            mRetrofitBuilderMap[defaultUrl] = retrofitBuilder
+        }
+
         /**
          * 状态检测的字节码文件
          */
-        private lateinit var mClazz: Class<out IResponseStatus>
+        private var mClazz: Class<out IResponseStatus>? = null
 
         /**
          * 设置这个类主要是为了进行服务器基础数据的状态监测
@@ -75,7 +83,8 @@ class NetworkManager private constructor() {
          * @param clazz 状态监测的字节码
          ** */
         fun setBaseServerResponse(
-                clazz: Class<out IResponseStatus>): Builder {
+            clazz: Class<out IResponseStatus>
+        ): Builder {
             this.mClazz = clazz
 
             return this
@@ -97,16 +106,27 @@ class NetworkManager private constructor() {
             return this
         }
 
+        fun addConverterFactory(factory: Converter.Factory, url: String = this.defaultUrl): Builder {
+            val builder = mRetrofitBuilderMap[url] ?: throw IllegalArgumentException("do you forget call addBaseUrl at first.")
+            builder.addConverterFactory(factory)
+            return this
+        }
+
+        fun addCallAdapterFactory(factory: CallAdapter.Factory, url: String = this.defaultUrl): Builder {
+            val builder = mRetrofitBuilderMap[url] ?: throw IllegalArgumentException("do you forget call addBaseUrl at first.")
+            builder.addCallAdapterFactory(factory)
+            return this
+        }
+
         fun build(client: OkHttpClient): NetworkManager {
             mNetworkClient.mDefaultUrl = defaultUrl
-            val retrofitBuilder = Retrofit.Builder().baseUrl(defaultUrl)
-            mRetrofitBuilderMap[defaultUrl] = retrofitBuilder
 
             //retrofit对象的builder对象集合
             mRetrofitBuilderMap.forEach { (key, retrofitBuilder) ->
-                retrofitBuilder.addConverterFactory(CustomConvertFactory.create(mClazz))
-                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-
+                mClazz?.let {
+                    retrofitBuilder.addConverterFactory(CustomConvertFactory.create(mClazz))
+                }
+                retrofitBuilder.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 val retrofit = retrofitBuilder.client(client).build()
                 mNetworkClient.mRetrofitMap[key] = retrofit
             }
