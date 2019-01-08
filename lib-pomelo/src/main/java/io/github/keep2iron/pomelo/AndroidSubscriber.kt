@@ -56,10 +56,12 @@ open class AndroidSubscriber<T> : Observer<T>, Subscriber<T> {
     }
 
     fun cancel() {
-        if (!disposable!!.isDisposed) {
-            disposable?.dispose()
+        disposable?.apply {
+            if(!this.isDisposed){
+                this.dispose()
+            }
         }
 
-        subscription!!.cancel()
+        subscription?.cancel()
     }
 }

@@ -5,6 +5,7 @@
 
 package io.github.keep2iron.pomelo
 
+import android.support.v4.util.ArrayMap
 import java.util.HashMap
 import java.util.LinkedHashMap
 import okhttp3.OkHttpClient
@@ -16,15 +17,14 @@ import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 
-
 /**
  * @author keep2iron
  */
 class NetworkManager private constructor() {
     /**
-     * 因为存在android客户端连接多个地址，因此通过
+     * 因为存在android客户端连接多个地址，因此通过Map进行配置
      */
-    private val mRetrofitMap = LinkedHashMap<String, Retrofit>()
+    private val mRetrofitMap = ArrayMap<String, Retrofit>()
     /**
      * 默认的url地址
      */
@@ -50,7 +50,6 @@ class NetworkManager private constructor() {
      */
     class Builder(private val defaultUrl: String) {
 
-        private var mNetworkClient: NetworkManager = NetworkManager()
         private var mRetrofitBuilderMap = HashMap<String, Retrofit.Builder>()
 
         init {
@@ -107,18 +106,22 @@ class NetworkManager private constructor() {
         }
 
         fun addConverterFactory(factory: Converter.Factory, url: String = this.defaultUrl): Builder {
-            val builder = mRetrofitBuilderMap[url] ?: throw IllegalArgumentException("do you forget call addBaseUrl at first.")
+            val builder =
+                mRetrofitBuilderMap[url] ?: throw IllegalArgumentException("do you forget call addBaseUrl at first.")
             builder.addConverterFactory(factory)
             return this
         }
 
         fun addCallAdapterFactory(factory: CallAdapter.Factory, url: String = this.defaultUrl): Builder {
-            val builder = mRetrofitBuilderMap[url] ?: throw IllegalArgumentException("do you forget call addBaseUrl at first.")
+            val builder =
+                mRetrofitBuilderMap[url] ?: throw IllegalArgumentException("do you forget call addBaseUrl at first.")
             builder.addCallAdapterFactory(factory)
             return this
         }
 
         fun build(client: OkHttpClient): NetworkManager {
+            val mNetworkClient = NetworkManager()
+
             mNetworkClient.mDefaultUrl = defaultUrl
 
             //retrofit对象的builder对象集合
