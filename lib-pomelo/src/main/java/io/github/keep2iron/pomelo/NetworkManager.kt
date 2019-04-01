@@ -7,7 +7,6 @@ package io.github.keep2iron.pomelo
 
 import android.support.v4.util.ArrayMap
 import java.util.HashMap
-import java.util.LinkedHashMap
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 
@@ -52,6 +51,8 @@ class NetworkManager private constructor() {
 
         private var mRetrofitBuilderMap = HashMap<String, Retrofit.Builder>()
 
+        private var responseProcessListener: ((String?) -> String)? = null
+
         init {
             val retrofitBuilder = Retrofit.Builder().baseUrl(defaultUrl)
             mRetrofitBuilderMap[defaultUrl] = retrofitBuilder
@@ -89,6 +90,10 @@ class NetworkManager private constructor() {
             return this
         }
 
+        fun addRespProcess() {
+
+        }
+
         /**
          * 添加的请求的基础地址,默认最先添加的url地址是请求的默认地址
          *
@@ -119,6 +124,10 @@ class NetworkManager private constructor() {
             return this
         }
 
+        fun setResponseListener(listener: (String?) -> String) {
+            this.responseProcessListener = listener
+        }
+
         fun build(client: OkHttpClient): NetworkManager {
             val mNetworkClient = NetworkManager()
 
@@ -127,7 +136,7 @@ class NetworkManager private constructor() {
             //retrofit对象的builder对象集合
             mRetrofitBuilderMap.forEach { (key, retrofitBuilder) ->
                 mClazz?.let {
-                    retrofitBuilder.addConverterFactory(CustomConvertFactory.create(mClazz))
+                    retrofitBuilder.addConverterFactory(CustomConvertFactory.create(mClazz,this.responseProcessListener))
                 }
                 retrofitBuilder.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 val retrofit = retrofitBuilder.client(client).build()

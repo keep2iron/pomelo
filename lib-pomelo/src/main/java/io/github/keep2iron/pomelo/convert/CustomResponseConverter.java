@@ -8,6 +8,8 @@ import java.lang.reflect.Type;
 
 import io.github.keep2iron.pomelo.IResponseStatus;
 import io.github.keep2iron.pomelo.exception.StatusErrorException;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 
@@ -25,11 +27,13 @@ class CustomResponseConverter<T> implements Converter<ResponseBody, T> {
     private final Gson gson;
     private final Type type;
     private Class<? extends IResponseStatus> clazz;
+    private Function1<String, String> listener;
 
-    <C extends IResponseStatus> CustomResponseConverter(Gson gson, Type type, Class<C> clazz) {
+    CustomResponseConverter(Gson gson, Type type, Class<? extends IResponseStatus> clazz, Function1<String, String> listener) {
         this.gson = gson;
         this.type = type;
         this.clazz = clazz;
+        this.listener = listener;
     }
 
     /**
@@ -49,6 +53,9 @@ class CustomResponseConverter<T> implements Converter<ResponseBody, T> {
     }
 
     private T convertByStatusTest(String body) throws StatusErrorException {
+        if (listener != null) {
+            body = listener.invoke(body);
+        }
         IResponseStatus status = gson.fromJson(body, clazz);
 
         if (status.isResponseSuccessful()) {
