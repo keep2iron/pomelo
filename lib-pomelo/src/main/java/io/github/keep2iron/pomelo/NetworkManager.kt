@@ -124,8 +124,9 @@ class NetworkManager private constructor() {
             return this
         }
 
-        fun setResponseListener(listener: (String?) -> String) {
+        fun setResponseListener(listener: (String?) -> String): Builder {
             this.responseProcessListener = listener
+            return this
         }
 
         fun build(client: OkHttpClient): NetworkManager {
