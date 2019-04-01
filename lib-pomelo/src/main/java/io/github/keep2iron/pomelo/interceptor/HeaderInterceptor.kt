@@ -5,6 +5,7 @@
 
 package io.github.keep2iron.pomelo.interceptor
 
+import android.support.v4.util.ArrayMap
 import java.io.IOException
 import java.util.HashMap
 
@@ -17,16 +18,17 @@ import okhttp3.Response
  * @version 1.0
  * @since 2018/03/16 15:54
  *
- * 统一的
+ * 统一的header添加管理器
  */
-abstract class HeaderInterceptor(val listener: (headerParams: Map<String, String>) -> Unit) : Interceptor {
+class HeaderInterceptor(val listener: (url: String, headerParams: ArrayMap<String, String>) -> Unit) : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val newRequest: Request
-        val headerParams = HashMap<String, String>()
-        listener(headerParams)
+        val headerParams = ArrayMap<String, String>()
+        val url = request.url().uri().toString()
+        listener(url, headerParams)
         try {
             val builder = request.newBuilder()
             for ((key, value) in headerParams) {
