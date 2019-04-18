@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import io.github.keep2iron.pomelo.IResponseStatus;
-import io.github.keep2iron.pomelo.exception.StatusErrorException;
-import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
@@ -26,13 +23,11 @@ class CustomResponseConverter<T> implements Converter<ResponseBody, T> {
 
     private final Gson gson;
     private final Type type;
-    private Class<? extends IResponseStatus> clazz;
     private Function1<String, String> listener;
 
-    CustomResponseConverter(Gson gson, Type type, Class<? extends IResponseStatus> clazz, Function1<String, String> listener) {
+    CustomResponseConverter(Gson gson, Type type, Function1<String, String> listener) {
         this.gson = gson;
         this.type = type;
-        this.clazz = clazz;
         this.listener = listener;
     }
 
@@ -46,26 +41,14 @@ class CustomResponseConverter<T> implements Converter<ResponseBody, T> {
     @Override
     public T convert(ResponseBody responseBody) throws IOException {
         String body = responseBody.string();
-        if (clazz != null) {
-            return convertByStatusTest(body);
-        }
         return convert(body);
     }
 
-    private T convertByStatusTest(String body) throws StatusErrorException {
+    private T convert(String body) {
         if (listener != null) {
             body = listener.invoke(body);
         }
-        IResponseStatus status = gson.fromJson(body, clazz);
 
-        if (status.isResponseSuccessful()) {
-            return convert(body);
-        } else {
-            throw new StatusErrorException(status);
-        }
-    }
-
-    private T convert(String body) {
         //如果返回类型是String那么就直接返回String对象,
         if (type instanceof Class) {
             Class clazz = (Class) type;

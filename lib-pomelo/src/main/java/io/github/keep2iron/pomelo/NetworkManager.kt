@@ -53,45 +53,21 @@ class NetworkManager private constructor() {
 
         private var responseProcessListener: ((String?) -> String)? = null
 
+        private var useDefaultConvertAdapter = true
+
+        private var userRxJava2ConvertAdapter = true
+
         init {
             val retrofitBuilder = Retrofit.Builder().baseUrl(defaultUrl)
             mRetrofitBuilderMap[defaultUrl] = retrofitBuilder
         }
 
-        /**
-         * 状态检测的字节码文件
-         */
-        private var mClazz: Class<out IResponseStatus>? = null
-
-        /**
-         * 设置这个类主要是为了进行服务器基础数据的状态监测
-         *
-         *
-         * 形如这样的json
-         * {
-         * "MessageCode":1000,
-         * "Message":"成功",
-         * {
-         * 数据......
-         * }
-         * }
-         * 传入字节码对象，因为内部会进行gson解析然后生成这个状态对象。
-         *
-         *
-         * 这个检测对象必须实现了**CustomConvertFactory.IResponseStatus****这个类
-         *
-         * @param clazz 状态监测的字节码
-         ** */
-        fun setBaseServerResponse(
-            clazz: Class<out IResponseStatus>
-        ): Builder {
-            this.mClazz = clazz
-
-            return this
+        fun useDefaultConvertAdapter(useDefaultConvertAdapter: Boolean) {
+            this.useDefaultConvertAdapter = useDefaultConvertAdapter
         }
 
-        fun addRespProcess() {
-
+        fun userRxJava2ConvertAdapter(userRxJava2ConvertAdapter: Boolean) {
+            this.userRxJava2ConvertAdapter = userRxJava2ConvertAdapter
         }
 
         /**
@@ -136,10 +112,12 @@ class NetworkManager private constructor() {
 
             //retrofit对象的builder对象集合
             mRetrofitBuilderMap.forEach { (key, retrofitBuilder) ->
-                mClazz?.let {
-                    retrofitBuilder.addConverterFactory(CustomConvertFactory.create(mClazz,this.responseProcessListener))
+                if (useDefaultConvertAdapter) {
+                    retrofitBuilder.addConverterFactory(CustomConvertFactory.create(this.responseProcessListener))
                 }
-                retrofitBuilder.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                if (userRxJava2ConvertAdapter) {
+                    retrofitBuilder.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                }
                 val retrofit = retrofitBuilder.client(client).build()
                 mNetworkClient.mRetrofitMap[key] = retrofit
             }
