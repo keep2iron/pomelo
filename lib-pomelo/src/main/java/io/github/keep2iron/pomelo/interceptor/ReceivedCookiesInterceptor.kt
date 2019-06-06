@@ -14,15 +14,12 @@ import okhttp3.Response
  * This Interceptor add all received Cookies to the app DefaultPreferences.
  * Your implementation on how to save the Cookies on the Pref MAY VARY.
  *
- *
- *
- *
  * 用于保存cookie信息的拦截器
  *
  * @author tsuharesu
  * @date 4/1/15
  */
-class ReceivedCookiesInterceptor : Interceptor {
+open class ReceivedCookiesInterceptor : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {

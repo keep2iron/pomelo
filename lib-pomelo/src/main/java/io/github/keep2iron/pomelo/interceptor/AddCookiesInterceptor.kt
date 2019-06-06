@@ -19,7 +19,7 @@ import okhttp3.Response
  *
  * Created by tsuharesu on 4/1/15.
  */
-class AddCookiesInterceptor : Interceptor {
+open class AddCookiesInterceptor : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {

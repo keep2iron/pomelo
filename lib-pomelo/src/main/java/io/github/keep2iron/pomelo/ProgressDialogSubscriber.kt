@@ -1,7 +1,9 @@
 package io.github.keep2iron.pomelo
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
+import android.support.annotation.CallSuper
 import io.github.keep2iron.pomelo.dialog.ProgressDialogController
 import org.reactivestreams.Subscription
 import java.lang.ref.WeakReference
@@ -18,6 +20,7 @@ abstract class ProgressDialogSubscriber<T>(
 ) : AndroidSubscriber<T>() {
     private var activityRef = WeakReference<Activity>(activity)
 
+    @CallSuper
     override fun onSubscribe(disposable: Disposable) {
         super.onSubscribe(disposable)
         val act = activityRef.get()
@@ -26,6 +29,7 @@ abstract class ProgressDialogSubscriber<T>(
         }
     }
 
+    @CallSuper
     override fun onSubscribe(subscription: Subscription) {
         super.onSubscribe(subscription)
         val act = activityRef.get()
@@ -34,16 +38,19 @@ abstract class ProgressDialogSubscriber<T>(
         }
     }
 
+    @CallSuper
     override fun onNext(t: T) {
         super.onNext(t)
         controller.onDialogDismiss()
     }
 
+    @CallSuper
     override fun onError(throwable: Throwable) {
         super.onError(throwable)
         controller.onDialogDismiss()
     }
 
+    @CallSuper
     override fun onComplete() {
         super.onComplete()
         controller.onDialogDismiss()

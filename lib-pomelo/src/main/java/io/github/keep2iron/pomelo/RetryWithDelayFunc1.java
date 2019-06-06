@@ -10,9 +10,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 
 /**
- * Created by 薛世君
- * Date : 2016/11/11
- * Email : 497881309@qq.com
+ * 网络请求重试
  */
 public class RetryWithDelayFunc1 implements Function<Observable<? extends Throwable>, Observable<?>> {
     private int time;

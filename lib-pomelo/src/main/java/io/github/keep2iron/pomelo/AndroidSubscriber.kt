@@ -5,13 +5,10 @@
 
 package io.github.keep2iron.pomelo
 
+import android.support.annotation.CallSuper
 import android.util.Log
-
-import com.orhanobut.logger.Logger
-
 import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
-
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 
@@ -22,42 +19,41 @@ import io.reactivex.disposables.Disposable
  *
  * 请在application中初始化这个方法
  */
-open class AndroidSubscriber<T> : Observer<T>, Subscriber<T> {
+open class AndroidSubscriber<T>(
+    private inline val onSuccess: ((resp: T) -> Unit)? = null,
+    private inline val onError: ((throwable: Throwable) -> Unit)? = null
+) : Observer<T>, Subscriber<T> {
     private var disposable: Disposable? = null
     private var subscription: Subscription? = null
 
     override fun onComplete() {
     }
 
+    @CallSuper
     override fun onSubscribe(disposable: Disposable) {
         this.disposable = disposable
     }
 
+    @CallSuper
     override fun onError(throwable: Throwable) {
-        Logger.e(Log.getStackTraceString(throwable))
+        Log.e(NetworkManager.TAG, Log.getStackTraceString(throwable))
+        NetworkManager.doOnError(throwable)
+        onError?.invoke(throwable)
     }
 
-
+    @CallSuper
     override fun onNext(t: T) {
-        onSuccess(t)
-    }
-
-    /**
-     * 当正常请求时进行调用
-     *
-     * @param resp
-     */
-    open fun onSuccess(resp: T){
-
+        onSuccess?.invoke(t)
     }
 
     override fun onSubscribe(subscription: Subscription) {
         this.subscription = subscription
     }
 
+    @CallSuper
     fun cancel() {
         disposable?.apply {
-            if(!this.isDisposed){
+            if (!this.isDisposed) {
                 this.dispose()
             }
         }

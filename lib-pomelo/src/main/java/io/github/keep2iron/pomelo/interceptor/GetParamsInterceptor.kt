@@ -17,7 +17,7 @@ import okhttp3.Response
  *
  * 统一的GET参数添加的拦截器
  */
-class GetParamsInterceptor(val listener: (url: String, headerParams: ArrayMap<String, String>) -> Unit) : Interceptor {
+open class GetParamsInterceptor(val listener: (url: String, headerParams: ArrayMap<String, String>) -> Unit) : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {

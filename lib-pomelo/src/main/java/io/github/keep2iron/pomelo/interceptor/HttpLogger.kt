@@ -1,8 +1,6 @@
 package io.github.keep2iron.pomelo.interceptor
 
 import android.util.Log
-
-import com.orhanobut.logger.Logger
 import io.github.keep2iron.pomelo.BuildConfig
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -13,16 +11,12 @@ import okhttp3.logging.HttpLoggingInterceptor
  *
  * 用于打印HTTP LOG信息
  */
-class HttpLogger : HttpLoggingInterceptor.Logger {
+open class HttpLogger(val tagName: String) : HttpLoggingInterceptor.Logger {
     override fun log(message: String) {
         if (!BuildConfig.DEBUG) {
             return
         }
 
-        if (message.startsWith("{")) {
-            Logger.json(message)
-        } else {
-            Log.e("keep2iron", message)
-        }
+        Log.d(tagName, message)
     }
 }
