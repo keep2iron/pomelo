@@ -20,6 +20,7 @@ import io.reactivex.disposables.Disposable
  * 请在application中初始化这个方法
  */
 open class AndroidSubscriber<T>(
+    private val useGlobalOnError: Boolean = true,
     private inline val onSuccess: ((resp: T) -> Unit)? = null,
     private inline val onError: ((throwable: Throwable) -> Unit)? = null
 ) : Observer<T>, Subscriber<T> {
@@ -37,7 +38,9 @@ open class AndroidSubscriber<T>(
     @CallSuper
     override fun onError(throwable: Throwable) {
         Log.e(NetworkManager.TAG, Log.getStackTraceString(throwable))
-        NetworkManager.doOnError(throwable)
+        if(useGlobalOnError) {
+            NetworkManager.doOnError(throwable)
+        }
         onError?.invoke(throwable)
     }
 
