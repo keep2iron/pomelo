@@ -25,7 +25,7 @@ class MyApplication : Application() {
         super.onCreate()
 
         Stetho.initializeWithDefaults(this)
-        MyApplication.networkManager = NetworkManager.build("http://10.0.2.2:8080/") {
+        networkManager = NetworkManager.build("http://10.0.2.2:8080/") {
             initOkHttp { builder ->
                 builder.protocols(Collections.singletonList(Protocol.HTTP_1_1))         //解决 https://www.cnblogs.com/myhalo/p/6811472.html
                     .connectTimeout(15, TimeUnit.SECONDS)

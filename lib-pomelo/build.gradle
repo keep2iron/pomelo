@@ -9,8 +9,10 @@ android {
     buildToolsVersion versions.build.build_tools
 
     defaultConfig {
-        minSdkVersion versions.build.min_sdk
+        minSdkVersion 19
         targetSdkVersion versions.build.target_sdk
+
+        consumerProguardFiles  'proguard-rules.pro'
     }
 
     compileOptions {

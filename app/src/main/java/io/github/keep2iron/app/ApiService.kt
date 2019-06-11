@@ -7,6 +7,6 @@ import retrofit2.http.POST
 interface ApiService {
 
     @POST("/api/index/movie")
-    fun indexHome(): Observable<BaseResponse<String>>
+    fun indexHome(): Observable<String>
 
 }

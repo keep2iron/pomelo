@@ -13,9 +13,18 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release {
+            storeFile file ('../keep2iron.jks')
+            storePassword 'keep2iron.github.io'
+            keyAlias 'keep2iron'
+            keyPassword 'keep2iron.github.io'
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.release
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

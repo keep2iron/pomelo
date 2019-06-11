@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
                 service.indexHome()
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
-                    .subscribe(AndroidSubscriber<BaseResponse<String>>(
+                    .subscribe(AndroidSubscriber<String>(
                         onSuccess = { resp ->
                             Log.d("keep2iron","onSuccessful .......... ${resp}")
                         },
