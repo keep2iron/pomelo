@@ -24,18 +24,18 @@ class MainActivity : AppCompatActivity() {
 
         val service = MyApplication.networkManager.getService(ApiService::class.java)
         Observable.interval(0, 1000, TimeUnit.MILLISECONDS)
-            .subscribe {
+            .flatMap {
                 service.indexHome()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.io())
-                    .subscribe(AndroidSubscriber<String>(
-                        onSuccess = { resp ->
-                            Log.d("keep2iron","onSuccessful .......... ${resp}")
-                        },
-                        onError = { throwable: Throwable ->
-                            Log.d("keep2iron","onError .......... ${throwable}")
-                        }
-                    ))
             }
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe(AndroidSubscriber<String>(
+                onSuccess = { resp ->
+                    Log.d("keep2iron","onSuccessful .......... ${resp}")
+                },
+                onError = { throwable: Throwable ->
+                    Log.d("keep2iron","onError .......... ${throwable}")
+                }
+            ))
     }
 }
