@@ -1,1 +1,1 @@
-include ':app', ':lib-pomelo'
+include ':app', ':pomelo', ':log'

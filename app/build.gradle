@@ -13,17 +13,8 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    signingConfigs {
-        release {
-            storeFile file ('../keep2iron.jks')
-            storePassword 'keep2iron.github.io'
-            keyAlias 'keep2iron'
-            keyPassword 'keep2iron.github.io'
-        }
-    }
     buildTypes {
         release {
-            signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -35,9 +26,15 @@ dependencies {
     implementation deps.kotlin.stdlib_jdk7
     implementation deps.support.app_compat
     implementation deps.support.constraint_layout
-    implementation deps.kotlin.stdlib_jdk7
 
-    implementation project(':lib-pomelo')
+    implementation project(':pomelo')
+    implementation project(':log')
+    implementation deps.rxjava2
+    implementation deps.rx_android
+    implementation deps.retrofit.scalars
+    implementation deps.retrofit.adapter
+    implementation deps.logger
+    implementation deps.logging
 
     implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
