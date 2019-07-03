@@ -12,11 +12,12 @@ import io.reactivex.disposables.Disposable
  * @version 1.0
  * @since 2017/12/27 17:46
  */
-abstract class ProgressDialogSubscriber<T>(
+open class ProgressDialogSubscriber<T>(
     activity: Activity,
-    private val controller: ProgressDialogController
-) : AndroidSubscriber<T>() {
-    private var activityRef = WeakReference<Activity>(activity)
+    private val controller: ProgressDialogController,
+    block: AndroidSubscriber<T>.() -> Unit
+) : AndroidSubscriber<T>(block) {
+    private var activityRef = WeakReference(activity)
 
     @CallSuper
     override fun onSubscribe(disposable: Disposable) {
