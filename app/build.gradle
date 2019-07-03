@@ -33,7 +33,7 @@ dependencies {
     implementation deps.rx_android
     implementation deps.retrofit.scalars
     implementation deps.retrofit.adapter
-    implementation deps.logging
+    implementation deps.logger
 
     implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
