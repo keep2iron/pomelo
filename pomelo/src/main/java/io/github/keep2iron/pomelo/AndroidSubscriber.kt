@@ -13,12 +13,17 @@ import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 
 open class AndroidSubscriber<T>(
-    private val useGlobalOnError: Boolean = true,
-    private inline val onSuccess: ((resp: T) -> Unit)? = null,
-    private inline val onError: ((throwable: Throwable) -> Unit)? = null
+    block: AndroidSubscriber<T>.() -> Unit
 ) : Observer<T>, Subscriber<T> {
+    init {
+        apply(block)
+    }
+
     private var disposable: Disposable? = null
     private var subscription: Subscription? = null
+
+    var onSuccess: ((resp: T) -> Unit)? = null
+    var onError: ((throwable: Throwable) -> Unit)? = null
 
     override fun onComplete() {
     }

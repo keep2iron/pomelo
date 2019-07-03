@@ -6,6 +6,7 @@ import android.util.Log
 import io.github.keep2iron.pomelo.AndroidSubscriber
 import io.github.keep2iron.pomelo.utilities.FindService
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.lang.NullPointerException
 import java.util.concurrent.TimeUnit
@@ -22,12 +23,15 @@ class MainActivity : AppCompatActivity() {
             .subscribe {
                 apiService.indexHome("test")
                     .subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.io())
-                    .subscribe(AndroidSubscriber<BaseResponse<String>>(
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(AndroidSubscriber<BaseResponse<String>> {
                         onSuccess = { resp ->
                             Log.d("keep2iron", "onSuccessful .......... ${resp.value}")
                         }
-                    ))
+                        onError = {
+
+                        }
+                    })
             }
     }
 }

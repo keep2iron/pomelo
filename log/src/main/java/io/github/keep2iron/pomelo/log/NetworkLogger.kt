@@ -2,7 +2,7 @@ package io.github.keep2iron.pomelo.log
 
 import okhttp3.logging.HttpLoggingInterceptor
 
-class NetworkLogger(val logger: NetworkLoggingInterceptor.Logger) : HttpLoggingInterceptor.Logger {
+class NetworkLogger(private val logger: NetworkLoggingInterceptor.Logger) : HttpLoggingInterceptor.Logger {
 
     private val mMessage = StringBuilder()
 
