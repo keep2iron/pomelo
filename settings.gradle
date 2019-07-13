@@ -1,1 +1,1 @@
-include ':app', ':pomelo', ':log'
+include ':app', ':core', ':log', ':extra'

@@ -1,0 +1,5 @@
+<resources>
+    <string name="pomelo_load_failed">加载失败</string>
+    <string name="pomelo_load_end">没有更多数据</string>
+    <string name="pomelo_loading">正在加载</string>
+</resources>
