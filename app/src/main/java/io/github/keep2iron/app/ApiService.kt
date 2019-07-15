@@ -10,6 +10,6 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("/api/index/movie")
-    fun indexHome(@Field("params1") params1: String): Observable<BaseResponse<String>>
+    fun indexHome(@Field("params1") params1: String): Observable<BaseResponse<List<Movie>>>
 
 }

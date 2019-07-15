@@ -4,17 +4,17 @@ import android.databinding.ObservableList
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import io.github.keep2iron.pomlo.pager.LoadMore
-import io.github.keep2iron.pomlo.pager.LoadMoreImpl
+import io.github.keep2iron.pomlo.pager.SampleLoadMore
 
 /**
  * for recyclerView
  */
 open class RecyclerDiffListAdapter<T>(
     val data: ObservableList<T>,
-    private val loadMoreClass: Class<out LoadMoreImpl> = LoadMoreImpl::class.java
+    private val loadMoreClass: Class<out SampleLoadMore> = SampleLoadMore::class.java
 ) : RecyclerView.Adapter<RecyclerViewHolder>() {
 
-    private lateinit var loadMore: LoadMoreImpl
+    private lateinit var loadMore: SampleLoadMore
 
     fun addHeaderAdapter() {
 

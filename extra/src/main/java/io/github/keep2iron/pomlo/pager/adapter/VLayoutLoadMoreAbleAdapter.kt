@@ -8,15 +8,24 @@ import io.github.keep2iron.pomlo.pager.LoadMore
 import io.github.keep2iron.pomlo.pager.LoadMoreAble
 
 class VLayoutLoadMoreAbleAdapter(private val loadMore: LoadMore) :
-    DelegateAdapter.Adapter<RecyclerViewHolder>(),
-    LoadMoreAble {
+        DelegateAdapter.Adapter<RecyclerViewHolder>(),
+        LoadMoreAble {
+
+    init {
+        loadMore.attachAdapter(this)
+    }
+
+    override fun scrollToPosition(position: Int) {
+        loadMore.scrollToPosition(position)
+    }
 
     override fun setOnLoadMoreListener(listener: (loadMore: LoadMore) -> Unit) {
         loadMore.setOnLoadMoreListener(listener)
     }
 
-    override fun onCreateViewHolder(viewParent: ViewGroup, viewType: Int): RecyclerViewHolder =
-        RecyclerViewHolder(loadMore.onCreateView(viewParent, viewType))
+    override fun onCreateViewHolder(viewParent: ViewGroup, viewType: Int): RecyclerViewHolder {
+        return RecyclerViewHolder(loadMore.onCreateView(viewParent, viewType))
+    }
 
     override fun getItemCount(): Int = 1
 

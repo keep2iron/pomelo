@@ -1,33 +1,36 @@
 package io.github.keep2iron.pomlo.pager.load
 
-import android.databinding.ObservableList
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.alibaba.android.vlayout.DelegateAdapter
-import io.github.keep2iron.pomlo.pager.LoadMore
 import io.github.keep2iron.pomlo.pager.adapter.AbstractSubAdapter
 import io.github.keep2iron.pomlo.pager.adapter.MultiTypeListAdapter
 
-class MultipleTypeBinder(
-    data: ObservableList<Any>,
-    recyclerView: RecyclerView,
-    refreshLayout: View,
-    loadMoreEnabled: Boolean = false
+class ListBinder(
+        recyclerView: RecyclerView,
+        refreshLayout: View,
+        loadMoreEnabled: Boolean = false
 ) : BaseBinder(recyclerView, refreshLayout, loadMoreEnabled) {
 
-    val adapter = MultiTypeListAdapter(data)
-
-    inline fun <reified T> registerAdapter(subAdapter: AbstractSubAdapter) {
-        adapter.registerAdapter<T>(subAdapter)
-    }
+    private var adapters = arrayListOf<AbstractSubAdapter>()
 
     override fun onBindDelegateAdapter(delegateAdapter: DelegateAdapter) {
-        delegateAdapter.addAdapter(adapter)
+        delegateAdapter.addAdapters(adapters as List<DelegateAdapter.Adapter<RecyclerView.ViewHolder>>)
     }
 
     override fun onBindViewPool(viewPool: RecyclerView.RecycledViewPool) {
-        adapter.adapterMap.values.forEach { adapter ->
+        adapters.forEach { adapter ->
             viewPool.setMaxRecycledViews(adapter.viewType, adapter.cacheMaxViewCount)
         }
+    }
+
+    fun addSubAdapter(multipleTypeAdapter: MultiTypeListAdapter): ListBinder {
+        adapters.add(multipleTypeAdapter)
+        return this
+    }
+
+    fun addSubAdapter(subAdapter: AbstractSubAdapter): ListBinder {
+        adapters.add(subAdapter)
+        return this
     }
 }

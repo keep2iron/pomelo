@@ -19,19 +19,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val disposable = Observable.interval(0, 1000, TimeUnit.MILLISECONDS)
-            .subscribe {
-                apiService.indexHome("test")
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(AndroidSubscriber<BaseResponse<String>> {
-                        onSuccess = { resp ->
-                            Log.d("keep2iron", "onSuccessful .......... ${resp.value}")
-                        }
-                        onError = {
-
-                        }
-                    })
-            }
+//        val disposable = Observable.interval(0, 1000, TimeUnit.MILLISECONDS)
+//            .subscribe {
+//                apiService.indexHome("test")
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(AndroidSubscriber<BaseResponse<String>> {
+//                        onSuccess = { resp ->
+//                            Log.d("keep2iron", "onSuccessful .......... ${resp.value}")
+//                        }
+//                        onError = {
+//
+//                        }
+//                    })
+//            }
     }
 }

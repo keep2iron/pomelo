@@ -17,6 +17,9 @@
             tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name="io.github.keep2iron.app.MainActivity">
+
+        </activity>
+        <activity android:name=".PageStateActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

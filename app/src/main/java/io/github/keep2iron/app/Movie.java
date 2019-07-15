@@ -1,5 +1,7 @@
 package io.github.keep2iron.app;
 
+import java.util.Objects;
+
 /**
  * Created by keep2iron on ${Date}.
  * write the powerful code ！
@@ -60,5 +62,23 @@ public class Movie {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return id == movie.id &&
+                year == movie.year &&
+                Objects.equals(movieName, movie.movieName) &&
+                Objects.equals(movieImage, movie.movieImage) &&
+                Objects.equals(description, movie.description) &&
+                Objects.equals(local, movie.local);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, movieName, movieImage, description, year, local);
     }
 }

@@ -16,7 +16,9 @@ import android.view.ViewGroup
  *
  * 加载更多adapter的父类 后面一些样式上的问题 可以直接继承该adapter
  */
-open class LoadMoreImpl : LoadMore {
+open class SampleLoadMore(val recyclerView: RecyclerView) : LoadMore {
+
+    private lateinit var adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>
 
     var mOnLoadMoreListener: ((adapter: LoadMore) -> Unit)? = null
 
@@ -47,8 +49,7 @@ open class LoadMoreImpl : LoadMore {
             field = value
         }
 
-    constructor(recyclerView: RecyclerView) {
-        // add recycler scrolling listener
+    init {
         val onScrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -58,7 +59,7 @@ open class LoadMoreImpl : LoadMore {
                 }
 
                 if (newState == RecyclerView.SCROLL_STATE_SETTLING ||
-                    newState == RecyclerView.SCROLL_STATE_DRAGGING
+                        newState == RecyclerView.SCROLL_STATE_DRAGGING
                 ) {
                     val isBottom: Boolean
                     val layoutManager = recyclerView.layoutManager
@@ -75,12 +76,18 @@ open class LoadMoreImpl : LoadMore {
                     }
                     if (isBottom && isEnableLoadMore && showState == STATE_DEFAULT) {
                         showLoading()
-                        mOnLoadMoreListener?.invoke(this@LoadMoreImpl)
+                        mOnLoadMoreListener?.invoke(this@SampleLoadMore)
                     }
                 }
             }
         }
         recyclerView.addOnScrollListener(onScrollListener)
+    }
+
+    override fun scrollToPosition(position: Int) {
+        recyclerView.post {
+            recyclerView.scrollToPosition(position)
+        }
     }
 
     override fun setLoadMoreEnable(isEnabled: Boolean) {
@@ -98,9 +105,9 @@ open class LoadMoreImpl : LoadMore {
     override fun onCreateView(viewParent: ViewGroup, viewType: Int): View {
         if (viewType == LoadMore.ITEM_TYPE) {
             val itemView =
-                LayoutInflater.from(viewParent.context).inflate(onCreateViewLayoutId(), viewParent, false)
+                    LayoutInflater.from(viewParent.context).inflate(onCreateViewLayoutId(), viewParent, false)
             itemView.findViewById<View>(R.id.pomelo_load_more_load_fail_view).setOnClickListener {
-                mOnLoadMoreListener?.invoke(this@LoadMoreImpl)
+                mOnLoadMoreListener?.invoke(this@SampleLoadMore)
                 showLoading()
             }
             return itemView
@@ -113,7 +120,7 @@ open class LoadMoreImpl : LoadMore {
         if (isEnableLoadMore && showState == STATE_DEFAULT) {
             showState = STATE_LOADING
             holder.itemView.post {
-                mOnLoadMoreListener?.invoke(this@LoadMoreImpl)
+                mOnLoadMoreListener?.invoke(this@SampleLoadMore)
             }
         }
         when (showState) {
@@ -143,34 +150,34 @@ open class LoadMoreImpl : LoadMore {
     private fun visibleLoading(itemView: View, visible: Boolean) {
         itemView.post {
             itemView.findViewById<View>(R.id.pomelo_load_more_loading_view).visibility =
-                if (visible) View.VISIBLE else View.GONE
+                    if (visible) View.VISIBLE else View.GONE
         }
     }
 
     private fun visibleLoadFail(itemView: View, visible: Boolean) {
         itemView.post {
             itemView.findViewById<View>(R.id.pomelo_load_more_load_fail_view).visibility =
-                if (visible) View.VISIBLE else View.GONE
+                    if (visible) View.VISIBLE else View.GONE
         }
     }
 
     private fun visibleLoadEnd(itemView: View, visible: Boolean) {
         itemView.post {
             itemView.findViewById<View>(R.id.pomelo_load_more_load_end_view).visibility =
-                if (visible) View.VISIBLE else View.GONE
+                    if (visible) View.VISIBLE else View.GONE
         }
     }
 
     override fun showLoadMoreFailed() {
         showState =
-            STATE_LOAD_MORE_FAILED
+                STATE_LOAD_MORE_FAILED
         notifyItemChanged(0)
     }
 
     override fun showLoadMoreEnd() {
         isEnableLoadMore = false
         showState =
-            STATE_LOAD_MORE_END
+                STATE_LOAD_MORE_END
         notifyItemChanged(0)
     }
 
@@ -184,6 +191,14 @@ open class LoadMoreImpl : LoadMore {
         notifyItemChanged(0)
     }
 
+    override fun notifyItemChanged(position: Int) {
+        adapter.notifyItemChanged(position)
+    }
+
+    override fun attachAdapter(adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>) {
+        this.adapter = adapter
+    }
+
     companion object {
         private const val STATE_DEFAULT = 1
         private const val STATE_LOADING = 2
@@ -195,10 +210,7 @@ open class LoadMoreImpl : LoadMore {
          */
         private fun last(lastPositions: IntArray): Int {
             return lastPositions.max()
-                ?: lastPositions[0]
+                    ?: lastPositions[0]
         }
-    }
-
-    override fun notifyItemChanged(position: Int) {
     }
 }

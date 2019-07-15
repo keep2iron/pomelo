@@ -89,25 +89,25 @@ class PomeloPageStateLayout : FrameLayout {
             for (i in 0 until array.indexCount) {
                 val index = array.getIndex(i)
                 when (index) {
-                    R.styleable.PomeloPageStateLayout_psl_layout_loadError -> {
+                    R.styleable.PomeloPageStateLayout_pomelo_layout_load_error -> {
                         mLoadError =
                             LayoutInflater.from(getContext()).inflate(array.getResourceId(index, -1), this, false)
-//                        mLoadError?.
+                        mLoadError!!.visibility = View.GONE
                     }
-                    R.styleable.PomeloPageStateLayout_psl_layout_noData -> {
+                    R.styleable.PomeloPageStateLayout_pomelo_layout_empty_data -> {
                         mNoDataView =
                             LayoutInflater.from(getContext()).inflate(array.getResourceId(index, -1), this, false)
-                        mNoDataView?.visibility = View.GONE
+                        mNoDataView!!.visibility = View.GONE
                     }
-                    R.styleable.PomeloPageStateLayout_psl_layout_noNetwork -> {
+                    R.styleable.PomeloPageStateLayout_pomelo_layout_network_error -> {
                         mNoNetwork =
                             LayoutInflater.from(getContext()).inflate(array.getResourceId(index, -1), this, false)
-                        mNoNetwork?.visibility = View.GONE
+                        mNoNetwork!!.visibility = View.GONE
                     }
-                    R.styleable.PomeloPageStateLayout_psl_layout_loading -> {
+                    R.styleable.PomeloPageStateLayout_pomelo_layout_loading -> {
                         mLoadingView =
                             LayoutInflater.from(getContext()).inflate(array.getResourceId(index, -1), this, false)
-                        mLoadingView?.visibility = View.GONE
+                        mLoadingView!!.visibility = View.GONE
                     }
                 }
             }

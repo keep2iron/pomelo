@@ -1,15 +1,18 @@
 package io.github.keep2iron.pomlo.state
 
+import android.databinding.ObservableField
 import android.view.View
 
 open class PageStateObservable(
-    private val pageStateLayout: PomeloPageStateLayout,
-    private var state: PageState = PageState.ORIGIN
-) {
+        private var state: PageState = PageState.ORIGIN
+) : ObservableField<PageState>(state) {
+
+    private var pageStateLayout: PomeloPageStateLayout? = null
+
 
     private val listener = object : View.OnAttachStateChangeListener {
         override fun onViewAttachedToWindow(v: View?) {
-            pageStateLayout.initPageState(state)
+            pageStateLayout?.initPageState(state)
         }
 
         override fun onViewDetachedFromWindow(v: View?) {
@@ -17,41 +20,34 @@ open class PageStateObservable(
         }
     }
 
-    private var stateChangeListener: ((state: PageState) -> Unit)? = null
-
-    init {
+    fun setupWithPageStateLayout(pageStateLayout: PomeloPageStateLayout) {
+        this.pageStateLayout = pageStateLayout
+        clear()
         pageStateLayout.addOnAttachStateChangeListener(listener)
     }
 
     fun setPageState(pageState: PageState) {
         when (pageState) {
             PageState.ORIGIN -> {
-                pageStateLayout.displayOriginView()
+                pageStateLayout?.displayOriginView()
             }
             PageState.LOADING -> {
-                pageStateLayout.displayLoading()
+                pageStateLayout?.displayLoading()
             }
             PageState.LOAD_ERROR -> {
-                pageStateLayout.displayLoadError()
+                pageStateLayout?.displayLoadError()
             }
             PageState.NO_DATA -> {
-                pageStateLayout.displayNoData()
+                pageStateLayout?.displayNoData()
             }
             PageState.NO_NETWORK -> {
-                pageStateLayout.displayNoNetwork()
+                pageStateLayout?.displayNoNetwork()
             }
         }
-        if (this.state != pageState) {
-            this.state = pageState
-            stateChangeListener?.invoke(this.state)
-        }
-    }
-
-    fun setOnStateChangeListener(stateChangeListener: (state: PageState) -> Unit) {
-        this.stateChangeListener = stateChangeListener
+        set(state)
     }
 
     fun clear() {
-        pageStateLayout.removeOnAttachStateChangeListener(listener)
+        pageStateLayout?.removeOnAttachStateChangeListener(listener)
     }
 }

@@ -7,23 +7,19 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.alibaba.android.vlayout.DelegateAdapter
+import com.alibaba.android.vlayout.LayoutHelper
+import com.alibaba.android.vlayout.layout.LinearLayoutHelper
 import io.github.keep2iron.pomlo.pager.R
 
 typealias OnItemClickListener = (position: Int, view: View) -> Unit
 
 abstract class AbstractSubAdapter(val viewType: Int,val  cacheMaxViewCount: Int) :
-    RecyclerView.Adapter<RecyclerViewHolder>() {
+    DelegateAdapter.Adapter<RecyclerViewHolder>() {
+
+    override fun onCreateLayoutHelper(): LayoutHelper = LinearLayoutHelper()
 
     private var listenerMap = SparseArrayCompat<OnItemClickListener>()
-
-//    private var viewType: Int = 0
-//
-//    private var cacheMaxViewCount = 5
-//
-//    constructor() : this() {
-//        this.viewType = viewType
-//        this.cacheMaxViewCount = cacheMaxViewCount
-//    }
 
     /**
      * 获取布局的layout id
