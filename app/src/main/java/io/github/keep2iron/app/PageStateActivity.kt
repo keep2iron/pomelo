@@ -1,5 +1,6 @@
 package io.github.keep2iron.app
 
+import android.databinding.ObservableArrayList
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
@@ -13,7 +14,7 @@ import io.github.keep2iron.pomlo.pager.adapter.RecyclerViewHolder
 import io.github.keep2iron.pomlo.pager.load.ListBinder
 import io.github.keep2iron.pomlo.pager.load.LoadController
 import io.github.keep2iron.pomlo.pager.load.LoadListener
-import io.github.keep2iron.pomlo.pager.rx.LoadSubscriber
+import io.github.keep2iron.pomlo.pager.rx.LoadListSubscriber
 import io.github.keep2iron.pomlo.state.PageState
 import io.github.keep2iron.pomlo.state.PageStateObservable
 import io.github.keep2iron.pomlo.state.PomeloPageStateLayout
@@ -41,32 +42,34 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
 
         pageState.setupWithPageStateLayout(pageStateLayout)
 
-        ListBinder(recyclerView, refreshLayout, true)
-                .addSubAdapter(object : AbstractSubListAdapter<Movie>(data,1,10) {
-                    override fun render(holder: RecyclerViewHolder, item: Movie, position: Int) {
-                        holder.setText(R.id.tvText, item.movieName)
-                    }
+        val binder = ListBinder(recyclerView, refreshLayout, true)
+            .addSubAdapter(object : AbstractSubListAdapter<Movie>(data, 1, 10) {
+                override fun render(holder: RecyclerViewHolder, item: Movie, position: Int) {
+                    holder.setText(R.id.tvText, item.movieName)
+                }
 
-                    override fun onInflateLayoutId(parent: ViewGroup, viewType: Int): Int = R.layout.item_list
-                })
-                .setLoadListener(this)
-                .bind()
+                override fun onInflateLayoutId(parent: ViewGroup, viewType: Int): Int = R.layout.item_list
+            })
+            .setLoadListener(this)
+            .bind()
+
+        onLoad(binder.loadController, binder.loadController.pagerValue())
     }
 
     override fun onLoad(controller: LoadController, pagerValue: Any) {
-        apiService.indexHome("test")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(LoadSubscriber(controller, {
-                    it.value.isEmpty()
-                }, pageState) {
-                    onSuccess = {
-                        data.update(it.value)
-
-                        controller.intInc()
-                    }
-                })
+        apiService.indexHome(controller.pagerValue() as Int)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                it.value
+            }
+            .subscribe(LoadListSubscriber<Movie>(controller, data, pagerValue) {
+                onSuccess = {
+                    controller.intInc()
+                }
+            })
     }
 
     override fun defaultValue(): Any = 1
+
 }

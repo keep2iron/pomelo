@@ -7,29 +7,39 @@ import io.github.keep2iron.pomlo.pager.Refreshable
 import java.lang.IllegalArgumentException
 
 class LoadController(
-        private val loadMoreAble: LoadMoreAble,
-        private val refreshAble: Refreshable,
-        private val loadListener: LoadListener
+    private val loadMoreAble: LoadMoreAble,
+    private val refreshAble: Refreshable,
+    private val loadListener: LoadListener
 ) : LoadMoreAble, Refreshable {
 
     internal val pager: Pager = Pager(loadListener.defaultValue())
 
-    internal fun setup() {
+    internal fun setupLoadMore() {
         loadMoreAble.setOnLoadMoreListener {
             refreshAble.setRefreshEnable(false)
             loadListener.onLoad(this, pager.value)
         }
         loadMoreAble.setLoadMoreEnable(true)
+    }
 
+    internal fun setupRefresh() {
         refreshAble.setOnRefreshListener {
             pager.reset()
             loadMoreAble.setLoadMoreEnable(false)
-            loadListener.onLoad(this, pager)
+            loadListener.onLoad(this, pager.value)
         }
     }
 
     fun intInc() {
-        (pager.value as Int).inc()
+        pager.value = pager.value as Int + 1
+    }
+
+    fun pagerValue(): Any {
+        return pager.value
+    }
+
+    fun isLoadDefault(value: Any): Boolean {
+        return value == pager.defaultValue
     }
 
     override fun showLoadMoreComplete() {

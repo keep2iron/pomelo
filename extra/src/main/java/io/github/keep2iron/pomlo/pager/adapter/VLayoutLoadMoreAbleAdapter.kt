@@ -1,5 +1,6 @@
 package io.github.keep2iron.pomlo.pager.adapter
 
+import android.os.Handler
 import android.view.ViewGroup
 import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.LayoutHelper
@@ -8,8 +9,8 @@ import io.github.keep2iron.pomlo.pager.LoadMore
 import io.github.keep2iron.pomlo.pager.LoadMoreAble
 
 class VLayoutLoadMoreAbleAdapter(private val loadMore: LoadMore) :
-        DelegateAdapter.Adapter<RecyclerViewHolder>(),
-        LoadMoreAble {
+    DelegateAdapter.Adapter<RecyclerViewHolder>(),
+    LoadMoreAble {
 
     init {
         loadMore.attachAdapter(this)

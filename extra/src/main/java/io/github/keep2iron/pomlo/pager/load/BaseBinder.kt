@@ -10,9 +10,9 @@ import io.github.keep2iron.pomlo.pager.adapter.VLayoutLoadMoreAbleAdapter
 import io.github.keep2iron.pomlo.pager.manager.WrapperVirtualLayoutManager
 
 abstract class BaseBinder(
-        private val recyclerView: RecyclerView,
-        private val refreshLayout: View,
-        private val loadMoreEnabled: Boolean
+    private val recyclerView: RecyclerView,
+    private val refreshLayout: View,
+    private val loadMoreEnabled: Boolean
 ) {
 
     private var viewPool: RecyclerView.RecycledViewPool? = null
@@ -20,6 +20,8 @@ abstract class BaseBinder(
     private var loadMore: LoadMore? = null
 
     private lateinit var loadListener: LoadListener
+
+    lateinit var loadController: LoadController
 
     fun setLoadListener(loadListener: LoadListener): BaseBinder {
         this.loadListener = loadListener
@@ -30,7 +32,7 @@ abstract class BaseBinder(
 
     protected abstract fun onBindViewPool(viewPool: RecyclerView.RecycledViewPool)
 
-    fun bind() {
+    fun bind(): BaseBinder {
         if (viewPool == null) {
             viewPool = RecyclerView.RecycledViewPool()
         }
@@ -44,20 +46,25 @@ abstract class BaseBinder(
         val adapter = DelegateAdapter(layoutManager)
         onBindDelegateAdapter(adapter)
 
+        if (loadMore == null) {
+            loadMore = SampleLoadMore(recyclerView)
+        }
+        loadController = LoadController(
+            VLayoutLoadMoreAbleAdapter(loadMore!!),
+            SwipeRefreshAble(refreshLayout), loadListener
+        )
+
+        loadController.setupRefresh()
+
         if (loadMoreEnabled) {
-            if (loadMore == null) {
-                loadMore = SampleLoadMore(recyclerView)
-            }
-            val controller = LoadController(
-                    VLayoutLoadMoreAbleAdapter(loadMore!!),
-                    SwipeRefreshAble(refreshLayout), loadListener
-            )
-            controller.setup()
+            loadController.setupLoadMore()
 
             adapter.addAdapter(VLayoutLoadMoreAbleAdapter(loadMore!!))
             viewPool!!.setMaxRecycledViews(LoadMore.ITEM_TYPE, 1)
         }
 
         recyclerView.adapter = adapter
+
+        return this
     }
 }

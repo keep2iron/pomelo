@@ -2,6 +2,7 @@ package io.github.keep2iron.app
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import io.github.keep2iron.pomelo.NetworkManager
 import io.github.keep2iron.pomelo.convert.CustomGsonConvertFactory
 import io.github.keep2iron.pomelo.interceptor.NetworkErrorHandleInterceptor
@@ -37,10 +38,7 @@ class MyApplication : Application() {
                 connectTimeout(15, TimeUnit.SECONDS)
                 readTimeout(15, TimeUnit.SECONDS)
                 addInterceptor(NetworkErrorHandleInterceptor { exception ->
-                    Log.d(
-                        "keep2iron",
-                        "${exception}"
-                    )
+//                    Toast.makeText(this@MyApplication, "${exception}", Toast.LENGTH_SHORT).show()
                 })
                 addInterceptor(HeaderParamsInterceptor { _, headerParams ->
                     headerParams["test-header-params"] = ""

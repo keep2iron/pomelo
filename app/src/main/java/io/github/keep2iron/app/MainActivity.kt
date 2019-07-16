@@ -3,6 +3,8 @@ package io.github.keep2iron.app
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import io.github.keep2iron.pomelo.AndroidSubscriber
 import io.github.keep2iron.pomelo.utilities.FindService
 import io.reactivex.Observable
@@ -18,6 +20,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        findViewById<TextView>(R.id.tvText).setOnClickListener {
+            it.alpha = 0f
+            it.alpha = 1f
+//            it.post {
+//                 = View.GONE
+//            }
+//            it.postDelayed( {
+//                it.visibility = View.VISIBLE
+//            },50L)
+        }
 
 //        val disposable = Observable.interval(0, 1000, TimeUnit.MILLISECONDS)
 //            .subscribe {

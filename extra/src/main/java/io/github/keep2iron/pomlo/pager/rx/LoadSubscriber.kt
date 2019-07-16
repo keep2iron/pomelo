@@ -7,14 +7,13 @@ import io.github.keep2iron.pomlo.state.PageState
 import io.github.keep2iron.pomlo.state.PageStateObservable
 
 open class LoadSubscriber<T>(
-        private val controller: LoadController,
-        val testRespEmpty: (resp: T) -> Boolean,
-        private val pageState: PageStateObservable? = null,
-        block: AndroidSubscriber<T>.() -> Unit
+    protected val controller: LoadController,
+    val testRespEmpty: (resp: T) -> Boolean,
+    protected val pageState: PageStateObservable? = null,
+    block: AndroidSubscriber<T>.() -> Unit
 ) : AndroidSubscriber<T>(block) {
 
     override fun onNext(resp: T) {
-        super.onNext(resp)
         controller.setRefreshEnable(true)
         controller.setLoadMoreEnable(true)
 
@@ -56,5 +55,4 @@ open class LoadSubscriber<T>(
         controller.showRefreshComplete()
         controller.showLoadMoreFailed()
     }
-
 }
