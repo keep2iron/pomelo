@@ -116,7 +116,7 @@ open class SampleLoadMore(val recyclerView: RecyclerView) : LoadMore {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val itemView = holder.itemView as ViewGroup
+        val itemView = holder.itemView
         if (isEnableLoadMore && showState == STATE_DEFAULT) {
             showState = STATE_LOADING
             holder.itemView.post {
@@ -148,17 +148,17 @@ open class SampleLoadMore(val recyclerView: RecyclerView) : LoadMore {
     }
 
 
-    private fun visibleLoading(itemView: ViewGroup, visible: Boolean) {
-        itemView.removeView(itemView.findViewById<View>(R.id.pomelo_load_more_loading_view))
+    private fun visibleLoading(itemView: View, visible: Boolean) {
+        itemView.findViewById<View>(R.id.pomelo_load_more_loading_view).visibility =
             if (visible) View.VISIBLE else View.INVISIBLE
     }
 
-    private fun visibleLoadFail(itemView: ViewGroup, visible: Boolean) {
+    private fun visibleLoadFail(itemView: View, visible: Boolean) {
         itemView.findViewById<View>(R.id.pomelo_load_more_load_fail_view).visibility =
             if (visible) View.VISIBLE else View.INVISIBLE
     }
 
-    private fun visibleLoadEnd(itemView: ViewGroup, visible: Boolean) {
+    private fun visibleLoadEnd(itemView: View, visible: Boolean) {
         itemView.findViewById<View>(R.id.pomelo_load_more_load_end_view).visibility =
             if (visible) View.VISIBLE else View.INVISIBLE
     }
