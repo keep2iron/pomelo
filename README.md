@@ -1,4 +1,4 @@
-![Image](/image/banner.png)
+![Image](image/banner.png)
 
 # Pomelo
 [![Release](https://jitpack.io/v/keep2iron/pomelo.svg)](https://jitpack.io/v/#keep2iron/pejoy) ![BuildStatus](https://travis-ci.org/keep2iron/pomelo.svg?branch=master)
@@ -38,7 +38,8 @@ Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
 
 NetworkManager.init(host) {
     initOkHttp {
-        protocols(Collections.singletonList(Protocol.HTTP_1_1))         //解决 https://www.cnblogs.com/myhalo/p/6811472.html
+        protocols(Collections.singletonList(Protocol.HTTP_1_1))         
+        //解决 https://www.cnblogs.com/myhalo/p/6811472.html
         connectTimeout(15, TimeUnit.SECONDS)
         readTimeout(15, TimeUnit.SECONDS)
 
@@ -63,7 +64,7 @@ NetworkManager.init(host) {
         })
 
 		//optional network log.
-        addNetworkInterceptor(NetworkLoggingInterceptor(object : NetworkLoggingInterceptor.Logger {
+        addNetworkInterceptor(NetworkLoggingInterceptor(object: NetworkLoggingInterceptor.Logger {
             override fun d(message: String) {
                 Logger.d(message)
             }
@@ -91,13 +92,68 @@ val apiService = NetworkManager.getInstance().getService(ApiService::class.java)
 
 request use rxjava2
 ```kotlin
-apiService.indexHome("test")
+apiService.indexHome(0)
     .subscribeOn(Schedulers.io())
     .observeOn(AndroidSchedulers.mainThread())
-    .subscribe(AndroidSubscriber<BaseResponse<String>>{
-        onSuccess = {
+    .subscribe(AndroidSubscriber {
+        onSuccess = { resp ->
+            Log.d("keep2iron", "onSuccessful..........${resp.value}")
         }
-		onError = {
-		}
-	})
+        onError = {
+        }
+    })
 ```
+
+### Request Pagination
+
+add dependencies in gradle
+
+````groovy
+implementation deps.alibaba.vlayout
+implementation deps.support.recyclerview
+````
+
+init in Activity.onCreate() and make Activity or Model implements **io.github.keep2iron.pomlo.pager.load.LoadListener** 
+
+````kotlin
+val binder = ListBinder(recyclerView, refreshLayout, true)
+	.addSubAdapter(object : AbstractSubListAdapter<Movie>(data, 1, 10) {
+        override fun render(holder: RecyclerViewHolder, item: Movie, position: Int) {
+            holder.setText(R.id.tvText, item.movieName)
+        }
+
+    	override fun onInflateLayoutId(parent: ViewGroup, viewType: Int): Int 
+        	= R.layout.item_list
+		})
+    .setLoadMore(CustomLoadMore(recyclerView))
+    .setLoadListener(this)
+    .bind()
+````
+
+optional, in **io.github.keep2iron.pomlo.pager.load.LoadListener**  you can override **defaultValue():Any** method to return default page value(in pomelo default value is 0),in demo we use 1 as default value.
+
+````kotlin
+override fun defaultValue(): Any = 1
+````
+
+override **onLoad** method, this method will execute in refresh and loadMore,you can use it to request.
+
+````kotlin
+override fun onLoad(controller: LoadController, pagerValue: Any) {
+    apiService.indexHome(controller.pagerValue() as Int)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .map {
+        	it.value
+        }
+        .subscribe(LoadListSubscriber<Movie>(controller, data, pagerValue, pageState) {
+        	onSuccess = {
+        		controller.intInc()
+        	}
+    	})
+}
+````
+
+**LoadListSubscriber** already packed up for the List page loading logic.
+
+if you want to custom,you can use **io.github.keep2iron.pomlo.pager.rx.LoadSubscriber** or **io.github.keep2iron.pomelo.AndroidSubscriber** 

@@ -1,6 +1,5 @@
 package io.github.keep2iron.app
 
-import android.databinding.ObservableArrayList
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
@@ -30,7 +29,8 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
     })
 
     private val apiService by FindService(ApiService::class.java)
-    val pageState = PageStateObservable(PageState.LOADING)
+
+    private val pageState = PageStateObservable(PageState.LOADING)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
