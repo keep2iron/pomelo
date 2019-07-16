@@ -10,9 +10,9 @@ import io.github.keep2iron.pomlo.pager.adapter.VLayoutLoadMoreAbleAdapter
 import io.github.keep2iron.pomlo.pager.manager.WrapperVirtualLayoutManager
 
 abstract class BaseBinder(
-    private val recyclerView: RecyclerView,
-    private val refreshLayout: View,
-    private val loadMoreEnabled: Boolean
+        private val recyclerView: RecyclerView,
+        private val refreshLayout: View,
+        private val loadMoreEnabled: Boolean
 ) {
 
     private var viewPool: RecyclerView.RecycledViewPool? = null
@@ -25,6 +25,11 @@ abstract class BaseBinder(
 
     fun setLoadListener(loadListener: LoadListener): BaseBinder {
         this.loadListener = loadListener
+        return this
+    }
+
+    fun setLoadMore(loadMore: LoadMore): BaseBinder {
+        this.loadMore = loadMore
         return this
     }
 
@@ -50,8 +55,8 @@ abstract class BaseBinder(
             loadMore = SampleLoadMore(recyclerView)
         }
         loadController = LoadController(
-            VLayoutLoadMoreAbleAdapter(loadMore!!),
-            SwipeRefreshAble(refreshLayout), loadListener
+                VLayoutLoadMoreAbleAdapter(loadMore!!),
+                SwipeRefreshAble(refreshLayout), loadListener
         )
 
         loadController.setupRefresh()

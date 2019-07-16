@@ -23,8 +23,6 @@ open class SampleLoadMore(val recyclerView: RecyclerView) : LoadMore {
 
     var mOnLoadMoreListener: ((adapter: LoadMore) -> Unit)? = null
 
-    val handler = Handler()
-
     override fun setOnLoadMoreListener(listener: (loadMore: LoadMore) -> Unit) {
         mOnLoadMoreListener = listener
     }

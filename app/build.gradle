@@ -32,6 +32,8 @@ dependencies {
     implementation project(':log')
     implementation project(':extra')
 
+    implementation 'com.airbnb.android:lottie:2.7.0'
+
     implementation deps.alibaba.vlayout
     implementation deps.rxjava2
     implementation deps.rx_android

@@ -30,7 +30,7 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
     })
 
     private val apiService by FindService(ApiService::class.java)
-    val pageState = PageStateObservable(PageState.ORIGIN)
+    val pageState = PageStateObservable(PageState.LOADING)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,31 +43,32 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
         pageState.setupWithPageStateLayout(pageStateLayout)
 
         val binder = ListBinder(recyclerView, refreshLayout, true)
-            .addSubAdapter(object : AbstractSubListAdapter<Movie>(data, 1, 10) {
-                override fun render(holder: RecyclerViewHolder, item: Movie, position: Int) {
-                    holder.setText(R.id.tvText, item.movieName)
-                }
+                .addSubAdapter(object : AbstractSubListAdapter<Movie>(data, 1, 10) {
+                    override fun render(holder: RecyclerViewHolder, item: Movie, position: Int) {
+                        holder.setText(R.id.tvText, item.movieName)
+                    }
 
-                override fun onInflateLayoutId(parent: ViewGroup, viewType: Int): Int = R.layout.item_list
-            })
-            .setLoadListener(this)
-            .bind()
+                    override fun onInflateLayoutId(parent: ViewGroup, viewType: Int): Int = R.layout.item_list
+                })
+                .setLoadMore(CustomLoadMore(recyclerView))
+                .setLoadListener(this)
+                .bind()
 
         onLoad(binder.loadController, binder.loadController.pagerValue())
     }
 
     override fun onLoad(controller: LoadController, pagerValue: Any) {
         apiService.indexHome(controller.pagerValue() as Int)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                it.value
-            }
-            .subscribe(LoadListSubscriber<Movie>(controller, data, pagerValue) {
-                onSuccess = {
-                    controller.intInc()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map {
+                    it.value
                 }
-            })
+                .subscribe(LoadListSubscriber<Movie>(controller, data, pagerValue, pageState) {
+                    onSuccess = {
+                        controller.intInc()
+                    }
+                })
     }
 
     override fun defaultValue(): Any = 1

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="60dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:id="@id/pomelo_load_more_loading_view"
@@ -11,12 +12,14 @@
         android:gravity="center_horizontal|top"
         android:orientation="horizontal">
 
-        <android.widget.ProgressBar
-            android:id="@+id/loading_progress"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="loading.json"
+            app:lottie_loop="true"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginRight="10dp"
-            android:indeterminate="true" />
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/loading_text"
