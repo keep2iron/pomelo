@@ -39,8 +39,8 @@ dependencies {
 
 publish {
     userOrg = 'keep2iron'
-    groupId = 'io.github.keep2iron.pomelo'
-    artifactId = 'log'
+    groupId = 'io.github.keep2iron'
+    artifactId = 'pomelo-log'
     publishVersion = '0.0.1'
     desc = 'network wrap framewrok'
     website = 'https://keep2iron.github.io'
