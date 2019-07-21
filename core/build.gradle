@@ -1,15 +1,13 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.github.dcendents.android-maven'
-
-group='com.github.keep2iron'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion versions.build.target_sdk
     buildToolsVersion versions.build.build_tools
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 15
         targetSdkVersion versions.build.target_sdk
 
         consumerProguardFiles  'proguard-rules.pro'
@@ -44,34 +42,12 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
 
-// 指定编码
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
+publish {
+    userOrg = 'keep2iron'
+    groupId = 'io.github.keep2iron.pomelo'
+    artifactId = 'core'
+    publishVersion = '0.0.1'
+    desc = 'network wrap framewrok'
+    website = 'https://keep2iron.github.io'
 }
 
-// 打包源码
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-    failOnError  false
-    source = android.sourceSets.main.java.sourceFiles
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    classpath += configurations.compile
-}
-
-// 制作文档(Javadoc)
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
-repositories {
-    mavenCentral()
-}

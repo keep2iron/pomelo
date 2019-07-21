@@ -5,6 +5,7 @@ import io.github.keep2iron.pomlo.pager.exception.NoDataException
 import io.github.keep2iron.pomlo.pager.load.LoadController
 import io.github.keep2iron.pomlo.state.PageState
 import io.github.keep2iron.pomlo.state.PageStateObservable
+import java.io.IOException
 
 open class LoadSubscriber<T>(
     protected val controller: LoadController,
@@ -26,7 +27,7 @@ open class LoadSubscriber<T>(
             if (testRespEmpty(resp)) {
                 if (pager.value == pager.defaultValue) {
                     controller.scrollToPosition(0)
-                    pageState?.setPageState(PageState.NO_DATA)
+                    pageState?.setPageState(PageState.EMPTY_DATA)
                 }
                 super.onNext(resp)
                 throw NoDataException()
@@ -47,7 +48,11 @@ open class LoadSubscriber<T>(
         super.onError(throwable)
         val pager = controller.pager
         if (pager.value == pager.defaultValue) {
-            pageState?.setPageState(PageState.LOAD_ERROR)
+            if(throwable is IOException){
+                pageState?.setPageState(PageState.NETWORK_ERROR)
+            }else{
+                pageState?.setPageState(PageState.LOAD_ERROR)
+            }
         }
 
         controller.setLoadMoreEnable(true)

@@ -12,8 +12,8 @@ import java.util.*
 
 enum class PageState {
     ORIGIN,
-    NO_DATA,
-    NO_NETWORK,
+    EMPTY_DATA,
+    NETWORK_ERROR,
     LOAD_ERROR,
     LOADING,
 }
@@ -31,47 +31,7 @@ class PomeloPageStateLayout : FrameLayout {
     /**
      * 被状态管理的View
      */
-    private var mOriginView: View? = null
-        set(value) {
-            field = value
-            views[PageState.ORIGIN] = value
-        }
-    /**
-     * 无数据view
-     */
-    private var mNoDataView: View? = null
-        set(value) {
-            field = value
-            value?.visibility = View.GONE
-            views[PageState.NO_DATA] = value
-        }
-    /**
-     * 无网络
-     */
-    private var mNoNetwork: View? = null
-        set(value) {
-            field = value
-            value?.visibility = View.GONE
-            views[PageState.NO_NETWORK] = value
-        }
-    /**
-     * 加载失败
-     */
-    private var mLoadError: View? = null
-        set(value) {
-            field = value
-            value?.visibility = View.GONE
-            views[PageState.LOAD_ERROR] = value
-        }
-    /**
-     * 正在加载
-     */
-    private var mLoadingView: View? = null
-        set(value) {
-            field = value
-            value?.visibility = View.GONE
-            views[PageState.LOADING] = value
-        }
+    private lateinit var mOriginView: View
 
     private var pageState = PageState.ORIGIN
 
@@ -87,27 +47,26 @@ class PomeloPageStateLayout : FrameLayout {
             val array = resources.obtainAttributes(attrs, R.styleable.PomeloPageStateLayout)
 
             for (i in 0 until array.indexCount) {
-                val index = array.getIndex(i)
-                when (index) {
+                when (val index = array.getIndex(i)) {
                     R.styleable.PomeloPageStateLayout_pomelo_layout_load_error -> {
-                        mLoadError =
+                        val loadError =
                             LayoutInflater.from(getContext()).inflate(array.getResourceId(index, -1), this, false)
-                        mLoadError!!.visibility = View.GONE
+                        views[PageState.LOAD_ERROR] = loadError
                     }
                     R.styleable.PomeloPageStateLayout_pomelo_layout_empty_data -> {
-                        mNoDataView =
+                        val emptyDataView =
                             LayoutInflater.from(getContext()).inflate(array.getResourceId(index, -1), this, false)
-                        mNoDataView!!.visibility = View.GONE
+                        views[PageState.EMPTY_DATA] = emptyDataView
                     }
                     R.styleable.PomeloPageStateLayout_pomelo_layout_network_error -> {
-                        mNoNetwork =
+                        val networkErrorView =
                             LayoutInflater.from(getContext()).inflate(array.getResourceId(index, -1), this, false)
-                        mNoNetwork!!.visibility = View.GONE
+                        views[PageState.NETWORK_ERROR] = networkErrorView
                     }
                     R.styleable.PomeloPageStateLayout_pomelo_layout_loading -> {
-                        mLoadingView =
+                        val loadingView =
                             LayoutInflater.from(getContext()).inflate(array.getResourceId(index, -1), this, false)
-                        mLoadingView!!.visibility = View.GONE
+                        views[PageState.LOADING] = loadingView
                     }
                 }
             }
@@ -120,41 +79,25 @@ class PomeloPageStateLayout : FrameLayout {
 
         if (childCount <= 0) {
             throw IllegalArgumentException(javaClass.simpleName + "'child count must > 0")
+        }else if(childCount == 1){
+            mOriginView = getChildAt(0)
+            mOriginView.visibility = View.GONE
+            views[PageState.ORIGIN] = mOriginView
         }
 
-        mOriginView = getChildAt(0)
-
-        mLoadError?.apply {
-            addView(this, 0)
-            visibility = View.GONE
+        for ((state, view) in views) {
+            if (state != PageState.ORIGIN && view != null && view.parent != this@PomeloPageStateLayout) {
+                view.visibility = View.GONE
+                addView(view, 0)
+            }
         }
-
-        mNoDataView?.apply {
-            addView(this, 0)
-            visibility = View.GONE
-        }
-
-        mNoNetwork?.apply {
-            addView(this, 0)
-            visibility = View.GONE
-        }
-
-        mLoadingView?.apply {
-            addView(this, 0)
-            visibility = View.GONE
-        }
-
-        views[PageState.ORIGIN] = mOriginView
-        views[PageState.LOAD_ERROR] = mLoadError
-        views[PageState.NO_DATA] = mNoDataView
-        views[PageState.NO_NETWORK] = mNoNetwork
-        views[PageState.LOADING] = mLoadingView
 
         initPageState(pageState)
     }
 
     fun setPageStateView(state: PageState, view: View) {
         views[state] = view
+        onFinishInflate()
     }
 
     /**
@@ -172,9 +115,6 @@ class PomeloPageStateLayout : FrameLayout {
                     preSateView.visibility = View.GONE
                 }
 
-                override fun onAnimationCancel(animation: Animator) {
-                    super.onAnimationCancel(animation)
-                }
             }).setDuration(duration.toLong())
             .alpha(0f)
             .start()
@@ -184,46 +124,35 @@ class PomeloPageStateLayout : FrameLayout {
         showView.visibility = View.VISIBLE
         showView.animate()
             .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationCancel(animation: Animator) {
-                    super.onAnimationCancel(animation)
-                }
             })
             .setDuration(duration.toLong())
             .alpha(1f)
             .start()
     }
 
-    fun isVisible(view: View): Boolean {
-        return view.visibility == View.VISIBLE
-    }
-
     fun displayOriginView() {
         if (pageState != PageState.ORIGIN) {
             val preState = pageState
             pageState = PageState.ORIGIN
-            animStateView(preState, mOriginView!!)
+            animStateView(preState, mOriginView)
         }
     }
 
-    fun displayNoNetwork() {
-        if (pageState != PageState.NO_NETWORK) {
+    fun displayNetworkError() {
+        if (pageState != PageState.NETWORK_ERROR) {
             val preState = pageState
-            pageState = PageState.NO_NETWORK
-            if (mNoNetwork == null) {
-                throw IllegalArgumentException("you should add no network layout")
-            }
-            animStateView(preState, mNoNetwork!!)
+            pageState = PageState.NETWORK_ERROR
+            val view = views[pageState] ?: throw IllegalArgumentException("you should add network error layout")
+            animStateView(preState, view)
         }
     }
 
-    fun displayNoData() {
-        if (pageState != PageState.NO_DATA) {
+    fun displayEmptyData() {
+        if (pageState != PageState.EMPTY_DATA) {
             val preState = pageState
-            pageState = PageState.NO_DATA
-            if (mNoDataView == null) {
-                throw IllegalArgumentException("you should add no data layout")
-            }
-            animStateView(preState, mNoDataView!!)
+            pageState = PageState.EMPTY_DATA
+            val view = views[pageState] ?: throw IllegalArgumentException("you should add empty data layout")
+            animStateView(preState, view)
         }
     }
 
@@ -231,10 +160,8 @@ class PomeloPageStateLayout : FrameLayout {
         if (pageState != PageState.LOADING) {
             val preState = pageState
             pageState = PageState.LOADING
-            if (mLoadingView == null) {
-                throw IllegalArgumentException("you should add loading layout")
-            }
-            animStateView(preState, mLoadingView!!)
+            val view = views[pageState] ?: throw IllegalArgumentException("you should add loading layout")
+            animStateView(preState, view)
         }
     }
 
@@ -242,10 +169,8 @@ class PomeloPageStateLayout : FrameLayout {
         if (pageState != PageState.LOAD_ERROR) {
             val preState = pageState
             pageState = PageState.LOAD_ERROR
-            if (mLoadError == null) {
-                throw IllegalArgumentException("you should add load error layout")
-            }
-            animStateView(preState, mLoadError!!)
+            val view = views[pageState] ?: throw IllegalArgumentException("you should add load error layout")
+            animStateView(preState, view)
         }
     }
 

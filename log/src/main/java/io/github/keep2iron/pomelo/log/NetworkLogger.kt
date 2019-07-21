@@ -36,7 +36,7 @@ internal fun addIndentBlank(sb: StringBuilder, indent: Int) {
 internal fun String.formatJson(): String {
     if (isNullOrEmpty()) return ""
     val sb = StringBuilder()
-    var last = '\u0000'
+    var last: Char
     var current = '\u0000'
     var indent = 0
     for (i in 0 until length) {
