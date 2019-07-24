@@ -3,18 +3,17 @@ package io.github.keep2iron.pomlo.pager.adapter
 import android.support.annotation.IdRes
 import android.support.annotation.LayoutRes
 import android.support.v4.util.SparseArrayCompat
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.LayoutHelper
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper
-import io.github.keep2iron.pomlo.pager.R
+import io.github.keep2iron.pomelo.pager.R
 
 typealias OnItemClickListener = (position: Int, view: View) -> Unit
 
-abstract class AbstractSubAdapter(val viewType: Int,val  cacheMaxViewCount: Int) :
+abstract class AbstractSubAdapter(val viewType: Int, val cacheMaxViewCount: Int) :
     DelegateAdapter.Adapter<RecyclerViewHolder>() {
 
     override fun onCreateLayoutHelper(): LayoutHelper = LinearLayoutHelper()
@@ -73,4 +72,6 @@ abstract class AbstractSubAdapter(val viewType: Int,val  cacheMaxViewCount: Int)
     override fun getItemViewType(position: Int): Int {
         return viewType
     }
+
+    override fun getItemCount(): Int = 1
 }

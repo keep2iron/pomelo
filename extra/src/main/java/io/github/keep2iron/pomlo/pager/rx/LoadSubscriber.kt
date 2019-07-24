@@ -15,12 +15,7 @@ open class LoadSubscriber<T>(
 ) : AndroidSubscriber<T>(block) {
 
     override fun onNext(resp: T) {
-        controller.setRefreshEnable(true)
-        controller.setLoadMoreEnable(true)
-
-        controller.showRefreshComplete()
-        controller.showLoadMoreComplete()
-
+        controller.loadComplete()
         val pager = controller.pager
 
         try {
@@ -45,19 +40,16 @@ open class LoadSubscriber<T>(
     }
 
     override fun onError(throwable: Throwable) {
-        super.onError(throwable)
         val pager = controller.pager
         if (pager.value == pager.defaultValue) {
-            if(throwable is IOException){
+            if (throwable is IOException) {
                 pageState?.setPageState(PageState.NETWORK_ERROR)
-            }else{
+            } else {
                 pageState?.setPageState(PageState.LOAD_ERROR)
             }
         }
 
-        controller.setLoadMoreEnable(true)
-        controller.setRefreshEnable(true)
-        controller.showRefreshComplete()
-        controller.showLoadMoreFailed()
+        controller.loadFailedComplete()
+        super.onError(throwable)
     }
 }

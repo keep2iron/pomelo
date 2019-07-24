@@ -12,4 +12,8 @@ interface ApiService {
     @POST("/api/index/movie")
     fun indexHome(@Field("page") page: Int): Observable<BaseResponse<List<Movie>>>
 
+    @FormUrlEncoded
+    @POST("/api/index/recommend")
+    fun indexRecommend(@Field("page") page: Int): Observable<BaseResponse<List<Recommend>>>
+
 }

@@ -2,6 +2,7 @@ package io.github.keep2iron.pomlo.pager.manager
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import com.alibaba.android.vlayout.VirtualLayoutManager
 import java.lang.Exception
 
@@ -17,6 +18,7 @@ class WrapperVirtualLayoutManager(context: Context) : VirtualLayoutManager(conte
         try {
             super.onLayoutChildren(recycler, state)
         } catch (ignore: Exception) {
+            Log.w(WrapperVirtualLayoutManager::class.java.simpleName, Log.getStackTraceString(ignore))
         }
     }
 

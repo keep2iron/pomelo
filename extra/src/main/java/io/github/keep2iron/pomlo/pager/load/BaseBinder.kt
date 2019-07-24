@@ -74,6 +74,6 @@ abstract class BaseBinder(
     }
 
     fun load() {
-        loadListener.onLoad(loadController, loadController.pagerValue())
+        loadListener.onLoad(loadController, loadController.pagerValue(), false)
     }
 }

@@ -3,11 +3,12 @@ package io.github.keep2iron.pomlo.state
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
+import android.support.annotation.LayoutRes
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
-import io.github.keep2iron.pomlo.pager.R
+import io.github.keep2iron.pomelo.pager.R
 import java.util.*
 
 enum class PageState {
@@ -79,7 +80,7 @@ class PomeloPageStateLayout : FrameLayout {
 
         if (childCount <= 0) {
             throw IllegalArgumentException(javaClass.simpleName + "'child count must > 0")
-        }else if(childCount == 1){
+        } else if (childCount == 1) {
             mOriginView = getChildAt(0)
             mOriginView.visibility = View.GONE
             views[PageState.ORIGIN] = mOriginView
@@ -100,9 +101,12 @@ class PomeloPageStateLayout : FrameLayout {
         onFinishInflate()
     }
 
-    /**
-     * loaderror -> loading
-     */
+    fun setPageStateView(state: PageState, @LayoutRes layoutId: Int) {
+        val stateView = LayoutInflater.from(context.applicationContext).inflate(layoutId, this, false)
+        views[state] = stateView
+        onFinishInflate()
+    }
+
     private fun animStateView(preState: PageState, showView: View) {
         val preSateView = views[preState]!!
 

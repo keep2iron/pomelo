@@ -206,7 +206,7 @@ public class DiffObservableList<T> extends AbstractList<T> implements Observable
          * Called by the DiffUtil when it wants to check whether two items have the same data.
          * DiffUtil uses this information to detect if the contents of an item has changed.
          * <p>
-         * DiffUtil uses this method to check equality instead of {@link Object#equals(Object)} so
+         * DiffUtil uses this method to check equality instead of {@link java.lang.Object#equals(Object)} so
          * that you can change its behavior depending on your UI.
          * <p>
          * This method is called only if {@link #areItemsTheSame(T, T)} returns {@code true} for

@@ -3,15 +3,11 @@ package io.github.keep2iron.app
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.TextView
 import io.github.keep2iron.pomelo.AndroidSubscriber
 import io.github.keep2iron.pomelo.utilities.FindService
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.lang.NullPointerException
-import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,8 +34,6 @@ class MainActivity : AppCompatActivity() {
             .subscribe(AndroidSubscriber {
                 onSuccess = { resp ->
                     Log.d("keep2iron", "onSuccessful .......... ${resp.value}")
-                }
-                onError = {
                 }
             })
     }

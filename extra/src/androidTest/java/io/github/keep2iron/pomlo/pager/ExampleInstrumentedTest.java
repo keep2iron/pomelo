@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("io.github.keep2iron.pomlo.pager.test", appContext.getPackageName());
+        assertEquals("io.github.keep2iron.pomelo.pager.test", appContext.getPackageName());
     }
 }

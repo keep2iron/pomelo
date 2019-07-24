@@ -1,6 +1,5 @@
 package io.github.keep2iron.pomlo.pager
 
-import android.os.Handler
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -8,6 +7,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.github.keep2iron.pomelo.pager.R
 
 /**
  *
@@ -17,7 +17,7 @@ import android.view.ViewGroup
  *
  * 加载更多adapter的父类 后面一些样式上的问题 可以直接继承该adapter
  */
-open class SampleLoadMore(val recyclerView: RecyclerView) : LoadMore {
+open class SampleLoadMore(private val recyclerView: RecyclerView) : LoadMore {
 
     private lateinit var adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>
 
@@ -32,7 +32,7 @@ open class SampleLoadMore(val recyclerView: RecyclerView) : LoadMore {
      */
     private var showState = STATE_DEFAULT
 
-    var isEnableLoadMore = true
+    var isEnableLoadMore = false
 
     /**
      * 设置距离底部还有preLoadNumber个item就进行预加载

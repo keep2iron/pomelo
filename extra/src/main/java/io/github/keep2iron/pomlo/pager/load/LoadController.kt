@@ -17,7 +17,7 @@ class LoadController(
     internal fun setupLoadMore() {
         loadMoreAble.setOnLoadMoreListener {
             refreshAble.setRefreshEnable(false)
-            loadListener.onLoad(this, pager.value)
+            loadListener.onLoad(this, pager.value, false)
         }
         loadMoreAble.setLoadMoreEnable(true)
     }
@@ -26,7 +26,7 @@ class LoadController(
         refreshAble.setOnRefreshListener {
             pager.reset()
             loadMoreAble.setLoadMoreEnable(false)
-            loadListener.onLoad(this, pager.value)
+            loadListener.onLoad(this, pager.value, true)
         }
     }
 
@@ -36,6 +36,10 @@ class LoadController(
 
     fun pagerValue(): Any {
         return pager.value
+    }
+
+    fun reset() {
+        pager.reset()
     }
 
     fun isLoadDefault(value: Any): Boolean {
@@ -80,5 +84,19 @@ class LoadController(
 
     override fun setOnRefreshListener(listener: (refreshLayout: View) -> Unit) {
         throw IllegalArgumentException("setOnRefreshListener is call in internal")
+    }
+
+    fun loadComplete() {
+        setRefreshEnable(true)
+        setLoadMoreEnable(true)
+        showRefreshComplete()
+        showLoadMoreComplete()
+    }
+
+    fun loadFailedComplete() {
+        setRefreshEnable(true)
+        setLoadMoreEnable(true)
+        showRefreshComplete()
+        showLoadMoreFailed()
     }
 }

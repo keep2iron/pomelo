@@ -1,6 +1,7 @@
 package io.github.keep2iron.pomlo.pager.adapter
 
 import android.databinding.ObservableList
+import android.support.v7.widget.RecyclerView
 import io.github.keep2iron.pomlo.databinding.ObservableOnListChangeAdapter
 
 abstract class AbstractSubListAdapter<T>(val data: ObservableList<T>,
@@ -8,9 +9,11 @@ abstract class AbstractSubListAdapter<T>(val data: ObservableList<T>,
                                          cacheMaxViewCount: Int = 1) :
     AbstractSubAdapter(viewType, cacheMaxViewCount) {
 
-    init {
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
         data.addOnListChangedCallback(ObservableOnListChangeAdapter<T>(this))
     }
+
 
     override fun render(holder: RecyclerViewHolder, position: Int) {
     }

@@ -17,8 +17,9 @@ class MultipleTypeBinder(
 
     val adapter = MultiTypeListAdapter(data)
 
-    inline fun <reified T> registerAdapter(subAdapter: AbstractSubAdapter) {
+    inline fun <reified T> addSubAdapter(subAdapter: AbstractSubAdapter): MultipleTypeBinder {
         adapter.registerAdapter<T>(subAdapter)
+        return this
     }
 
     override fun onBindDelegateAdapter(delegateAdapter: DelegateAdapter) {
