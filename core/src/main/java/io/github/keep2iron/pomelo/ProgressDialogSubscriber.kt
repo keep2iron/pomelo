@@ -24,7 +24,7 @@ open class ProgressDialogSubscriber<T>(
     super.onSubscribe(disposable)
     val act = activityRef.get()
     if (act != null) {
-      controller.onDialogShow(act, this as AndroidSubscriber<Any>)
+      controller.onDialogShow(act, this)
     }
   }
 
@@ -33,7 +33,7 @@ open class ProgressDialogSubscriber<T>(
     super.onSubscribe(subscription)
     val act = activityRef.get()
     if (act != null) {
-      controller.onDialogShow(act, this as AndroidSubscriber<Any>)
+      controller.onDialogShow(act, this)
     }
   }
 

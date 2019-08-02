@@ -14,9 +14,9 @@ interface ProgressDialogController {
   /**
    * 控制dialog 让其显示
    */
-  fun onDialogShow(
+  fun <T> onDialogShow(
     activity: Activity,
-    subscriber: AndroidSubscriber<Any>
+    subscriber: AndroidSubscriber<T>
   )
 
   /**

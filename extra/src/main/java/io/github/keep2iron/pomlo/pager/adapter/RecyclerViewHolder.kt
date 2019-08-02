@@ -31,12 +31,12 @@ open class RecyclerViewHolder : RecyclerView.ViewHolder {
   ) : this(LayoutInflater.from(context).inflate(layoutRes, parent, false))
 
   fun <T : View> findViewById(viewId: Int): T {
-    var view: View? = cacheView.get(viewId)
+    var view: T? = cacheView.get(viewId) as T
     if (view == null) {
-      view = itemView.findViewById(viewId)
+      view = itemView.findViewById<T>(viewId)
       cacheView.put(viewId, view)
     }
-    return view as T
+    return view!!
   }
 
   fun getTextView(viewId: Int): TextView = findViewById(viewId)
