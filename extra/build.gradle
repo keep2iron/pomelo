@@ -3,53 +3,53 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.novoda.bintray-release'
 
 android {
-    compileSdkVersion versions.build.target_sdk
-    buildToolsVersion versions.build.build_tools
+  compileSdkVersion versions.build.target_sdk
+  buildToolsVersion versions.build.build_tools
 
-    defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion versions.build.target_sdk
+  defaultConfig {
+    minSdkVersion 15
+    targetSdkVersion versions.build.target_sdk
 
-        consumerProguardFiles 'proguard-rules.pro'
+    consumerProguardFiles 'proguard-rules.pro'
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
+  }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+  resourcePrefix "pomelo"
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    resourcePrefix "pomelo"
-
-    dataBinding {
-        enabled = true
-    }
+  dataBinding {
+    enabled = true
+  }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(':core')
-    implementation deps.kotlin.stdlib_jdk7
-    compileOnly deps.support.recyclerview
-    compileOnly deps.alibaba.vlayout
+  implementation project(':core')
+  implementation deps.kotlin.stdlib_jdk7
+  compileOnly deps.support.recyclerview
+  compileOnly deps.alibaba.vlayout
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+  testImplementation 'junit:junit:4.12'
+  androidTestImplementation 'androidx.test:runner:1.1.0'
+  androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 }
 
 publish {
-    userOrg = 'keep2iron'
-    groupId = 'io.github.keep2iron'
-    artifactId = 'pomelo-extra'
-    publishVersion = '0.0.1'
-    desc = 'network wrap framewrok'
-    website = 'https://keep2iron.github.io'
+  userOrg = 'keep2iron'
+  groupId = 'io.github.keep2iron'
+  artifactId = 'pomelo-extra'
+  publishVersion = '0.0.1'
+  desc = 'network wrap framewrok'
+  website = 'https://keep2iron.github.io'
 }

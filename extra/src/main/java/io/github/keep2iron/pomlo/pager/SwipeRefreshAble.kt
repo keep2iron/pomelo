@@ -1,8 +1,6 @@
 package io.github.keep2iron.pomlo.pager
 
-import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
-
 
 /**
  *
@@ -12,29 +10,29 @@ import android.view.View
  */
 class SwipeRefreshAble(layout: View) : Refreshable {
 
-    private lateinit var listener: (refreshLayout: View) -> Unit
+  private lateinit var listener: (refreshLayout: View) -> Unit
 
-    override fun setOnRefreshListener(listener: (refreshLayout: View) -> Unit) {
-        this.listener = listener
+  override fun setOnRefreshListener(listener: (refreshLayout: View) -> Unit) {
+    this.listener = listener
+  }
+
+  private val layoutView = layout as androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+
+  init {
+    layoutView.setOnRefreshListener {
+      listener(layout)
     }
+  }
 
-    private val layoutView = layout as SwipeRefreshLayout
+  override fun setRefreshEnable(isEnabled: Boolean) {
+    layoutView.isEnabled = isEnabled
+  }
 
-    init {
-        layoutView.setOnRefreshListener {
-            listener(layout)
-        }
-    }
+  override fun refreshing() {
+    layoutView.isRefreshing = true
+  }
 
-    override fun setRefreshEnable(isEnabled: Boolean) {
-        layoutView.isEnabled = isEnabled
-    }
-
-    override fun refreshing() {
-        layoutView.isRefreshing = true
-    }
-
-    override fun showRefreshComplete() {
-        layoutView.isRefreshing = false
-    }
+  override fun showRefreshComplete() {
+    layoutView.isRefreshing = false
+  }
 }

@@ -5,10 +5,10 @@
 
 package io.github.keep2iron.pomelo.interceptor
 
-import java.io.IOException
-import java.util.HashSet
 import okhttp3.Interceptor
 import okhttp3.Response
+import java.io.IOException
+import java.util.HashSet
 
 /**
  * This Interceptor add all received Cookies to the app DefaultPreferences.
@@ -21,21 +21,21 @@ import okhttp3.Response
  */
 open class ReceivedCookiesInterceptor : Interceptor {
 
-    @Throws(IOException::class)
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
-        val originalResponse = chain.proceed(request)
+  @Throws(IOException::class)
+  override fun intercept(chain: Interceptor.Chain): Response {
+    val request = chain.request()
+    val originalResponse = chain.proceed(request)
 
-        if (!originalResponse.headers("Set-Cookie").isEmpty()) {
-            val cookies = HashSet<String>()
+    if (!originalResponse.headers("Set-Cookie").isEmpty()) {
+      val cookies = HashSet<String>()
 
-            for (header in originalResponse.headers("Set-Cookie")) {
-                cookies.add(header)
-            }
+      for (header in originalResponse.headers("Set-Cookie")) {
+        cookies.add(header)
+      }
 
 //            SPUtils.instance.put("cookies", cookies)
-        }
-
-        return originalResponse
     }
+
+    return originalResponse
+  }
 }

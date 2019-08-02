@@ -7,37 +7,37 @@ package io.github.keep2iron.app;
  */
 public class BaseResponse<T> {
 
-    private int code;
-    private String message;
-    private T value;
+  private int code;
+  private String message;
+  private T value;
 
-    public BaseResponse(T value) {
-        this.message = "successful";
-        this.code = 200;
-        this.value = value;
-    }
+  public BaseResponse(T value) {
+    this.message = "successful";
+    this.code = 200;
+    this.value = value;
+  }
 
-    public int getCode() {
-        return code;
-    }
+  public int getCode() {
+    return code;
+  }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
+  public void setCode(int code) {
+    this.code = code;
+  }
 
-    public String getMessage() {
-        return message;
-    }
+  public String getMessage() {
+    return message;
+  }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+  public void setMessage(String message) {
+    this.message = message;
+  }
 
-    public T getValue() {
-        return value;
-    }
+  public T getValue() {
+    return value;
+  }
 
-    public void setValue(T value) {
-        this.value = value;
-    }
+  public void setValue(T value) {
+    this.value = value;
+  }
 }

@@ -13,16 +13,16 @@ package io.github.keep2iron.pomlo.pager
  */
 interface LoadMoreAble {
 
-    fun scrollToPosition(position: Int)
+  fun scrollToPosition(position: Int)
 
-    fun setLoadMoreEnable(isEnabled: Boolean)
+  fun setLoadMoreEnable(isEnabled: Boolean)
 
-    fun showLoadMoreComplete()
+  fun showLoadMoreComplete()
 
-    fun showLoadMoreFailed()
+  fun showLoadMoreFailed()
 
-    fun showLoadMoreEnd()
+  fun showLoadMoreEnd()
 
-    fun setOnLoadMoreListener(listener: (loadMore: LoadMore) -> Unit)
+  fun setOnLoadMoreListener(listener: (loadMore: LoadMore) -> Unit)
 
 }

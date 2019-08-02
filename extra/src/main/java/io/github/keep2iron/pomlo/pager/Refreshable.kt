@@ -9,11 +9,11 @@ import android.view.View
  * @since 2018/05/02 17:03
  */
 interface Refreshable {
-    fun setRefreshEnable(isEnabled: Boolean)
+  fun setRefreshEnable(isEnabled: Boolean)
 
-    fun refreshing()
+  fun refreshing()
 
-    fun showRefreshComplete()
+  fun showRefreshComplete()
 
-    fun setOnRefreshListener(listener: (refreshLayout: View) -> Unit)
+  fun setOnRefreshListener(listener: (refreshLayout: View) -> Unit)
 }

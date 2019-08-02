@@ -10,13 +10,13 @@ package io.github.keep2iron.pomlo.pager.load
  */
 class Pager(var defaultValue: Any) {
 
-    var value: Any = defaultValue
+  var value: Any = defaultValue
 
-    fun reset() {
-        this.value = defaultValue
-    }
+  fun reset() {
+    this.value = defaultValue
+  }
 
-    fun default(): Boolean {
-        return value == defaultValue
-    }
+  fun default(): Boolean {
+    return value == defaultValue
+  }
 }

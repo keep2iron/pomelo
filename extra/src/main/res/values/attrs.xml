@@ -1,16 +1,16 @@
 <resources>
-    <declare-styleable name="PomeloPageStateLayout">
+  <declare-styleable name="PomeloPageStateLayout">
 
-        <!--NoData Layout resource id-->
-        <attr name="pomelo_layout_empty_data" format="reference"/>
+    <!--NoData Layout resource id-->
+    <attr name="pomelo_layout_empty_data" format="reference"/>
 
-        <!--NoNetwork Layout resource id-->
-        <attr name="pomelo_layout_network_error" format="reference"/>
+    <!--NoNetwork Layout resource id-->
+    <attr name="pomelo_layout_network_error" format="reference"/>
 
-        <!--LoadError Layout resource id-->
-        <attr name="pomelo_layout_load_error" format="reference"/>
+    <!--LoadError Layout resource id-->
+    <attr name="pomelo_layout_load_error" format="reference"/>
 
-        <!--Loading Layout resource id-->
-        <attr name="pomelo_layout_loading" format="reference"/>
-    </declare-styleable>
+    <!--Loading Layout resource id-->
+    <attr name="pomelo_layout_loading" format="reference"/>
+  </declare-styleable>
 </resources>

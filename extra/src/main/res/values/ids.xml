@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <item name="pomelo_load_more_loading_view" type="id"/>
+  <item name="pomelo_load_more_loading_view" type="id"/>
 
-    <item name="pomelo_load_more_load_fail_view" type="id"/>
+  <item name="pomelo_load_more_load_fail_view" type="id"/>
 
-    <item name="pomelo_load_more_load_end_view" type="id"/>
+  <item name="pomelo_load_more_load_end_view" type="id"/>
 
-    <item name="pomelo_adapter_position" type="id"/>
+  <item name="pomelo_adapter_position" type="id"/>
 
 </resources>

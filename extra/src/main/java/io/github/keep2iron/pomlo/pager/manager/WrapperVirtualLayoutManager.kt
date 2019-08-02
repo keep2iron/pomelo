@@ -1,10 +1,8 @@
 package io.github.keep2iron.pomlo.pager.manager
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import com.alibaba.android.vlayout.VirtualLayoutManager
-import java.lang.Exception
 
 /**
  *
@@ -14,12 +12,15 @@ import java.lang.Exception
  */
 class WrapperVirtualLayoutManager(context: Context) : VirtualLayoutManager(context) {
 
-    override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
-        try {
-            super.onLayoutChildren(recycler, state)
-        } catch (ignore: Exception) {
-            Log.w(WrapperVirtualLayoutManager::class.java.simpleName, Log.getStackTraceString(ignore))
-        }
+  override fun onLayoutChildren(
+    recycler: androidx.recyclerview.widget.RecyclerView.Recycler?,
+    state: androidx.recyclerview.widget.RecyclerView.State?
+  ) {
+    try {
+      super.onLayoutChildren(recycler, state)
+    } catch (ignore: Exception) {
+      Log.w(WrapperVirtualLayoutManager::class.java.simpleName, Log.getStackTraceString(ignore))
     }
+  }
 
 }

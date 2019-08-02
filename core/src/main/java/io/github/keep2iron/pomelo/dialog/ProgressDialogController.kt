@@ -11,14 +11,17 @@ import io.github.keep2iron.pomelo.AndroidSubscriber
  */
 interface ProgressDialogController {
 
-    /**
-     * 控制dialog 让其显示
-     */
-    fun onDialogShow(activity: Activity, subscriber: AndroidSubscriber<Any>)
+  /**
+   * 控制dialog 让其显示
+   */
+  fun onDialogShow(
+    activity: Activity,
+    subscriber: AndroidSubscriber<Any>
+  )
 
-    /**
-     * 控制dialog 让其隐藏
-     */
-    fun onDialogDismiss()
+  /**
+   * 控制dialog 让其隐藏
+   */
+  fun onDialogDismiss()
 
 }

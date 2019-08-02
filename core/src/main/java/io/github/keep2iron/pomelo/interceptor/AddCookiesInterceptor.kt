@@ -5,11 +5,9 @@
 
 package io.github.keep2iron.pomelo.interceptor
 
-import java.io.IOException
-import java.util.HashSet
 import okhttp3.Interceptor
-import okhttp3.Request
 import okhttp3.Response
+import java.io.IOException
 
 /**
  * This interceptor put all the Cookies in Pref in the Request.
@@ -21,16 +19,16 @@ import okhttp3.Response
  */
 open class AddCookiesInterceptor : Interceptor {
 
-    @Throws(IOException::class)
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
-        val builder = request.newBuilder()
+  @Throws(IOException::class)
+  override fun intercept(chain: Interceptor.Chain): Response {
+    val request = chain.request()
+    val builder = request.newBuilder()
 
 //        val preferences = SPUtils.instance.getStringSet("cookies", HashSet()) as HashSet<String>
 //        for (cookie in preferences) {
 //            builder.addHeader("Cookie", cookie)
 //        }
 
-        return chain.proceed(builder.build())
-    }
+    return chain.proceed(builder.build())
+  }
 }

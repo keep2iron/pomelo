@@ -2,53 +2,53 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion versions.build.target_sdk
-    buildToolsVersion versions.build.build_tools
+  compileSdkVersion versions.build.target_sdk
+  buildToolsVersion versions.build.build_tools
 
-    defaultConfig {
-        applicationId "io.github.keep2iron.app"
-        minSdkVersion 16
-        targetSdkVersion versions.build.target_sdk
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  defaultConfig {
+    applicationId "io.github.keep2iron.app"
+    minSdkVersion 16
+    targetSdkVersion versions.build.target_sdk
+    versionCode 1
+    versionName "1.0"
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+  buildTypes {
+    release {
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+  }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation deps.kotlin.stdlib_jdk7
-    implementation deps.support.app_compat
-    implementation deps.support.recyclerview
-    implementation deps.support.constraint_layout
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation deps.kotlin.stdlib_jdk7
+  implementation deps.support.app_compat
+  implementation deps.support.recyclerview
+  implementation deps.support.constraint_layout
 
-    implementation project(':core')
-    implementation project(':log')
-    implementation project(':extra')
+  implementation project(':core')
+  implementation project(':log')
+  implementation project(':extra')
 
-    implementation 'com.airbnb.android:lottie:2.7.0'
+  implementation 'com.airbnb.android:lottie:3.0.7'
 
-    implementation deps.alibaba.vlayout
-    implementation deps.rxjava2
-    implementation deps.rx_android
-    implementation deps.retrofit.scalars
-    implementation deps.retrofit.adapter
-    implementation deps.logger
+  implementation deps.alibaba.vlayout
+  implementation deps.rxjava2
+  implementation deps.rx_android
+  implementation deps.retrofit.scalars
+  implementation deps.retrofit.adapter
+  implementation deps.logger
 
-    implementation 'com.facebook.stetho:stetho:1.5.1'
-    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
+  implementation 'com.facebook.stetho:stetho:1.5.1'
+  implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+  testImplementation 'junit:junit:4.12'
+  androidTestImplementation 'androidx.test:runner:1.1.0'
+  androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 }
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }

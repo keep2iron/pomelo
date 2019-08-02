@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
-    <io.github.keep2iron.pomlo.state.PomeloPageStateLayout
-        android:id="@+id/pageStateLayout"
+  <io.github.keep2iron.pomlo.state.PomeloPageStateLayout
+      android:id="@+id/pageStateLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:pomelo_layout_loading="@layout/layout_loading"
+      >
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:pomelo_layout_loading="@layout/layout_loading">
+        />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </io.github.keep2iron.pomlo.state.PomeloPageStateLayout>
-</android.support.v4.widget.SwipeRefreshLayout>
+  </io.github.keep2iron.pomlo.state.PomeloPageStateLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

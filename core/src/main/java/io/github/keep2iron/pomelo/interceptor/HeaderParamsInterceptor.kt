@@ -5,10 +5,9 @@
 
 package io.github.keep2iron.pomelo.interceptor
 
-import java.io.IOException
 import okhttp3.Interceptor
-import okhttp3.Request
 import okhttp3.Response
+import java.io.IOException
 
 /**
  * @author keep2iron [Contract me.](http://keep2iron.github.io)
@@ -20,18 +19,20 @@ import okhttp3.Response
 class HeaderParamsInterceptor(val listener: (url: String, headerParams: HashMap<String, String>) -> Unit) :
     Interceptor {
 
-    @Throws(IOException::class)
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
-        val headerParams = HashMap<String, String>()
-        val url = request.url().uri().toString()
-        listener(url, headerParams)
+  @Throws(IOException::class)
+  override fun intercept(chain: Interceptor.Chain): Response {
+    val request = chain.request()
+    val headerParams = HashMap<String, String>()
+    val url = request.url()
+        .uri()
+        .toString()
+    listener(url, headerParams)
 
-        val builder = request.newBuilder()
-        for ((key, value) in headerParams) {
-            builder.addHeader(key, value)
-        }
-
-        return chain.proceed(builder.build())
+    val builder = request.newBuilder()
+    for ((key, value) in headerParams) {
+      builder.addHeader(key, value)
     }
+
+    return chain.proceed(builder.build())
+  }
 }

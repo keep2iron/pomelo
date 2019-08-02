@@ -11,25 +11,28 @@ import io.github.keep2iron.pomelo.AndroidSubscriber
  * @date 2019/1/8
  */
 class DefaultProgressDialogController(
-    private val title: String,
-    private val message: String,
-    private val canCancelable: Boolean = true
+  private val title: String,
+  private val message: String,
+  private val canCancelable: Boolean = true
 ) : ProgressDialogController {
 
-    private var dialog: ProgressDialog? = null
+  private var dialog: ProgressDialog? = null
 
-    override fun onDialogDismiss() {
-        dialog?.dismiss()
-    }
+  override fun onDialogDismiss() {
+    dialog?.dismiss()
+  }
 
-    override fun onDialogShow(activity: Activity, subscriber: AndroidSubscriber<Any>) {
-        this.dialog = ProgressDialog.show(activity, title, message)
-        this.dialog?.apply {
-            this.setCancelable(canCancelable)
-            this.setCanceledOnTouchOutside(canCancelable)
-            this.setOnCancelListener {
-                subscriber.cancel()
-            }
-        }
+  override fun onDialogShow(
+    activity: Activity,
+    subscriber: AndroidSubscriber<Any>
+  ) {
+    this.dialog = ProgressDialog.show(activity, title, message)
+    this.dialog?.apply {
+      this.setCancelable(canCancelable)
+      this.setCanceledOnTouchOutside(canCancelable)
+      this.setOnCancelListener {
+        subscriber.cancel()
+      }
     }
+  }
 }

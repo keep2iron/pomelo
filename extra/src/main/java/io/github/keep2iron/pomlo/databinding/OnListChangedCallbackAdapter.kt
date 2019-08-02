@@ -1,6 +1,6 @@
 package io.github.keep2iron.pomlo.databinding
 
-import android.databinding.ObservableList
+import androidx.databinding.ObservableList
 
 /**
  * @author keep2iron [Contract me.](http://keep2iron.github.io)
@@ -8,23 +8,40 @@ import android.databinding.ObservableList
  * @since 2017/11/23 15:54
  */
 open class OnListChangedCallbackAdapter<T> : ObservableList.OnListChangedCallback<ObservableList<T>>() {
-    override fun onChanged(ts: ObservableList<T>) {
+  override fun onChanged(ts: ObservableList<T>) {
 
-    }
+  }
 
-    override fun onItemRangeChanged(ts: ObservableList<T>, i: Int, i1: Int) {
+  override fun onItemRangeChanged(
+    ts: ObservableList<T>,
+    i: Int,
+    i1: Int
+  ) {
 
-    }
+  }
 
-    override fun onItemRangeInserted(ts: ObservableList<T>, i: Int, i1: Int) {
+  override fun onItemRangeInserted(
+    ts: ObservableList<T>,
+    i: Int,
+    i1: Int
+  ) {
 
-    }
+  }
 
-    override fun onItemRangeMoved(ts: ObservableList<T>, i: Int, i1: Int, i2: Int) {
+  override fun onItemRangeMoved(
+    ts: ObservableList<T>,
+    i: Int,
+    i1: Int,
+    i2: Int
+  ) {
 
-    }
+  }
 
-    override fun onItemRangeRemoved(ts: ObservableList<T>, i: Int, i1: Int) {
+  override fun onItemRangeRemoved(
+    ts: ObservableList<T>,
+    i: Int,
+    i1: Int
+  ) {
 
-    }
+  }
 }

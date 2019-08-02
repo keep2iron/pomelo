@@ -16,21 +16,24 @@ import java.io.IOException
  * @see NullStringToEmptyAdapterFactory
  */
 class StringNullAdapter : TypeAdapter<String>() {
-    @Throws(IOException::class)
-    override fun read(reader: JsonReader): String {
-        if (reader.peek() == JsonToken.NULL) {
-            reader.nextNull()
-            return ""
-        }
-        return reader.nextString()
+  @Throws(IOException::class)
+  override fun read(reader: JsonReader): String {
+    if (reader.peek() == JsonToken.NULL) {
+      reader.nextNull()
+      return ""
     }
+    return reader.nextString()
+  }
 
-    @Throws(IOException::class)
-    override fun write(writer: JsonWriter, value: String?) {
-        if (value == null) {
-            writer.nullValue()
-            return
-        }
-        writer.value(value)
+  @Throws(IOException::class)
+  override fun write(
+    writer: JsonWriter,
+    value: String?
+  ) {
+    if (value == null) {
+      writer.nullValue()
+      return
     }
+    writer.value(value)
+  }
 }
