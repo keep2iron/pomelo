@@ -2,13 +2,14 @@ package io.github.keep2iron.pomlo.pager.load
 
 import android.view.View
 import androidx.databinding.ObservableList
+import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.vlayout.DelegateAdapter
 import io.github.keep2iron.pomlo.pager.adapter.AbstractSubAdapter
 import io.github.keep2iron.pomlo.pager.adapter.MultiTypeListAdapter
 
 class MultipleTypeBinder(
   data: ObservableList<Any>,
-  recyclerView: androidx.recyclerview.widget.RecyclerView,
+  recyclerView: RecyclerView,
   refreshLayout: View,
   loadMoreEnabled: Boolean = false
 ) : BaseBinder(recyclerView, refreshLayout, loadMoreEnabled) {
@@ -24,7 +25,7 @@ class MultipleTypeBinder(
     delegateAdapter.addAdapter(adapter)
   }
 
-  override fun onBindViewPool(viewPool: androidx.recyclerview.widget.RecyclerView.RecycledViewPool) {
+  override fun onBindViewPool(viewPool: RecyclerView.RecycledViewPool) {
     adapter.adapterMap.values.forEach { adapter ->
       viewPool.setMaxRecycledViews(adapter.viewType, adapter.cacheMaxViewCount)
     }

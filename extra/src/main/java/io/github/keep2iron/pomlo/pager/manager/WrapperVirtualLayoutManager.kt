@@ -2,6 +2,7 @@ package io.github.keep2iron.pomlo.pager.manager
 
 import android.content.Context
 import android.util.Log
+import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.vlayout.VirtualLayoutManager
 
 /**
@@ -13,8 +14,8 @@ import com.alibaba.android.vlayout.VirtualLayoutManager
 class WrapperVirtualLayoutManager(context: Context) : VirtualLayoutManager(context) {
 
   override fun onLayoutChildren(
-    recycler: androidx.recyclerview.widget.RecyclerView.Recycler?,
-    state: androidx.recyclerview.widget.RecyclerView.State?
+    recycler: RecyclerView.Recycler?,
+    state: RecyclerView.State?
   ) {
     try {
       super.onLayoutChildren(recycler, state)

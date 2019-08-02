@@ -1,8 +1,9 @@
 package io.github.keep2iron.app
 
+import androidx.recyclerview.widget.RecyclerView
 import io.github.keep2iron.pomlo.pager.SampleLoadMore
 
-class CustomLoadMore(recyclerView: androidx.recyclerview.widget.RecyclerView) : SampleLoadMore(
+class CustomLoadMore(recyclerView: RecyclerView) : SampleLoadMore(
     recyclerView
 ) {
 

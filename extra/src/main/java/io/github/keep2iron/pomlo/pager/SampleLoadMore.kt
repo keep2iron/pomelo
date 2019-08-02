@@ -14,10 +14,10 @@ import io.github.keep2iron.pomelo.pager.R
  *
  * 加载更多adapter的父类 后面一些样式上的问题 可以直接继承该adapter
  */
-open class SampleLoadMore(private val recyclerView: androidx.recyclerview.widget.RecyclerView) :
+open class SampleLoadMore(private val recyclerView: RecyclerView) :
     LoadMore {
 
-  private lateinit var adapter: androidx.recyclerview.widget.RecyclerView.Adapter<out androidx.recyclerview.widget.RecyclerView.ViewHolder>
+  private lateinit var adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>
 
   var mOnLoadMoreListener: ((adapter: LoadMore) -> Unit)? = null
 
@@ -46,9 +46,9 @@ open class SampleLoadMore(private val recyclerView: androidx.recyclerview.widget
     }
 
   init {
-    val onScrollListener = object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+    val onScrollListener = object : RecyclerView.OnScrollListener() {
       override fun onScrollStateChanged(
-        recyclerView: androidx.recyclerview.widget.RecyclerView,
+        recyclerView: RecyclerView,
         newState: Int
       ) {
         super.onScrollStateChanged(recyclerView, newState)
@@ -57,8 +57,8 @@ open class SampleLoadMore(private val recyclerView: androidx.recyclerview.widget
           return
         }
 
-        if (newState == androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_SETTLING ||
-            newState == androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
+        if (newState == RecyclerView.SCROLL_STATE_SETTLING ||
+            newState == RecyclerView.SCROLL_STATE_DRAGGING
         ) {
           val isBottom: Boolean
           val layoutManager = recyclerView.layoutManager
@@ -122,7 +122,7 @@ open class SampleLoadMore(private val recyclerView: androidx.recyclerview.widget
   }
 
   override fun onBindViewHolder(
-    holder: androidx.recyclerview.widget.RecyclerView.ViewHolder,
+    holder: RecyclerView.ViewHolder,
     position: Int
   ) {
     val itemView = holder.itemView
@@ -208,7 +208,7 @@ open class SampleLoadMore(private val recyclerView: androidx.recyclerview.widget
     adapter.notifyItemChanged(position, null)
   }
 
-  override fun attachAdapter(adapter: androidx.recyclerview.widget.RecyclerView.Adapter<out androidx.recyclerview.widget.RecyclerView.ViewHolder>) {
+  override fun attachAdapter(adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>) {
     this.adapter = adapter
   }
 

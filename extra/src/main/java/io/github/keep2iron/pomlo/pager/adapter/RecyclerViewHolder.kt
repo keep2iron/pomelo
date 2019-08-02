@@ -11,11 +11,12 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * @author keep2iron
  */
-open class RecyclerViewHolder : androidx.recyclerview.widget.RecyclerView.ViewHolder {
+open class RecyclerViewHolder : RecyclerView.ViewHolder {
   companion object {
     const val DEFAULT_TAG = 0
   }

@@ -11,12 +11,12 @@ import io.github.keep2iron.pomlo.pager.adapter.VLayoutLoadMoreAbleAdapter
 import io.github.keep2iron.pomlo.pager.manager.WrapperVirtualLayoutManager
 
 abstract class BaseBinder(
-  private val recyclerView: androidx.recyclerview.widget.RecyclerView,
+  private val recyclerView: RecyclerView,
   private val refreshLayout: View,
   private val loadMoreEnabled: Boolean
 ) {
 
-  private var viewPool: androidx.recyclerview.widget.RecyclerView.RecycledViewPool? = null
+  private var viewPool: RecyclerView.RecycledViewPool? = null
 
   private var loadMore: LoadMore? = null
 
@@ -36,7 +36,7 @@ abstract class BaseBinder(
 
   protected abstract fun onBindDelegateAdapter(delegateAdapter: DelegateAdapter)
 
-  protected abstract fun onBindViewPool(viewPool: androidx.recyclerview.widget.RecyclerView.RecycledViewPool)
+  protected abstract fun onBindViewPool(viewPool: RecyclerView.RecycledViewPool)
 
   fun bind(): BaseBinder {
     if (viewPool == null) {

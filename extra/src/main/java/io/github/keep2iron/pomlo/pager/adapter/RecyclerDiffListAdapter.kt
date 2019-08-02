@@ -22,7 +22,7 @@ open class RecyclerDiffListAdapter<T>(
 
   override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
     val constructor =
-      loadMoreClass.getConstructor(androidx.recyclerview.widget.RecyclerView::class.java)
+      loadMoreClass.getConstructor(RecyclerView::class.java)
     loadMore = constructor.newInstance(recyclerView)
   }
 

@@ -1,13 +1,14 @@
 package io.github.keep2iron.pomlo.databinding
 
 import androidx.databinding.ObservableList
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * @author keep2iron [Contract me.](http://keep2iron.github.io)
  * @version 1.0
  * @since 2017/11/17 15:25
  */
-open class ObservableOnListChangeAdapter<T>(private val mAdapter: androidx.recyclerview.widget.RecyclerView.Adapter<out androidx.recyclerview.widget.RecyclerView.ViewHolder>) :
+open class ObservableOnListChangeAdapter<T>(private val mAdapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>) :
     ObservableList.OnListChangedCallback<ObservableList<T>>() {
 
   override fun onChanged(sender: ObservableList<T>) {
