@@ -16,16 +16,7 @@ class DefaultProgressDialogController(
   private val canCancelable: Boolean = true
 ) : ProgressDialogController {
 
-  private var dialog: ProgressDialog? = null
-
-  override fun onDialogDismiss() {
-    dialog?.dismiss()
-  }
-
-  override fun onDialogShow(
-    activity: Activity,
-    subscriber: AndroidSubscriber<Any>
-  ) {
+  override fun <T> onDialogShow(activity: Activity, subscriber: AndroidSubscriber<T>) {
     this.dialog = ProgressDialog.show(activity, title, message)
     this.dialog?.apply {
       this.setCancelable(canCancelable)
@@ -35,4 +26,11 @@ class DefaultProgressDialogController(
       }
     }
   }
+
+  private var dialog: ProgressDialog? = null
+
+  override fun onDialogDismiss() {
+    dialog?.dismiss()
+  }
+
 }
