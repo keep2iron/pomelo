@@ -23,21 +23,21 @@ class MyApplication : Application() {
     super.onCreate()
 
     val formatStrategy = PrettyFormatStrategy.newBuilder()
-        .showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
-        .methodOffset(2)        // (Optional) Hides internal method calls up to offset. Default 5
-        .tag("pomelo")   // (Optional) Global tag for every log. Default PRETTY_LOGGER
-        .build()
+      .showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
+      .methodOffset(2)        // (Optional) Hides internal method calls up to offset. Default 5
+      .tag("pomelo")   // (Optional) Global tag for every log. Default PRETTY_LOGGER
+      .build()
     Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
 
     NetworkManager.init("http://10.0.2.2:8080/") {
       initOkHttp {
         protocols(
-            Collections.singletonList(Protocol.HTTP_1_1)
+          Collections.singletonList(Protocol.HTTP_1_1)
         )         //解决 https://www.cnblogs.com/myhalo/p/6811472.html
         connectTimeout(15, TimeUnit.SECONDS)
         readTimeout(15, TimeUnit.SECONDS)
         addInterceptor(NetworkErrorHandleInterceptor { exception ->
-          //                    Toast.makeText(this@MyApplication, "${exception}", Toast.LENGTH_SHORT).show()
+//          Toast.makeText(this@MyApplication, "${exception}", Toast.LENGTH_SHORT).show()
         })
         addInterceptor(HeaderParamsInterceptor { _, headerParams ->
           headerParams["test-header-params"] = ""

@@ -35,9 +35,7 @@ open class AndroidSubscriber<T>(
 
   @CallSuper
   override fun onError(throwable: Throwable) {
-    if (BuildConfig.DEBUG) {
-      Log.e(NetworkManager.TAG_NAME, Log.getStackTraceString(throwable))
-    }
+    Log.e(NetworkManager.TAG_NAME, Log.getStackTraceString(throwable))
     onError?.invoke(throwable)
   }
 
