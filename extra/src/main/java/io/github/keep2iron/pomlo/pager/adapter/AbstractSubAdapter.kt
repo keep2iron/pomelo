@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
+import androidx.collection.SparseArrayCompat
 import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.LayoutHelper
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper
@@ -15,12 +16,9 @@ typealias OnItemClickListener = (position: Int, view: View) -> Unit
 abstract class AbstractSubAdapter(
   val viewType: Int,
   val cacheMaxViewCount: Int
-) :
-    DelegateAdapter.Adapter<RecyclerViewHolder>() {
-
+) : DelegateAdapter.Adapter<RecyclerViewHolder>() {
   override fun onCreateLayoutHelper(): LayoutHelper = LinearLayoutHelper()
-
-  private var listenerMap = androidx.collection.SparseArrayCompat<OnItemClickListener>()
+  private var listenerMap = SparseArrayCompat<OnItemClickListener>()
 
   /**
    * 获取布局的layout id
@@ -48,8 +46,7 @@ abstract class AbstractSubAdapter(
     viewType: Int
   ): RecyclerViewHolder {
     val view = LayoutInflater.from(parent.context.applicationContext)
-        .inflate(onInflateLayoutId(parent, viewType), parent, false)
-
+      .inflate(onInflateLayoutId(parent, viewType), parent, false)
     val holder = RecyclerViewHolder(view)
 
     for (i in 0 until listenerMap.size()) {

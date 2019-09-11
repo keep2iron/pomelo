@@ -6,6 +6,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
 import io.github.keep2iron.pomelo.pager.R
@@ -20,6 +21,8 @@ enum class PageState {
 }
 
 typealias ReloadListener = (PageState, View) -> Unit
+
+typealias StateLayoutProvider = (context: Context, parentView: ViewGroup) -> View
 
 /**
  * @author keep2iron [Contract me.](http://keep2iron.github.io)
@@ -60,25 +63,25 @@ class PomeloPageStateLayout : FrameLayout {
           R.styleable.PomeloPageStateLayout_pomelo_layout_load_error -> {
             val loadError =
               LayoutInflater.from(getContext())
-                  .inflate(array.getResourceId(index, -1), this, false)
+                .inflate(array.getResourceId(index, -1), this, false)
             views[PageState.LOAD_ERROR] = loadError
           }
           R.styleable.PomeloPageStateLayout_pomelo_layout_empty_data -> {
             val emptyDataView =
               LayoutInflater.from(getContext())
-                  .inflate(array.getResourceId(index, -1), this, false)
+                .inflate(array.getResourceId(index, -1), this, false)
             views[PageState.EMPTY_DATA] = emptyDataView
           }
           R.styleable.PomeloPageStateLayout_pomelo_layout_network_error -> {
             val networkErrorView =
               LayoutInflater.from(getContext())
-                  .inflate(array.getResourceId(index, -1), this, false)
+                .inflate(array.getResourceId(index, -1), this, false)
             views[PageState.NETWORK_ERROR] = networkErrorView
           }
           R.styleable.PomeloPageStateLayout_pomelo_layout_loading -> {
             val loadingView =
               LayoutInflater.from(getContext())
-                  .inflate(array.getResourceId(index, -1), this, false)
+                .inflate(array.getResourceId(index, -1), this, false)
             views[PageState.LOADING] = loadingView
           }
         }
@@ -90,12 +93,21 @@ class PomeloPageStateLayout : FrameLayout {
   override fun onFinishInflate() {
     super.onFinishInflate()
 
-    if (childCount <= 0) {
-      throw IllegalArgumentException(javaClass.simpleName + "'child count must > 0")
-    } else if (childCount == 1) {
+    require(childCount > 0) { javaClass.simpleName + "'child count must > 0" }
+    if (childCount == 1) {
       mOriginView = getChildAt(0)
       mOriginView.visibility = View.GONE
       views[PageState.ORIGIN] = mOriginView
+    }
+
+    //set default vies
+    STATES.forEach {
+      val provider = STATE_PROVIDER[it]
+      val stateView = views[it]
+      if (stateView == null && provider != null) {
+        val defaultStateView = provider(context, this)
+        views[it] = defaultStateView
+      }
     }
 
     for ((state, view) in views) {
@@ -118,7 +130,7 @@ class PomeloPageStateLayout : FrameLayout {
 
   fun setPageStateView(state: PageState, @LayoutRes layoutId: Int) {
     val stateView = LayoutInflater.from(context.applicationContext)
-        .inflate(layoutId, this, false)
+      .inflate(layoutId, this, false)
     views[state] = stateView
     onFinishInflate()
   }
@@ -130,30 +142,30 @@ class PomeloPageStateLayout : FrameLayout {
     val preSateView = views[preState]!!
 
     preSateView.animate()
-        .cancel()
+      .cancel()
     preSateView.visibility = View.VISIBLE
     preSateView.alpha = 1f
     preSateView.animate()
-        .setListener(object : AnimatorListenerAdapter() {
-          override fun onAnimationEnd(animation: Animator) {
-            preSateView.visibility = View.GONE
-          }
+      .setListener(object : AnimatorListenerAdapter() {
+        override fun onAnimationEnd(animation: Animator) {
+          preSateView.visibility = View.GONE
+        }
 
-        })
-        .setDuration(duration.toLong())
-        .alpha(0f)
-        .start()
+      })
+      .setDuration(duration.toLong())
+      .alpha(0f)
+      .start()
 
     showView.animate()
-        .cancel()
+      .cancel()
     showView.alpha = 0f
     showView.visibility = View.VISIBLE
     showView.animate()
-        .setListener(object : AnimatorListenerAdapter() {
-        })
-        .setDuration(duration.toLong())
-        .alpha(1f)
-        .start()
+      .setListener(object : AnimatorListenerAdapter() {
+      })
+      .setDuration(duration.toLong())
+      .alpha(1f)
+      .start()
   }
 
   fun displayOriginView() {
@@ -212,9 +224,9 @@ class PomeloPageStateLayout : FrameLayout {
     for ((key, view) in views) {
       if (key == pageState) {
         val stateView = view
-            ?: throw IllegalArgumentException(
-                "$pageState view not add you should add state layout id in your xml."
-            )
+          ?: throw IllegalArgumentException(
+            "$pageState view not add you should add state layout id in your xml."
+          )
         stateView.alpha = 1f
         stateView.visibility = View.VISIBLE
       } else {
@@ -232,6 +244,29 @@ class PomeloPageStateLayout : FrameLayout {
   ) {
     views[pageState]?.setOnClickListener {
       reloadListener(pageState, it)
+    }
+  }
+
+  companion object {
+
+    private val STATE_PROVIDER =
+      HashMap<PageState, StateLayoutProvider>()
+
+    private val STATES = arrayOf(
+      PageState.EMPTY_DATA,
+      PageState.NETWORK_ERROR,
+      PageState.LOAD_ERROR,
+      PageState.LOADING
+    )
+
+    fun setDetaultPageStateLayout(state: PageState, @LayoutRes layoutId: Int) {
+      STATE_PROVIDER[state] = { context, parentView ->
+        LayoutInflater.from(context).inflate(layoutId, parentView, false)
+      }
+    }
+
+    fun setDetaultPageStateProvider(state: PageState, provider: StateLayoutProvider) {
+      STATE_PROVIDER[state] = provider
     }
   }
 }

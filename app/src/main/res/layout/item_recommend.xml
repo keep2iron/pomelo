@@ -9,14 +9,15 @@
       android:id="@+id/tvText"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:textColor="@android:color/white"
+      android:text="测试测试"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       />
 
-  <ImageView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+  <io.github.keep2iron.pineapple.MiddlewareView
+      android:id="@+id/imageView"
+      android:layout_width="150dp"
+      android:layout_height="150dp"
       android:src="@mipmap/ic_launcher"
       android:layout_marginBottom="8dp"
       app:layout_constraintBottom_toBottomOf="parent"

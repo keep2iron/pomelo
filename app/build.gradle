@@ -34,7 +34,12 @@ dependencies {
 
   implementation 'com.airbnb.android:lottie:3.0.7'
 
-  implementation deps.alibaba.vlayout
+  implementation 'io.github.keep2iron:pineapple-fresco:0.0.1-fix2'
+
+  implementation deps.fresco
+  // if you want to support gif add this
+  implementation deps.fresco_gif
+
   implementation deps.rxjava2
   implementation deps.rx_android
   implementation deps.retrofit.scalars

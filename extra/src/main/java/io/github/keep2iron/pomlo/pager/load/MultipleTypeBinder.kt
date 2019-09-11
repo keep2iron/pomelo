@@ -7,7 +7,7 @@ import com.alibaba.android.vlayout.DelegateAdapter
 import io.github.keep2iron.pomlo.pager.adapter.AbstractSubAdapter
 import io.github.keep2iron.pomlo.pager.adapter.MultiTypeListAdapter
 
-class MultipleTypeBinder(
+open class MultipleTypeBinder(
   data: ObservableList<Any>,
   recyclerView: RecyclerView,
   refreshLayout: View,

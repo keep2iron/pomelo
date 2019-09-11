@@ -37,8 +37,8 @@ dependencies {
 
   implementation project(':core')
   implementation deps.kotlin.stdlib_jdk7
-  compileOnly deps.support.recyclerview
-  compileOnly deps.alibaba.vlayout
+  implementation deps.support.recyclerview
+  implementation deps.alibaba.vlayout
 
   testImplementation 'junit:junit:4.12'
   androidTestImplementation 'androidx.test:runner:1.1.0'
