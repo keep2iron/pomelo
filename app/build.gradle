@@ -40,8 +40,6 @@ dependencies {
   // if you want to support gif add this
   implementation deps.fresco_gif
 
-  implementation deps.rxjava2
-  implementation deps.rx_android
   implementation deps.retrofit.scalars
   implementation deps.retrofit.adapter
   implementation deps.logger
