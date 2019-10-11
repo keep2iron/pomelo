@@ -1,16 +1,16 @@
 package io.github.keep2iron.pomlo.pager.load
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.vlayout.DelegateAdapter
+import io.github.keep2iron.pomlo.pager.Refreshable
 import io.github.keep2iron.pomlo.pager.adapter.AbstractSubAdapter
 import io.github.keep2iron.pomlo.pager.adapter.MultiTypeListAdapter
 
 class ListBinder(
     recyclerView: RecyclerView,
-    refreshLayout: View,
+    refreshable: Refreshable,
     loadMoreEnabled: Boolean = false
-) : BaseBinder(recyclerView, refreshLayout, loadMoreEnabled) {
+) : BaseBinder(recyclerView, refreshable, loadMoreEnabled) {
 
     private var adapters = arrayListOf<AbstractSubAdapter>()
 

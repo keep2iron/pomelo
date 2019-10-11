@@ -47,6 +47,14 @@ public class AsyncDiffObservableList<T> extends AbstractList<T> implements Obser
     differ.submitList(newItems);
   }
 
+  public void updateAppend(@Nullable List<T> newItems){
+    if(newItems != null) {
+      ArrayList<T> list = new ArrayList<>(differ.getCurrentList());
+      list.addAll(newItems);
+      differ.submitList(list);
+    }
+  }
+
   @Override
   public void addOnListChangedCallback(
       @NonNull OnListChangedCallback<? extends ObservableList<T>> callback) {

@@ -14,6 +14,7 @@ import io.github.keep2iron.pineapple.ImageLoaderManager
 import io.github.keep2iron.pomelo.AndroidSubscriber
 import io.github.keep2iron.pomelo.utilities.FindService
 import io.github.keep2iron.pomlo.collections.AsyncDiffObservableList
+import io.github.keep2iron.pomlo.pager.SwipeRefreshAble
 import io.github.keep2iron.pomlo.pager.adapter.AbstractSubAdapter
 import io.github.keep2iron.pomlo.pager.adapter.RecyclerViewHolder
 import io.github.keep2iron.pomlo.pager.load.BaseBinder
@@ -71,8 +72,6 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_page_state)
 
-        ImageLoaderManager.init(application)
-
         val pageStateLayout = findViewById<PomeloPageStateLayout>(R.id.pageStateLayout)
         val refreshLayout =
             findViewById<SwipeRefreshLayout>(R.id.refreshLayout)
@@ -85,7 +84,7 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
 
         pageState.setupWithPageStateLayout(pageStateLayout)
 
-        binder = MultipleTypeBinder(data, recyclerView, refreshLayout, true)
+        binder = MultipleTypeBinder(data, recyclerView, SwipeRefreshAble(refreshLayout), true)
             .addSubAdapter<Movie>(object : AbstractSubAdapter(1, 10) {
 
                 init {

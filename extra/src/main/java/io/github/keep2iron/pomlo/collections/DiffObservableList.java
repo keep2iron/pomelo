@@ -163,6 +163,17 @@ public class DiffObservableList<T> extends AbstractList<T> implements Observable
     diffResult.dispatchUpdatesTo(listCallback);
   }
 
+  public void updateAppend(@Nullable List<T> newItems){
+    if(newItems != null) {
+      ArrayList<T> resultList = new ArrayList<>(list);
+      resultList.addAll(newItems);
+
+      DiffUtil.DiffResult diffResult = doCalculateDiff(list, resultList);
+      list = resultList;
+      diffResult.dispatchUpdatesTo(listCallback);
+    }
+  }
+
   @Override
   public void addOnListChangedCallback(
       @NonNull OnListChangedCallback<? extends ObservableList<T>> listener) {
