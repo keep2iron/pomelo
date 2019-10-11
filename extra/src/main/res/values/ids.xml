@@ -9,4 +9,6 @@
 
   <item name="pomelo_adapter_position" type="id"/>
 
+  <item name="pomelo_view_holder" type="id"/>
+
 </resources>
