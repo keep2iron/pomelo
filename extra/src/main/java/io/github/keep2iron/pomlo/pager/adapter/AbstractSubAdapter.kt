@@ -59,7 +59,7 @@ abstract class AbstractSubAdapter(
         parent: ViewGroup,
         viewType: Int
     ): RecyclerViewHolder {
-        val view = LayoutInflater.from(parent.context.applicationContext)
+        val view = LayoutInflater.from(parent.context)
             .inflate(onInflateLayoutId(parent, viewType), parent, false)
         val holder = RecyclerViewHolder(view)
 

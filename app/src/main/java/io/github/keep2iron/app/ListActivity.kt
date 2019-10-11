@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.github.keep2iron.pomelo.utilities.FindService
-import io.github.keep2iron.pomlo.collections.AsyncDiffObservableList
 import io.github.keep2iron.pomlo.collections.DiffObservableList
 import io.github.keep2iron.pomlo.pager.SwipeRefreshAble
 import io.github.keep2iron.pomlo.pager.adapter.AbstractSubListAdapter
