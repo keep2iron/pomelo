@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.github.keep2iron.pomelo.utilities.FindService
-import io.github.keep2iron.pomlo.collections.DiffObservableList
+import io.github.keep2iron.pomlo.collections.AsyncDiffObservableList
 import io.github.keep2iron.pomlo.pager.SwipeRefreshAble
 import io.github.keep2iron.pomlo.pager.adapter.AbstractSubListAdapter
 import io.github.keep2iron.pomlo.pager.adapter.RecyclerViewHolder
@@ -24,7 +24,7 @@ class ListActivity : AppCompatActivity(), LoadListener {
 
     private val apiService by FindService(ApiService::class.java)
 
-    val data = DiffObservableList(object : DiffUtil.ItemCallback<Movie>() {
+    val data = AsyncDiffObservableList(object : DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
             return oldItem.id == newItem.id
         }
@@ -39,8 +39,7 @@ class ListActivity : AppCompatActivity(), LoadListener {
         setContentView(R.layout.activity_page_state)
 
         val pageStateLayout = findViewById<PomeloPageStateLayout>(R.id.pageStateLayout)
-        val refreshLayout =
-            findViewById<SwipeRefreshLayout>(R.id.refreshLayout)
+        val refreshLayout = findViewById<SwipeRefreshLayout>(R.id.refreshLayout)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
 
         ListBinder(recyclerView, SwipeRefreshAble(refreshLayout), true)
