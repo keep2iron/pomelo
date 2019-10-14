@@ -13,6 +13,27 @@ open class MultiTypeListAdapter(data: ObservableList<Any>) : AbstractSubListAdap
     }
   }
 
+  override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+    super.onDetachedFromRecyclerView(recyclerView)
+    for ((_, value) in adapterMap) {
+      value.onDetachedFromRecyclerView(recyclerView)
+    }
+  }
+
+  override fun onViewAttachedToWindow(holder: RecyclerViewHolder) {
+    super.onViewAttachedToWindow(holder)
+    for ((_, value) in adapterMap) {
+      value.onViewAttachedToWindow(holder)
+    }
+  }
+
+  override fun onViewDetachedFromWindow(holder: RecyclerViewHolder) {
+    super.onViewDetachedFromWindow(holder)
+    for ((_, value) in adapterMap) {
+      value.onViewDetachedFromWindow(holder)
+    }
+  }
+
   val adapterMap: HashMap<Class<*>, AbstractSubAdapter> = HashMap(20)
 
   override fun render(
