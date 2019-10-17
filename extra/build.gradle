@@ -39,9 +39,10 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(':core')
+//    implementation project(':core')
     implementation deps.kotlin.stdlib_jdk7
     implementation deps.support.recyclerview
+    implementation deps.rxjava2
     api deps.alibaba.vlayout
 
     testImplementation 'junit:junit:4.12'

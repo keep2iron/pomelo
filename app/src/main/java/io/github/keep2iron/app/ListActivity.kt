@@ -8,21 +8,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.github.keep2iron.pomelo.utilities.FindService
-import io.github.keep2iron.pomlo.collections.AsyncDiffObservableList
-import io.github.keep2iron.pomlo.pager.SwipeRefreshAble
-import io.github.keep2iron.pomlo.pager.adapter.AbstractSubListAdapter
-import io.github.keep2iron.pomlo.pager.adapter.RecyclerViewHolder
-import io.github.keep2iron.pomlo.pager.load.ListBinder
-import io.github.keep2iron.pomlo.pager.load.LoadController
-import io.github.keep2iron.pomlo.pager.load.LoadListener
-import io.github.keep2iron.pomlo.pager.rx.LoadListSubscriber
-import io.github.keep2iron.pomlo.state.PomeloPageStateLayout
+import io.github.keep2iron.pomelo.collections.AsyncDiffObservableList
+import io.github.keep2iron.pomelo.pager.SwipeRefreshAble
+import io.github.keep2iron.pomelo.pager.adapter.AbstractSubListAdapter
+import io.github.keep2iron.pomelo.pager.adapter.RecyclerViewHolder
+import io.github.keep2iron.pomelo.pager.load.ListBinder
+import io.github.keep2iron.pomelo.pager.load.LoadController
+import io.github.keep2iron.pomelo.pager.load.LoadListener
+import io.github.keep2iron.pomelo.pager.rx.LoadListSubscriber
+import io.github.keep2iron.pomelo.state.PomeloPageStateLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class ListActivity : AppCompatActivity(), LoadListener {
 
-    private val apiService by FindService(ApiService::class.java)
+    private val apiService:ApiService by FindService()
 
     val data = AsyncDiffObservableList(object : DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {

@@ -13,17 +13,17 @@ import com.orhanobut.logger.Logger
 import io.github.keep2iron.pineapple.ImageLoaderManager
 import io.github.keep2iron.pomelo.AndroidSubscriber
 import io.github.keep2iron.pomelo.utilities.FindService
-import io.github.keep2iron.pomlo.collections.AsyncDiffObservableList
-import io.github.keep2iron.pomlo.pager.SwipeRefreshAble
-import io.github.keep2iron.pomlo.pager.adapter.AbstractSubAdapter
-import io.github.keep2iron.pomlo.pager.adapter.RecyclerViewHolder
-import io.github.keep2iron.pomlo.pager.load.BaseBinder
-import io.github.keep2iron.pomlo.pager.load.LoadController
-import io.github.keep2iron.pomlo.pager.load.LoadListener
-import io.github.keep2iron.pomlo.pager.load.MultipleTypeBinder
-import io.github.keep2iron.pomlo.state.PageState
-import io.github.keep2iron.pomlo.state.PageStateObservable
-import io.github.keep2iron.pomlo.state.PomeloPageStateLayout
+import io.github.keep2iron.pomelo.collections.AsyncDiffObservableList
+import io.github.keep2iron.pomelo.pager.SwipeRefreshAble
+import io.github.keep2iron.pomelo.pager.adapter.AbstractSubAdapter
+import io.github.keep2iron.pomelo.pager.adapter.RecyclerViewHolder
+import io.github.keep2iron.pomelo.pager.load.BaseBinder
+import io.github.keep2iron.pomelo.pager.load.LoadController
+import io.github.keep2iron.pomelo.pager.load.LoadListener
+import io.github.keep2iron.pomelo.pager.load.MultipleTypeBinder
+import io.github.keep2iron.pomelo.state.PageState
+import io.github.keep2iron.pomelo.state.PageStateObservable
+import io.github.keep2iron.pomelo.state.PomeloPageStateLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.IOException
@@ -63,7 +63,7 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
             return false
         }
     })
-    private val apiService by FindService(ApiService::class.java)
+    private val apiService: ApiService by FindService()
     private val pageState = PageStateObservable(PageState.LOADING)
     private lateinit var binder: BaseBinder
     private var isFirstLoad = true
@@ -88,12 +88,20 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
             .addSubAdapter<Movie>(object : AbstractSubAdapter(1, 10) {
 
                 init {
-                    setOnItemClickListener { position, view ->
-                        Toast.makeText(view.context, "Movie position : $position", Toast.LENGTH_SHORT)
+                    setOnItemClickListener { position, view, itemView ->
+                        Toast.makeText(
+                            view.context,
+                            "Movie position : $position",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     }
-                    setOnItemClickListener(R.id.tvText) { position, view ->
-                        Toast.makeText(view.context, "tvText Movie position : $position", Toast.LENGTH_SHORT)
+                    setOnItemClickListener(R.id.tvText) { position, view, itemView ->
+                        Toast.makeText(
+                            view.context,
+                            "tvText Movie position : $position",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     }
                 }
@@ -118,8 +126,12 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
                 ) {
                     val item = data[position] as Recommend
 
-                    setOnItemClickListener { position, view ->
-                        Toast.makeText(view.context, "Recommend position : $position", Toast.LENGTH_SHORT)
+                    setOnItemClickListener { position, view, itemView ->
+                        Toast.makeText(
+                            view.context,
+                            "Recommend position : $position",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     }
 

@@ -2,15 +2,9 @@ package io.github.keep2iron.app
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import io.github.keep2iron.pineapple.ImageLoaderManager
-import io.github.keep2iron.pomelo.AndroidSubscriber
-import io.github.keep2iron.pomelo.utilities.FindService
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
 
