@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.databinding.ObservableList
 import androidx.recyclerview.widget.RecyclerView
 
-open class MultiTypeListAdapter(data: ObservableList<Any>) : AbstractSubListAdapter<Any>(data) {
+open class MultiTypeListAdapter(data: ObservableList<in Any>) : AbstractSubListAdapter<Any>(data) {
 
   override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
     super.onAttachedToRecyclerView(recyclerView)

@@ -126,7 +126,7 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
                 ) {
                     val item = data[position] as Recommend
 
-                    setOnItemClickListener { position, view, itemView ->
+                    setOnItemClickListener { position, view, _ ->
                         Toast.makeText(
                             view.context,
                             "Recommend position : $position",
@@ -164,7 +164,6 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
         isPullToRefresh: Boolean
     ) {
         Logger.d("onLoad........")
-        pageState.setPageState(PageState.ORIGIN)
         if (isPullToRefresh && controller.isLoadDefault(pagerValue)) {
             isLoadHomeEnd = false
         }
@@ -178,6 +177,7 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
                 }
                 .subscribe(AndroidSubscriber<List<Movie>> {
                     onSuccess = { respList ->
+                        pageState.setPageState(PageState.ORIGIN)
                         if (respList.isEmpty()) {
                             isLoadHomeEnd = true
                             controller.reset()

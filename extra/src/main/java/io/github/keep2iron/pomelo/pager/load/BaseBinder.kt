@@ -3,6 +3,7 @@ package io.github.keep2iron.pomelo.pager.load
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.alibaba.android.vlayout.DelegateAdapter
+import com.alibaba.android.vlayout.VirtualLayoutManager
 import io.github.keep2iron.pomelo.pager.LoadMore
 import io.github.keep2iron.pomelo.pager.Refreshable
 import io.github.keep2iron.pomelo.pager.SampleLoadMore
@@ -22,6 +23,8 @@ abstract class BaseBinder(
     private lateinit var loadListener: LoadListener
 
     lateinit var loadController: LoadController
+
+    lateinit var layoutManager:VirtualLayoutManager
 
     fun setLoadListener(loadListener: LoadListener): BaseBinder {
         this.loadListener = loadListener
@@ -47,7 +50,7 @@ abstract class BaseBinder(
             viewPool = RecycledViewPool()
         }
 
-        val layoutManager = WrapperVirtualLayoutManager(recyclerView.context.applicationContext)
+        layoutManager = WrapperVirtualLayoutManager(recyclerView.context.applicationContext)
 
         onBindViewPool(viewPool!!)
         recyclerView.setRecycledViewPool(viewPool)

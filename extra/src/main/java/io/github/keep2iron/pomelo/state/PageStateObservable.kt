@@ -3,14 +3,15 @@ package io.github.keep2iron.pomelo.state
 import androidx.databinding.ObservableField
 
 open class PageStateObservable(
-  private var state: PageState = PageState.ORIGIN
-) : ObservableField<PageState>(state) {
+  private var initState: PageState = PageState.ORIGIN
+) : ObservableField<PageState>(initState) {
 
   private var pageStateLayout: PomeloPageStateLayout? = null
 
   fun setupWithPageStateLayout(pageStateLayout: PomeloPageStateLayout) {
     this.pageStateLayout = pageStateLayout
-    pageStateLayout.initPageState(state)
+    set(initState)
+    pageStateLayout.initPageState(initState)
   }
 
   fun setPageState(pageState: PageState) {
@@ -31,6 +32,6 @@ open class PageStateObservable(
         pageStateLayout?.displayNetworkError()
       }
     }
-    set(state)
+    set(pageState)
   }
 }

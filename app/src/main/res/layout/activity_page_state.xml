@@ -9,9 +9,8 @@
       android:id="@+id/pageStateLayout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      app:pomelo_layout_loading="@layout/layout_loading"
       app:pomelo_layout_load_error="@layout/layout_loading"
-      >
+      app:pomelo_layout_loading="@layout/layout_loading">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
