@@ -8,9 +8,14 @@ import io.github.keep2iron.pomelo.pager.adapter.MultiTypeListAdapter
 
 class ListBinder(
     recyclerView: RecyclerView,
-    refreshable: Refreshable,
+    refreshable: Refreshable? = null,
     loadMoreEnabled: Boolean = false
-) : BaseBinder(recyclerView, refreshable, loadMoreEnabled) {
+) : BaseBinder(recyclerView) {
+
+    init {
+        setRefreshable(refreshable)
+        setLoadMoreEnabled(loadMoreEnabled)
+    }
 
     private var adapters = arrayListOf<AbstractSubAdapter>()
 
@@ -21,7 +26,16 @@ class ListBinder(
 
     override fun onBindViewPool(viewPool: RecyclerView.RecycledViewPool) {
         adapters.forEach { adapter ->
-            viewPool.setMaxRecycledViews(adapter.viewType, adapter.cacheMaxViewCount)
+            if (adapter is MultiTypeListAdapter) {
+                adapter.adapterMap.values.forEach { itemAdapter ->
+                    viewPool.setMaxRecycledViews(
+                        itemAdapter.viewType,
+                        itemAdapter.cacheMaxViewCount
+                    )
+                }
+            } else {
+                viewPool.setMaxRecycledViews(adapter.viewType, adapter.cacheMaxViewCount)
+            }
         }
     }
 

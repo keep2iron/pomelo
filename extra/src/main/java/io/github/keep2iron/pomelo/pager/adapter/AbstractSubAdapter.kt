@@ -17,9 +17,10 @@ import com.alibaba.android.vlayout.layout.LinearLayoutHelper
 typealias OnItemClickListener = (position: Int, view: View, itemView: View) -> Unit
 
 abstract class AbstractSubAdapter(
-    val viewType: Int,
-    val cacheMaxViewCount: Int
+    val viewType: Int = 0,
+    val cacheMaxViewCount: Int = 10
 ) : DelegateAdapter.Adapter<RecyclerViewHolder>() {
+
     override fun onCreateLayoutHelper(): LayoutHelper = LinearLayoutHelper()
     private var listenerMap = SparseArrayCompat<OnItemClickListener>()
 
@@ -63,10 +64,14 @@ abstract class AbstractSubAdapter(
     }
 
     private val internalClickListener = View.OnClickListener {
-        val listener = listenerMap[it.id]
-//        val viewHolder = it.getTag(R.id.pomelo_view_holder) as RecyclerViewHolder
-
         val viewHolder = findViewHolder(it)
+
+        //rootItem click
+        val listener = if (viewHolder.itemView == it) {
+            listenerMap[-1]
+        } else {
+            listenerMap[it.id]
+        }
 
         listener?.invoke(
             recyclerView.getChildAdapterPosition(viewHolder.itemView),

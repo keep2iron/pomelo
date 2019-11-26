@@ -54,6 +54,7 @@ class ListActivity : AppCompatActivity(), LoadListener {
             })
             .setLoadListener(this)
             .bind()
+
     }
 
     override fun onLoad(controller: LoadController, pagerValue: Any, isPullToRefresh: Boolean) {

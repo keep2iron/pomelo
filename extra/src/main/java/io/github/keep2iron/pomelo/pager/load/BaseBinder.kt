@@ -11,23 +11,35 @@ import io.github.keep2iron.pomelo.pager.adapter.VLayoutLoadMoreAbleAdapter
 import io.github.keep2iron.pomelo.pager.manager.WrapperVirtualLayoutManager
 
 abstract class BaseBinder(
-    private val recyclerView: RecyclerView,
-    private val refreshable: Refreshable,
-    private val loadMoreEnabled: Boolean
+    private val recyclerView: RecyclerView
 ) {
 
     private var viewPool: RecycledViewPool? = null
 
+    private lateinit var loadListener: LoadListener
+
     private var loadMore: LoadMore? = null
 
-    private lateinit var loadListener: LoadListener
+    private var refreshable: Refreshable? = null
+
+    private var loadMoreEnabled: Boolean = true
 
     lateinit var loadController: LoadController
 
-    lateinit var layoutManager:VirtualLayoutManager
+    lateinit var layoutManager: VirtualLayoutManager
 
     fun setLoadListener(loadListener: LoadListener): BaseBinder {
         this.loadListener = loadListener
+        return this
+    }
+
+    fun setRefreshable(refreshable: Refreshable?): BaseBinder {
+        this.refreshable = refreshable
+        return this
+    }
+
+    fun setLoadMoreEnabled(loadMoreEnabled: Boolean): BaseBinder {
+        this.loadMoreEnabled = loadMoreEnabled
         return this
     }
 
@@ -46,34 +58,41 @@ abstract class BaseBinder(
     protected abstract fun onBindViewPool(viewPool: RecycledViewPool)
 
     fun bind(): BaseBinder {
-        if (viewPool == null) {
-            viewPool = RecycledViewPool()
-        }
+        val viewPool = viewPool ?: RecycledViewPool()
 
         layoutManager = WrapperVirtualLayoutManager(recyclerView.context.applicationContext)
 
-        onBindViewPool(viewPool!!)
+        onBindViewPool(viewPool)
         recyclerView.setRecycledViewPool(viewPool)
         recyclerView.layoutManager = layoutManager
 
         val adapter = DelegateAdapter(layoutManager)
         onBindDelegateAdapter(adapter)
 
-        if (loadMore == null) {
-            loadMore = SampleLoadMore(recyclerView)
+        val loadMoreAble = if (loadMoreEnabled && loadMore == null) {
+            VLayoutLoadMoreAbleAdapter(SampleLoadMore(recyclerView))
+        } else if (loadMoreEnabled && loadMore != null) {
+            VLayoutLoadMoreAbleAdapter(loadMore!!)
+        } else {
+            null
         }
+
         loadController = LoadController(
-            VLayoutLoadMoreAbleAdapter(loadMore!!),
-            refreshable, loadListener
+            loadMoreAble,
+            refreshable,
+            loadListener
         )
 
-        loadController.setupRefresh()
+        //if enable refresh
+        if (refreshable != null) {
+            loadController.setupRefresh()
+        }
 
-        if (loadMoreEnabled) {
+        //if enable load more
+        if (loadMoreEnabled && loadMoreAble != null) {
             loadController.setupLoadMore()
-
-            adapter.addAdapter(VLayoutLoadMoreAbleAdapter(loadMore!!))
-            viewPool!!.setMaxRecycledViews(LoadMore.ITEM_TYPE, 1)
+            adapter.addAdapter(loadMoreAble)
+            viewPool.setMaxRecycledViews(LoadMore.ITEM_TYPE, 1)
         }
         recyclerView.adapter = adapter
         adapter.onAttachedToRecyclerView(recyclerView)

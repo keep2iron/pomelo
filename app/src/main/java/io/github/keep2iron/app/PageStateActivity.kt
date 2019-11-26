@@ -16,11 +16,12 @@ import io.github.keep2iron.pomelo.utilities.FindService
 import io.github.keep2iron.pomelo.collections.AsyncDiffObservableList
 import io.github.keep2iron.pomelo.pager.SwipeRefreshAble
 import io.github.keep2iron.pomelo.pager.adapter.AbstractSubAdapter
+import io.github.keep2iron.pomelo.pager.adapter.MultiTypeListAdapter
 import io.github.keep2iron.pomelo.pager.adapter.RecyclerViewHolder
 import io.github.keep2iron.pomelo.pager.load.BaseBinder
+import io.github.keep2iron.pomelo.pager.load.ListBinder
 import io.github.keep2iron.pomelo.pager.load.LoadController
 import io.github.keep2iron.pomelo.pager.load.LoadListener
-import io.github.keep2iron.pomelo.pager.load.MultipleTypeBinder
 import io.github.keep2iron.pomelo.state.PageState
 import io.github.keep2iron.pomelo.state.PageStateObservable
 import io.github.keep2iron.pomelo.state.PomeloPageStateLayout
@@ -84,72 +85,74 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
 
         pageState.setupWithPageStateLayout(pageStateLayout)
 
-        binder = MultipleTypeBinder(data, recyclerView, SwipeRefreshAble(refreshLayout), true)
-            .addSubAdapter<Movie>(object : AbstractSubAdapter(1, 10) {
+        binder = ListBinder(recyclerView, SwipeRefreshAble(refreshLayout))
+            .addSubAdapter(MultiTypeListAdapter(data).apply {
+                registerAdapter<Movie>(object : AbstractSubAdapter(1, 10) {
 
-                init {
-                    setOnItemClickListener { position, view, itemView ->
-                        Toast.makeText(
-                            view.context,
-                            "Movie position : $position",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                    }
-                    setOnItemClickListener(R.id.tvText) { position, view, itemView ->
-                        Toast.makeText(
-                            view.context,
-                            "tvText Movie position : $position",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                    }
-                }
-
-                override fun render(
-                    holder: RecyclerViewHolder,
-                    position: Int
-                ) {
-                    val item = data[position] as Movie
-                    holder.itemView.findViewById<TextView>(R.id.tvText).text = item.movieName
-                }
-
-                override fun onInflateLayoutId(
-                    parent: ViewGroup,
-                    viewType: Int
-                ): Int = R.layout.item_list
-            })
-            .addSubAdapter<Recommend>(object : AbstractSubAdapter(2, 10) {
-                override fun render(
-                    holder: RecyclerViewHolder,
-                    position: Int
-                ) {
-                    val item = data[position] as Recommend
-
-                    setOnItemClickListener { position, view, _ ->
-                        Toast.makeText(
-                            view.context,
-                            "Recommend position : $position",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                    }
-
-                    ImageLoaderManager.getInstance()
-                        .showImageView(
-                            holder.itemView.findViewById(R.id.imageView),
-                            item.recommandImage
-                        ) {
-                            this.isLoadGif = true
-                            this.resizeImageWidth = 100
-                            this.resizeImageHeight = 100
+                    init {
+                        setOnItemClickListener { position, view, itemView ->
+                            Toast.makeText(
+                                view.context,
+                                "Movie position : $position",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
                         }
-                }
+                        setOnItemClickListener(R.id.tvText) { position, view, itemView ->
+                            Toast.makeText(
+                                view.context,
+                                "tvText Movie position : $position",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+                    }
 
-                override fun onInflateLayoutId(
-                    parent: ViewGroup,
-                    viewType: Int
-                ): Int = R.layout.item_recommend
+                    override fun render(
+                        holder: RecyclerViewHolder,
+                        position: Int
+                    ) {
+                        val item = data[position] as Movie
+                        holder.itemView.findViewById<TextView>(R.id.tvText).text = item.movieName
+                    }
+
+                    override fun onInflateLayoutId(
+                        parent: ViewGroup,
+                        viewType: Int
+                    ): Int = R.layout.item_list
+                })
+                registerAdapter<Recommend>(object : AbstractSubAdapter(2, 10) {
+                    override fun render(
+                        holder: RecyclerViewHolder,
+                        position: Int
+                    ) {
+                        val item = data[position] as Recommend
+
+                        setOnItemClickListener { position, view, _ ->
+                            Toast.makeText(
+                                view.context,
+                                "Recommend position : $position",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+
+                        ImageLoaderManager.getInstance()
+                            .showImageView(
+                                holder.itemView.findViewById(R.id.imageView),
+                                item.recommandImage
+                            ) {
+                                this.isLoadGif = true
+                                this.resizeImageWidth = 100
+                                this.resizeImageHeight = 100
+                            }
+                    }
+
+                    override fun onInflateLayoutId(
+                        parent: ViewGroup,
+                        viewType: Int
+                    ): Int = R.layout.item_recommend
+                })
             })
             .setLoadMore(CustomLoadMore(recyclerView))
             .setLoadListener(this)
