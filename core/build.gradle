@@ -23,6 +23,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    compileOptions {
+        kotlinOptions.freeCompilerArgs += ['-module-name', "${rootProject.ext.version_group}.pomelo_core"]
+    }
+
     buildTypes {
         release {
             minifyEnabled false
