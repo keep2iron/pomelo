@@ -33,9 +33,13 @@ class LoadController(
         pager.value = pager.value as Int + 1
     }
 
-    fun pagerValue(): Any {
-        return pager.value
-    }
+    var pagerValue: Any
+        set(value) {
+            pager.value = value
+        }
+        get() {
+            return pager.value
+        }
 
     fun reset() {
         pager.reset()
