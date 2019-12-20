@@ -215,6 +215,8 @@ class PomeloPageStateLayout : FrameLayout {
     }
   }
 
+  fun getPageStateView(pageState:PageState):View? = views[pageState]
+
   /**
    * 设置初始化页面状态
    */

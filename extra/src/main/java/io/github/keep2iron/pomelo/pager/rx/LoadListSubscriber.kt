@@ -9,12 +9,13 @@ import io.github.keep2iron.pomelo.state.PageStateObservable
 class LoadListSubscriber<T>(
     controller: LoadController,
     private val list: List<T>,
-    val pagerValue: Any,
+    private val pagerValue: Any,
     pageState: PageStateObservable? = null,
+    testRespEmpty: (resp: List<T>) -> Boolean = {
+        it.isEmpty()
+    },
     block: AndroidSubscriber<List<T>>.() -> Unit
-) : LoadSubscriber<List<T>>(controller, {
-    it.isEmpty()
-}, pageState, block) {
+) : LoadSubscriber<List<T>>(controller, testRespEmpty, pageState, block) {
 
     override fun onNext(resp: List<T>) {
         if (list is DiffObservableList) {

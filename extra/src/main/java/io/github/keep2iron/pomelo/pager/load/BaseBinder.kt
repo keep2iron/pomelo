@@ -77,11 +77,13 @@ abstract class BaseBinder(
             null
         }
 
-        loadController = LoadController(
-            loadMoreAble,
-            refreshable,
-            loadListener
-        )
+        if (refreshable != null || (loadMoreEnabled && loadMoreAble != null)) {
+            loadController = LoadController(
+                loadMoreAble,
+                refreshable,
+                loadListener
+            )
+        }
 
         //if enable refresh
         if (refreshable != null) {
@@ -104,6 +106,6 @@ abstract class BaseBinder(
     }
 
     fun load() {
-        loadListener.onLoad(loadController, loadController.pagerValue(), false)
+        loadListener.onLoad(loadController, loadController.pagerValue, false)
     }
 }
