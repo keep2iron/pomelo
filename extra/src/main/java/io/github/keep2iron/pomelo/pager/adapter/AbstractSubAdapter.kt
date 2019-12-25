@@ -3,6 +3,7 @@ package io.github.keep2iron.pomelo.pager.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewParent
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.collection.SparseArrayCompat
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.LayoutHelper
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper
+import java.lang.IllegalArgumentException
 
 /**
  * Item click will invoke
@@ -45,26 +47,40 @@ abstract class AbstractSubAdapter(
         position: Int
     )
 
-    protected lateinit var recyclerView: RecyclerView
+//    protected lateinit var recyclerView: RecyclerView
 
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        this.recyclerView = recyclerView
+//    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+//        super.onAttachedToRecyclerView(recyclerView)
+//        this.recyclerView = recyclerView
+//    }
+
+    private fun findRecyclerView(view: View): RecyclerView {
+        var curView: ViewParent? = view.parent
+        do {
+            if (curView is RecyclerView) {
+                break
+            } else if (curView != null) {
+                curView = curView.parent
+            }
+        } while (curView != null)
+        check(curView is RecyclerView)
+
+        return curView
     }
 
-    private fun findViewHolder(view: View): RecyclerView.ViewHolder {
-        requireNotNull(view.parent) { "View $view can't found RecyclerView.ViewHolder" }
+    private fun findViewHolder(recyclerView: RecyclerView, view: View): RecyclerView.ViewHolder {
         val layoutParams = view.layoutParams
 
         return if (layoutParams is RecyclerView.LayoutParams) {
             recyclerView.getChildViewHolder(view)
         } else {
-            findViewHolder(view.parent as View)
+            findViewHolder(recyclerView,view.parent as View)
         }
     }
 
     private val internalClickListener = View.OnClickListener {
-        val viewHolder = findViewHolder(it)
+        val recyclerView = findRecyclerView(it)
+        val viewHolder = findViewHolder(recyclerView, it)
 
         //rootItem click
         val listener = if (viewHolder.itemView == it) {

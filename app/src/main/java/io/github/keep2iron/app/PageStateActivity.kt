@@ -85,7 +85,7 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
 
         pageState.setupWithPageStateLayout(pageStateLayout)
 
-        binder = ListBinder(recyclerView, SwipeRefreshAble(refreshLayout))
+        binder = ListBinder(recyclerView, SwipeRefreshAble(refreshLayout),true)
             .addSubAdapter(MultiTypeListAdapter(data).apply {
                 registerAdapter<Movie>(object : AbstractSubAdapter(1, 10) {
 
@@ -172,7 +172,7 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
         }
 
         if (!isLoadHomeEnd) {
-            apiService.indexHome(controller.pagerValue() as Int)
+            apiService.indexHome(controller.pagerValue as Int)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map {
@@ -208,7 +208,7 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
                     }
                 })
         } else {
-            apiService.indexRecommend(controller.pagerValue() as Int)
+            apiService.indexRecommend(controller.pagerValue as Int)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map {
