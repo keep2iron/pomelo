@@ -1,6 +1,7 @@
 package io.github.keep2iron.app
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.github.keep2iron.pomelo.utilities.FindService
 import io.github.keep2iron.pomelo.collections.AsyncDiffObservableList
+import io.github.keep2iron.pomelo.pager.SampleLoadMore
 import io.github.keep2iron.pomelo.pager.SwipeRefreshAble
 import io.github.keep2iron.pomelo.pager.adapter.AbstractSubListAdapter
 import io.github.keep2iron.pomelo.pager.adapter.RecyclerViewHolder
@@ -22,7 +24,7 @@ import io.reactivex.schedulers.Schedulers
 
 class ListActivity : AppCompatActivity(), LoadListener {
 
-    private val apiService:ApiService by FindService()
+    private val apiService: ApiService by FindService()
 
     val data = AsyncDiffObservableList(object : DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
@@ -42,7 +44,8 @@ class ListActivity : AppCompatActivity(), LoadListener {
         val refreshLayout = findViewById<SwipeRefreshLayout>(R.id.refreshLayout)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
 
-        ListBinder(recyclerView, SwipeRefreshAble(refreshLayout), true)
+        val sampleLoadMore = SampleLoadMore(false)
+        val baseBinder = ListBinder(recyclerView, SwipeRefreshAble(refreshLayout), sampleLoadMore)
             .addSubAdapter(object : AbstractSubListAdapter<Movie>(data) {
 
                 override fun render(holder: RecyclerViewHolder, item: Movie, position: Int) {
@@ -54,7 +57,6 @@ class ListActivity : AppCompatActivity(), LoadListener {
             })
             .setLoadListener(this)
             .bind()
-
     }
 
     override fun onLoad(controller: LoadController, pagerValue: Any, isPullToRefresh: Boolean) {

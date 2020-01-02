@@ -1,9 +1,11 @@
 package io.github.keep2iron.pomelo.pager.adapter
 
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.LayoutHelper
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper
+import com.alibaba.android.vlayout.layout.SingleLayoutHelper
 import io.github.keep2iron.pomelo.pager.LoadMore
 import io.github.keep2iron.pomelo.pager.LoadMoreAble
 
@@ -32,7 +34,7 @@ class VLayoutLoadMoreAbleAdapter(private val loadMore: LoadMore) :
 
   override fun getItemCount(): Int = 1
 
-  override fun onCreateLayoutHelper(): LayoutHelper = LinearLayoutHelper()
+  override fun onCreateLayoutHelper(): LayoutHelper = SingleLayoutHelper()
 
   override fun onBindViewHolder(
     holder: RecyclerViewHolder,
@@ -58,4 +60,8 @@ class VLayoutLoadMoreAbleAdapter(private val loadMore: LoadMore) :
   }
 
   override fun getItemViewType(position: Int): Int = LoadMore.ITEM_TYPE
+
+  override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+    loadMore.attachRecyclerView(recyclerView)
+  }
 }

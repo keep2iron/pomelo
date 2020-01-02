@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import com.alibaba.android.vlayout.DelegateAdapter
 import com.alibaba.android.vlayout.VirtualLayoutManager
 import io.github.keep2iron.pomelo.pager.LoadMore
+import io.github.keep2iron.pomelo.pager.LoadMoreAble
 import io.github.keep2iron.pomelo.pager.Refreshable
 import io.github.keep2iron.pomelo.pager.SampleLoadMore
 import io.github.keep2iron.pomelo.pager.adapter.VLayoutLoadMoreAbleAdapter
@@ -22,8 +23,6 @@ abstract class BaseBinder(
 
     private var refreshable: Refreshable? = null
 
-    private var loadMoreEnabled: Boolean = true
-
     lateinit var loadController: LoadController
 
     lateinit var layoutManager: VirtualLayoutManager
@@ -38,12 +37,7 @@ abstract class BaseBinder(
         return this
     }
 
-    fun setLoadMoreEnabled(loadMoreEnabled: Boolean): BaseBinder {
-        this.loadMoreEnabled = loadMoreEnabled
-        return this
-    }
-
-    fun setLoadMore(loadMore: LoadMore): BaseBinder {
+    fun setLoadMore(loadMore: LoadMore?): BaseBinder {
         this.loadMore = loadMore
         return this
     }
@@ -69,17 +63,15 @@ abstract class BaseBinder(
         val adapter = DelegateAdapter(layoutManager)
         onBindDelegateAdapter(adapter)
 
-        val loadMoreAble = if (loadMoreEnabled && loadMore == null) {
-            VLayoutLoadMoreAbleAdapter(SampleLoadMore(recyclerView))
-        } else if (loadMoreEnabled && loadMore != null) {
+        val loadMoreAdapter = if (loadMore != null) {
             VLayoutLoadMoreAbleAdapter(loadMore!!)
         } else {
             null
         }
 
-        if (refreshable != null || (loadMoreEnabled && loadMoreAble != null)) {
+        if (refreshable != null || (loadMoreAdapter != null)) {
             loadController = LoadController(
-                loadMoreAble,
+                loadMoreAdapter,
                 refreshable,
                 loadListener
             )
@@ -91,9 +83,9 @@ abstract class BaseBinder(
         }
 
         //if enable load more
-        if (loadMoreEnabled && loadMoreAble != null) {
+        if (loadMoreAdapter != null) {
             loadController.setupLoadMore()
-            adapter.addAdapter(loadMoreAble)
+            adapter.addAdapter(loadMoreAdapter)
             viewPool.setMaxRecycledViews(LoadMore.ITEM_TYPE, 1)
         }
         recyclerView.adapter = adapter
@@ -105,7 +97,18 @@ abstract class BaseBinder(
         return this
     }
 
+    /**
+     * 调用加载
+     */
     fun load() {
+        loadListener.onLoad(loadController, loadController.pagerValue, false)
+    }
+
+    /**
+     * 重置分页数 重新进行默认加载
+     */
+    fun reload() {
+        loadController.reset()
         loadListener.onLoad(loadController, loadController.pagerValue, false)
     }
 }

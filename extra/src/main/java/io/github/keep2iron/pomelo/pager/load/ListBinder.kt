@@ -2,19 +2,23 @@ package io.github.keep2iron.pomelo.pager.load
 
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.vlayout.DelegateAdapter
+import io.github.keep2iron.pomelo.pager.LoadMore
+import io.github.keep2iron.pomelo.pager.LoadMoreAble
 import io.github.keep2iron.pomelo.pager.Refreshable
+import io.github.keep2iron.pomelo.pager.SampleLoadMore
 import io.github.keep2iron.pomelo.pager.adapter.AbstractSubAdapter
 import io.github.keep2iron.pomelo.pager.adapter.MultiTypeListAdapter
+import io.github.keep2iron.pomelo.pager.adapter.VLayoutLoadMoreAbleAdapter
 
 class ListBinder(
     recyclerView: RecyclerView,
     refreshable: Refreshable? = null,
-    loadMoreEnabled: Boolean = false
+    loadMoreAble: LoadMore? = SampleLoadMore()
 ) : BaseBinder(recyclerView) {
 
     init {
         setRefreshable(refreshable)
-        setLoadMoreEnabled(loadMoreEnabled)
+        setLoadMore(loadMoreAble)
     }
 
     private var adapters = arrayListOf<AbstractSubAdapter>()

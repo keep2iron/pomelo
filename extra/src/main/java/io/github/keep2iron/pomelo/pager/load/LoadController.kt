@@ -18,7 +18,6 @@ class LoadController(
             refreshAble?.setRefreshEnable(false)
             loadListener.onLoad(this, pager.value, false)
         }
-        loadMoreAble?.setLoadMoreEnable(true)
     }
 
     internal fun setupRefresh() {

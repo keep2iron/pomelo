@@ -26,4 +26,6 @@ interface LoadMore : LoadMoreAble {
 
   fun attachAdapter(adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>)
 
+  fun attachRecyclerView(recyclerView:RecyclerView)
+
 }

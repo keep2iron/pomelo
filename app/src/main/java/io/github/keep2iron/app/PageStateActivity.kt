@@ -85,7 +85,7 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
 
         pageState.setupWithPageStateLayout(pageStateLayout)
 
-        binder = ListBinder(recyclerView, SwipeRefreshAble(refreshLayout),true)
+        binder = ListBinder(recyclerView, SwipeRefreshAble(refreshLayout), CustomLoadMore())
             .addSubAdapter(MultiTypeListAdapter(data).apply {
                 registerAdapter<Movie>(object : AbstractSubAdapter(1, 10) {
 
@@ -154,7 +154,6 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
                     ): Int = R.layout.item_recommend
                 })
             })
-            .setLoadMore(CustomLoadMore(recyclerView))
             .setLoadListener(this)
             .bind()
 

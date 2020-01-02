@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
   compileSdkVersion versions.build.target_sdk
@@ -11,6 +12,7 @@ android {
     targetSdkVersion versions.build.target_sdk
     versionCode 1
     versionName "1.0"
+    multiDexEnabled true
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
   buildTypes {
@@ -44,8 +46,11 @@ dependencies {
   implementation deps.retrofit.adapter
   implementation deps.logger
 
-  implementation 'com.facebook.stetho:stetho:1.5.1'
-  implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
+  implementation 'com.squareup.moshi:moshi-kotlin:1.9.2'
+  kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
+
+//  implementation 'com.facebook.stetho:stetho:1.5.1'
+//  implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
 
   testImplementation 'junit:junit:4.12'
   androidTestImplementation 'androidx.test:runner:1.1.0'
