@@ -15,7 +15,7 @@ import java.io.IOException
  * 用于将null字符串转换成""
  * @see NullStringToEmptyAdapterFactory
  */
-class StringNullAdapter : TypeAdapter<String>() {
+open class StringNullAdapter : TypeAdapter<String>() {
   @Throws(IOException::class)
   override fun read(reader: JsonReader): String {
     if (reader.peek() == JsonToken.NULL) {

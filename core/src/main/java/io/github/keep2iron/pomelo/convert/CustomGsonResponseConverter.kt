@@ -15,7 +15,7 @@ import java.lang.reflect.Type
  * Date : 2016/11/9
  * Email : 497881309@qq.com
  */
-internal class CustomGsonResponseConverter<T>(
+open class CustomGsonResponseConverter<T>(
   private val gson: Gson,
   private val type: Type,
   private val adapter: TypeAdapter<out T>

@@ -19,7 +19,7 @@ import java.nio.charset.Charset
  *
  * @see retrofit2.converter.gson.GsonRequestBodyConverter
  */
-internal class CustomGsonRequestConverter<T>(
+open class CustomGsonRequestConverter<T>(
   private val gson: Gson,
   private val adapter: TypeAdapter<T>
 ) : Converter<T, RequestBody> {

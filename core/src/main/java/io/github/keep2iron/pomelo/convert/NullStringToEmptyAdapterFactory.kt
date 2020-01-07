@@ -12,7 +12,7 @@ import com.google.gson.reflect.TypeToken
  *
  * 用于将null字符串转换成""
  */
-class NullStringToEmptyAdapterFactory : TypeAdapterFactory {
+open class NullStringToEmptyAdapterFactory : TypeAdapterFactory {
 
   override fun <T> create(
     gson: Gson,
