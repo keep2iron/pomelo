@@ -25,7 +25,7 @@ Pomelo 是基于 [retrofit](https://github.com/square/retrofit) 、 [okhttp](htt
 | pomelo-extra | ![Release](https://api.bintray.com/packages/keep2iron/maven/pomelo-extra/images/download.svg) |    分页加载、RecyclerView多类型    |
 | pomelo-log  | ![Release](https://api.bintray.com/packages/keep2iron/maven/pomelo-log/images/download.svg) |    网络日志处理    |
 
-## Download
+## 下载
 gradle:
 ```groovy
 dependencies {
@@ -35,9 +35,9 @@ dependencies {
 }
 ```
 
-## 下载
+## 使用
 
-##### 初始化 NetworkManager
+### 初始化 NetworkManager
 
 ```kotlin
 NetworkManager.init(host) {
@@ -82,7 +82,7 @@ NetworkManager.init(host) {
 }
 ```
 
-##### 请求 rest api
+### 请求 rest api
 
 通过kotlin代理进行创建网络请求service
 ```kotlin
@@ -140,9 +140,3 @@ ListBinder(recyclerView, SwipeRefreshAble(refreshLayout), true)
 3.使用ListBinder添加header或者list adapter
 
 > 可选, 在 **io.github.keep2iron.pomlo.pager.load.LoadListener** 可以进行重写 **defaultValue():Any** 方法去返回一个默认的分页值(在 pomelo 中默认值是0),在 demo 中我们用1作为默认值.
-
-
-
-**LoadListSubscriber** already packed up for the List page loading logic.
-
-if you want to custom,you can use **io.github.keep2iron.pomlo.pager.rx.LoadSubscriber** or **io.github.keep2iron.pomelo.AndroidSubscriber** 
