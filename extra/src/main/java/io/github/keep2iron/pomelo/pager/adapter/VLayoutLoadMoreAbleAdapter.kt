@@ -2,16 +2,16 @@ package io.github.keep2iron.pomelo.pager.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.alibaba.android.vlayout.DelegateAdapter
-import com.alibaba.android.vlayout.LayoutHelper
-import com.alibaba.android.vlayout.layout.LinearLayoutHelper
-import com.alibaba.android.vlayout.layout.SingleLayoutHelper
+import io.github.keep2iron.pomelo.helper.LinearLayoutHelper
 import io.github.keep2iron.pomelo.pager.LoadMore
 import io.github.keep2iron.pomelo.pager.LoadMoreAble
 
 class VLayoutLoadMoreAbleAdapter(private val loadMore: LoadMore) :
-    DelegateAdapter.Adapter<RecyclerViewHolder>(),
-    LoadMoreAble {
+  AbstractSubAdapter(
+    viewType = LoadMore.ITEM_TYPE,
+    layoutHelper = LinearLayoutHelper()
+  ),
+  LoadMoreAble {
 
   init {
     loadMore.attachAdapter(this)
@@ -25,23 +25,20 @@ class VLayoutLoadMoreAbleAdapter(private val loadMore: LoadMore) :
     loadMore.setOnLoadMoreListener(listener)
   }
 
+  override fun onInflateLayoutId(parent: ViewGroup, viewType: Int): Int = 0
+
+  override fun render(holder: RecyclerViewHolder, position: Int) {
+    loadMore.onBindViewHolder(holder, position)
+  }
+
   override fun onCreateViewHolder(
-    viewParent: ViewGroup,
+    parent: ViewGroup,
     viewType: Int
   ): RecyclerViewHolder {
-    return RecyclerViewHolder(loadMore.onCreateView(viewParent, viewType))
+    return RecyclerViewHolder(loadMore.onCreateView(parent, viewType))
   }
 
   override fun getItemCount(): Int = 1
-
-  override fun onCreateLayoutHelper(): LayoutHelper = SingleLayoutHelper()
-
-  override fun onBindViewHolder(
-    holder: RecyclerViewHolder,
-    position: Int
-  ) {
-    loadMore.onBindViewHolder(holder, position)
-  }
 
   override fun setLoadMoreEnable(isEnabled: Boolean) {
     loadMore.setLoadMoreEnable(isEnabled)

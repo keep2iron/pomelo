@@ -1,15 +1,17 @@
 package io.github.keep2iron.app
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.ObservableArrayList
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import io.github.keep2iron.pomelo.utilities.FindService
+import io.github.keep2iron.pineapple.ImageLoaderManager
 import io.github.keep2iron.pomelo.collections.AsyncDiffObservableList
+import io.github.keep2iron.pomelo.collections.DiffObservableList
+import io.github.keep2iron.pomelo.helper.LinearLayoutHelper
 import io.github.keep2iron.pomelo.pager.SampleLoadMore
 import io.github.keep2iron.pomelo.pager.SwipeRefreshAble
 import io.github.keep2iron.pomelo.pager.adapter.AbstractSubListAdapter
@@ -19,6 +21,7 @@ import io.github.keep2iron.pomelo.pager.load.LoadController
 import io.github.keep2iron.pomelo.pager.load.LoadListener
 import io.github.keep2iron.pomelo.pager.rx.LoadListSubscriber
 import io.github.keep2iron.pomelo.state.PomeloPageStateLayout
+import io.github.keep2iron.pomelo.utilities.FindService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -26,7 +29,7 @@ class ListActivity : AppCompatActivity(), LoadListener {
 
     private val apiService: ApiService by FindService()
 
-    val data = AsyncDiffObservableList(object : DiffUtil.ItemCallback<Movie>() {
+    val data = DiffObservableList(object : DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
             return oldItem.id == newItem.id
         }
@@ -35,6 +38,8 @@ class ListActivity : AppCompatActivity(), LoadListener {
             return oldItem == newItem
         }
     })
+//    val data = ObservableArrayList<Movie>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,12 +49,14 @@ class ListActivity : AppCompatActivity(), LoadListener {
         val refreshLayout = findViewById<SwipeRefreshLayout>(R.id.refreshLayout)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
 
-        val sampleLoadMore = SampleLoadMore(false)
+        val sampleLoadMore = SampleLoadMore(true)
         val baseBinder = ListBinder(recyclerView, SwipeRefreshAble(refreshLayout), sampleLoadMore)
-            .addSubAdapter(object : AbstractSubListAdapter<Movie>(data) {
+            .addSubAdapter(object : AbstractSubListAdapter<Movie>(data,LinearLayoutHelper()) {
 
                 override fun render(holder: RecyclerViewHolder, item: Movie, position: Int) {
                     holder.itemView.findViewById<TextView>(R.id.tvText).text = item.movieName
+                    ImageLoaderManager.getInstance()
+                        .showImageView(holder.findViewById(R.id.imageView), item.movieImage)
                 }
 
                 override fun onInflateLayoutId(parent: ViewGroup, viewType: Int): Int =
@@ -70,7 +77,10 @@ class ListActivity : AppCompatActivity(), LoadListener {
                 onSuccess = {
                     if (controller.isLoadDefault(pagerValue)) {
                         data.update(it)
+//                        data.clear()
+//                        data.addAll(it)
                     } else {
+//                        data.addAll(it)
                         data.updateAppend(it)
                     }
                     controller.intInc()

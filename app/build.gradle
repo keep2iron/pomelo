@@ -36,7 +36,7 @@ dependencies {
 
   implementation 'com.airbnb.android:lottie:3.0.7'
 
-  implementation 'io.github.keep2iron:pineapple-fresco:0.0.1-fix2'
+  implementation 'io.github.keep2iron:pineapple-fresco:0.0.2'
 
   implementation deps.fresco
   // if you want to support gif add this

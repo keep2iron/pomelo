@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 if (MAVEN_LOCAL.toBoolean()) {
     apply plugin: 'maven'
 } else {
@@ -48,7 +49,7 @@ dependencies {
     implementation deps.support.recyclerview
     api "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation deps.rxjava2
-    api deps.alibaba.vlayout
+//    api deps.alibaba.vlayout
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'

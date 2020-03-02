@@ -1,15 +1,16 @@
 package io.github.keep2iron.pomelo.pager.load
 
+import android.content.Context
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
-import com.alibaba.android.vlayout.DelegateAdapter
-import com.alibaba.android.vlayout.VirtualLayoutManager
+import io.github.keep2iron.pomelo.helper.LayoutHelper
+import io.github.keep2iron.pomelo.helper.LinearLayoutHelper
 import io.github.keep2iron.pomelo.pager.LoadMore
-import io.github.keep2iron.pomelo.pager.LoadMoreAble
 import io.github.keep2iron.pomelo.pager.Refreshable
-import io.github.keep2iron.pomelo.pager.SampleLoadMore
+import io.github.keep2iron.pomelo.pager.adapter.AbstractSubAdapter
+import io.github.keep2iron.pomelo.pager.adapter.DelegateAdapter
 import io.github.keep2iron.pomelo.pager.adapter.VLayoutLoadMoreAbleAdapter
-import io.github.keep2iron.pomelo.pager.manager.WrapperVirtualLayoutManager
 
 abstract class BaseBinder(
     private val recyclerView: RecyclerView
@@ -25,7 +26,7 @@ abstract class BaseBinder(
 
     lateinit var loadController: LoadController
 
-    lateinit var layoutManager: VirtualLayoutManager
+    internal var spanCount = 1
 
     fun setLoadListener(loadListener: LoadListener): BaseBinder {
         this.loadListener = loadListener
@@ -47,22 +48,17 @@ abstract class BaseBinder(
         return this
     }
 
-    protected abstract fun onBindDelegateAdapter(delegateAdapter: DelegateAdapter)
+    protected abstract fun onBindDelegateAdapter(context: Context,recyclerView:RecyclerView, delegateAdapter: DelegateAdapter):RecyclerView.LayoutManager
 
     protected abstract fun onBindViewPool(viewPool: RecycledViewPool)
 
     fun bind(): BaseBinder {
         val viewPool = viewPool ?: RecycledViewPool()
 
-        layoutManager = WrapperVirtualLayoutManager(recyclerView.context.applicationContext)
-
         onBindViewPool(viewPool)
         recyclerView.setRecycledViewPool(viewPool)
-        recyclerView.layoutManager = layoutManager
 
-        val adapter = DelegateAdapter(layoutManager)
-        onBindDelegateAdapter(adapter)
-
+        val adapter = DelegateAdapter()
         val loadMoreAdapter = if (loadMore != null) {
             VLayoutLoadMoreAbleAdapter(loadMore!!)
         } else {
@@ -82,17 +78,18 @@ abstract class BaseBinder(
             loadController.setupRefresh()
         }
 
+        val context = recyclerView.context.applicationContext
+        val layoutManager = onBindDelegateAdapter(context,recyclerView,adapter)
+
         //if enable load more
         if (loadMoreAdapter != null) {
             loadController.setupLoadMore()
             adapter.addAdapter(loadMoreAdapter)
             viewPool.setMaxRecycledViews(LoadMore.ITEM_TYPE, 1)
         }
+
+        recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
-        adapter.onAttachedToRecyclerView(recyclerView)
-        for (i in 0 until adapter.adaptersCount) {
-            adapter.findAdapterByIndex(i).onAttachedToRecyclerView(recyclerView)
-        }
 
         return this
     }

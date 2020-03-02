@@ -3,8 +3,12 @@ package io.github.keep2iron.pomelo.pager.adapter
 import android.view.ViewGroup
 import androidx.databinding.ObservableList
 import androidx.recyclerview.widget.RecyclerView
+import io.github.keep2iron.pomelo.helper.LayoutHelper
 
-open class MultiTypeListAdapter(data: ObservableList<in Any>) : AbstractSubListAdapter<Any>(data) {
+class MultiTypeListAdapter(data: ObservableList<in Any>) :
+  AbstractSubListAdapter<Any>(data, layoutHelper = LayoutHelper.EMPTY_LAYOUT) {
+
+  val adapterMap: HashMap<Class<*>, AbstractSubAdapter> = HashMap(20)
 
   override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
     super.onAttachedToRecyclerView(recyclerView)
@@ -34,15 +38,13 @@ open class MultiTypeListAdapter(data: ObservableList<in Any>) : AbstractSubListA
     }
   }
 
-  val adapterMap: HashMap<Class<*>, AbstractSubAdapter> = HashMap(20)
-
   override fun render(
     holder: RecyclerViewHolder,
     item: Any,
     position: Int
   ) {
     throw IllegalArgumentException(
-        "no need to call this method,because of onBindViewHolder is override."
+      "no need to call this method,because of onBindViewHolder is override."
     )
   }
 
@@ -51,7 +53,7 @@ open class MultiTypeListAdapter(data: ObservableList<in Any>) : AbstractSubListA
     viewType: Int
   ): Int {
     throw IllegalArgumentException(
-        "no need to call this method,because of onCreateViewHolder is override."
+      "no need to call this method,because of onCreateViewHolder is override."
     )
   }
 
@@ -74,7 +76,7 @@ open class MultiTypeListAdapter(data: ObservableList<in Any>) : AbstractSubListA
       }
     }
     throw IllegalArgumentException(
-        "itemType = $viewType miss match !please add it call registerAdapter()"
+      "itemType = $viewType miss match !please add it call registerAdapter()"
     )
   }
 
@@ -84,7 +86,7 @@ open class MultiTypeListAdapter(data: ObservableList<in Any>) : AbstractSubListA
     holder: RecyclerViewHolder,
     position: Int
   ) {
-    val adapter = getCurrentBindAdapter(position)
+    val adapter = getBindAdapterByPosition(position)
     adapter.onBindViewHolder(holder, position)
   }
 
@@ -93,20 +95,27 @@ open class MultiTypeListAdapter(data: ObservableList<in Any>) : AbstractSubListA
     position: Int,
     payloads: MutableList<Any>
   ) {
-    val adapter = getCurrentBindAdapter(position)
+    val adapter = getBindAdapterByPosition(position)
     adapter.onBindViewHolder(holder, position, payloads)
   }
 
   override fun getItemViewType(position: Int): Int {
-    return getCurrentBindAdapter(position).getItemViewType(position)
+    return getBindAdapterByPosition(position).getItemViewType(position)
   }
 
-  private fun getCurrentBindAdapter(position: Int): AbstractSubAdapter {
+  fun getBindAdapterByPosition(position: Int): AbstractSubAdapter {
     val item = data[position]
 
     return adapterMap[item.javaClass]
-        ?: throw IllegalArgumentException(
-            "position on $position ,item type ${item.javaClass.name} is miss match !please add it call registerAdapter()"
-        )
+      ?: throw IllegalArgumentException(
+        "position on $position ,item type ${item.javaClass.name} is miss match !please add it call registerAdapter()"
+      )
+  }
+
+  fun getBindAdapterByViewType(viewType: Int): AbstractSubAdapter {
+    val pair = adapterMap.toList().find {
+      it.second.viewType == viewType
+    } ?: throw IllegalArgumentException("viewType not find.")
+    return pair.second
   }
 }

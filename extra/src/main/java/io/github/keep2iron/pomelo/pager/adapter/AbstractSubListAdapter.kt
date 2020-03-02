@@ -2,14 +2,15 @@ package io.github.keep2iron.pomelo.pager.adapter
 
 import androidx.databinding.ObservableList
 import androidx.recyclerview.widget.RecyclerView
-import io.github.keep2iron.pomelo.databinding.RecyclerViewChangedAdapter
 import io.github.keep2iron.pomelo.databinding.WeakRecyclerViewChangedAdapter
+import io.github.keep2iron.pomelo.helper.LayoutHelper
 
 abstract class AbstractSubListAdapter<T>(
   val data: ObservableList<T>,
-  viewType: Int = 0,
-  cacheMaxViewCount: Int = 1
-) : AbstractSubAdapter(viewType, cacheMaxViewCount) {
+  layoutHelper: LayoutHelper,
+  viewType: Int = INVALID_VIEW_TYPE,
+  cacheMaxViewCount: Int = 10
+) : AbstractSubAdapter(viewType, layoutHelper, cacheMaxViewCount) {
 
   override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
     super.onAttachedToRecyclerView(recyclerView)
