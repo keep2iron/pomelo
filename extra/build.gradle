@@ -46,7 +46,7 @@ dependencies {
 
     implementation deps.kotlin.stdlib_jdk7
     implementation deps.support.recyclerview
-    api "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    compileOnly "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation deps.rxjava2
 
     testImplementation 'junit:junit:4.12'

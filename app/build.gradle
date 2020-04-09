@@ -33,14 +33,18 @@ dependencies {
   implementation project(':core')
   implementation project(':log')
   implementation project(':extra')
+  implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+  implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
-  implementation 'com.airbnb.android:lottie:3.0.7'
+  implementation 'com.airbnb.android:lottie:3.1.0'
 
   implementation 'io.github.keep2iron:pineapple-fresco:0.0.2'
 
   implementation deps.fresco
   // if you want to support gif add this
   implementation deps.fresco_gif
+
+  implementation "com.squareup.retrofit2:converter-moshi:2.4.0"
 
   implementation deps.retrofit.scalars
   implementation deps.retrofit.adapter

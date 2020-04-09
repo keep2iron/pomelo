@@ -1,11 +1,11 @@
 package io.github.keep2iron.app
 
 import android.app.Application
-import com.orhanobut.logger.AndroidLogAdapter
-import com.orhanobut.logger.Logger
-import com.orhanobut.logger.PrettyFormatStrategy
+import android.util.Log
+//import com.orhanobut.logger.AndroidLogAdapter
+//import com.orhanobut.logger.Logger
+//import com.orhanobut.logger.PrettyFormatStrategy
 import io.github.keep2iron.pomelo.NetworkManager
-import io.github.keep2iron.pomelo.convert.CustomGsonConvertFactory
 import io.github.keep2iron.pomelo.interceptor.GetParamsInterceptor
 import io.github.keep2iron.pomelo.interceptor.HeaderParamsInterceptor
 import io.github.keep2iron.pomelo.interceptor.NetworkErrorHandleInterceptor
@@ -22,12 +22,12 @@ class MyApplication : Application() {
   override fun onCreate() {
     super.onCreate()
 
-    val formatStrategy = PrettyFormatStrategy.newBuilder()
-      .showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
-      .methodOffset(2)        // (Optional) Hides internal method calls up to offset. Default 5
-      .tag("pomelo")   // (Optional) Global tag for every log. Default PRETTY_LOGGER
-      .build()
-    Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
+//    val formatStrategy = PrettyFormatStrategy.newBuilder()
+//      .showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
+//      .methodOffset(2)        // (Optional) Hides internal method calls up to offset. Default 5
+//      .tag("pomelo")   // (Optional) Global tag for every log. Default PRETTY_LOGGER
+//      .build()
+//    Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
 
     NetworkManager.init("http://10.0.2.2:8080/") {
       initOkHttp {
@@ -50,13 +50,14 @@ class MyApplication : Application() {
         })
         addNetworkInterceptor(NetworkLoggingInterceptor(object : NetworkLoggingInterceptor.Logger {
           override fun d(message: String) {
-            Logger.d(message)
+            Log.d("tag", message)
+//            Logger.d(message)
           }
         }))
       }
 
       initRetrofit {
-        addConverterFactory(CustomGsonConvertFactory.create())
+//        addConverterFactory(CustomGsonConvertFactory.create())
         addConverterFactory(ScalarsConverterFactory.create())
         addCallAdapterFactory(RxJava2CallAdapterFactory.create())
       }

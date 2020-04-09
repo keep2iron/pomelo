@@ -43,7 +43,6 @@ dependencies {
     api deps.rx_android
 
     implementation deps.support.annotations
-    implementation 'com.google.code.gson:gson:2.8.5'
     implementation deps.kotlin.stdlib_jdk7
 
     testImplementation 'junit:junit:4.12'

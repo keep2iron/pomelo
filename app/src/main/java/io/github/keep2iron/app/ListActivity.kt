@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.ObservableArrayList
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.github.keep2iron.pineapple.ImageLoaderManager
-import io.github.keep2iron.pomelo.collections.AsyncDiffObservableList
 import io.github.keep2iron.pomelo.collections.DiffObservableList
 import io.github.keep2iron.pomelo.helper.LinearLayoutHelper
 import io.github.keep2iron.pomelo.pager.SampleLoadMore
