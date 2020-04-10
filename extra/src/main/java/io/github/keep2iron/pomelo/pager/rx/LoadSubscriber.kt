@@ -21,14 +21,14 @@ open class LoadSubscriber<T>(
     try {
       if (testRespEmpty(resp)) {
         if (pager.value == pager.defaultValue) {
-          controller.scrollToPosition(0)
+//          controller.scrollToPosition(0)
           pageState?.setPageState(PageState.EMPTY_DATA)
         }
         super.onNext(resp)
         throw NoDataException()
       } else {
         if (pager.value == pager.defaultValue) {
-          controller.scrollToPosition(0)
+//          controller.scrollToPosition(0)
           pageState?.setPageState(PageState.ORIGIN)
         }
         super.onNext(resp)

@@ -9,6 +9,7 @@ import androidx.annotation.LayoutRes
 import androidx.collection.SparseArrayCompat
 import androidx.recyclerview.widget.RecyclerView
 import io.github.keep2iron.pomelo.helper.LayoutHelper
+import io.github.keep2iron.pomelo.helper.LinearLayoutHelper
 
 /**
  * Item click will invoke
@@ -17,8 +18,8 @@ typealias OnItemClickListener = (position: Int, view: View, itemView: View) -> U
 
 abstract class AbstractSubAdapter(
   val viewType: Int = INVALID_VIEW_TYPE,
-  val layoutHelper: LayoutHelper,
-  val cacheMaxViewCount: Int = 10
+  val cacheMaxViewCount: Int = 10,
+  val layoutHelper: LayoutHelper = LinearLayoutHelper()
 ) : RecyclerView.Adapter<RecyclerViewHolder>() {
 
   companion object {

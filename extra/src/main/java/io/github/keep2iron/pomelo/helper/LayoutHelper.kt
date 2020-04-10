@@ -15,7 +15,7 @@ open class LayoutHelper {
   var paddingBottom: Int = 0
 
   companion object {
-    val EMPTY_LAYOUT = LayoutHelper()
+    internal val EMPTY_LAYOUT = LayoutHelper()
   }
 
 }

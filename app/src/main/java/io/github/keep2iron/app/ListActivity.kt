@@ -49,7 +49,7 @@ class ListActivity : AppCompatActivity(), LoadListener {
 
         val sampleLoadMore = SampleLoadMore(true)
         val baseBinder = ListBinder(recyclerView, SwipeRefreshAble(refreshLayout), sampleLoadMore)
-            .addSubAdapter(object : AbstractSubListAdapter<Movie>(data,LinearLayoutHelper()) {
+            .addSubAdapter(object : AbstractSubListAdapter<Movie>(data, layoutHelper = LinearLayoutHelper()) {
 
                 override fun render(holder: RecyclerViewHolder, item: Movie, position: Int) {
                     holder.itemView.findViewById<TextView>(R.id.tvText).text = item.movieName

@@ -25,12 +25,18 @@ class ListBinder(
 
   private var adapters = arrayListOf<AbstractSubAdapter>()
 
+  private var layoutManager: RecyclerView.LayoutManager? = null
+
   override fun onBindDelegateAdapter(
     context: Context,
     recyclerView: RecyclerView,
     delegateAdapter: DelegateAdapter
   ): RecyclerView.LayoutManager {
     delegateAdapter.addAdapters(adapters)
+
+    if (spanCount > 1 && layoutManager != null) {
+      throw IllegalArgumentException("spanCount is > 1,layoutManager must not be set")
+    }
 
     return if (spanCount > 1) {
       val gridLayoutManager = GridLayoutManager(context, spanCount)
@@ -47,7 +53,7 @@ class ListBinder(
       }
       gridLayoutManager
     } else {
-      LinearLayoutManager(context)
+      layoutManager ?: LinearLayoutManager(context)
     }
   }
 
@@ -64,6 +70,11 @@ class ListBinder(
         viewPool.setMaxRecycledViews(adapter.viewType, adapter.cacheMaxViewCount)
       }
     }
+  }
+
+  fun setLayoutManager(layoutManager: RecyclerView.LayoutManager): ListBinder {
+    this.layoutManager = layoutManager
+    return this
   }
 
   fun setSpanCount(spanCount: Int): ListBinder {

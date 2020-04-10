@@ -7,11 +7,11 @@ buildscript {
     ext {
         version_group = 'io.github.keep2iron'
 
-        version_log = '0.0.2-alpha'
+        version_log = '0.0.3-alpha01'
 
-        version_extra = '0.0.2-alpha'
+        version_extra = '0.0.3-alpha01'
 
-        version_core = '0.0.2-alpha'
+        version_core = '0.0.3-alpha01'
     }
 
     dependencies {
