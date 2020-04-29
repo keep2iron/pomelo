@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import io.github.keep2iron.app.complex.PageStateActivity
+import io.github.keep2iron.app.webview.WebViewActivity
 import io.github.keep2iron.pineapple.ImageLoaderManager
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +24,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ListActivity::class.java))
         }
 
+      findViewById<View>(R.id.tvWebViewList).setOnClickListener {
+        startActivity(Intent(this, WebViewActivity::class.java))
+      }
     }
 
 }

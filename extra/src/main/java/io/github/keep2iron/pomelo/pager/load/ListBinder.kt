@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.github.keep2iron.pomelo.PomeloLinearLayoutManager
 import io.github.keep2iron.pomelo.helper.GridLayoutHelper
 import io.github.keep2iron.pomelo.pager.LoadMore
 import io.github.keep2iron.pomelo.pager.Refreshable
@@ -53,7 +54,7 @@ class ListBinder(
       }
       gridLayoutManager
     } else {
-      layoutManager ?: LinearLayoutManager(context)
+      layoutManager ?: PomeloLinearLayoutManager(context)
     }
   }
 

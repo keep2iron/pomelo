@@ -1,10 +1,10 @@
 package io.github.keep2iron.app
 
-import android.app.Application
-import android.util.Log
 //import com.orhanobut.logger.AndroidLogAdapter
 //import com.orhanobut.logger.Logger
 //import com.orhanobut.logger.PrettyFormatStrategy
+import android.app.Application
+import android.util.Log
 import io.github.keep2iron.pomelo.NetworkManager
 import io.github.keep2iron.pomelo.interceptor.GetParamsInterceptor
 import io.github.keep2iron.pomelo.interceptor.HeaderParamsInterceptor
@@ -13,8 +13,9 @@ import io.github.keep2iron.pomelo.interceptor.PostParamsInterceptor
 import io.github.keep2iron.pomelo.log.NetworkLoggingInterceptor
 import okhttp3.Protocol
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.util.Collections
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class MyApplication : Application() {
@@ -57,7 +58,7 @@ class MyApplication : Application() {
       }
 
       initRetrofit {
-//        addConverterFactory(CustomGsonConvertFactory.create())
+        addConverterFactory(MoshiConverterFactory.create())
         addConverterFactory(ScalarsConverterFactory.create())
         addCallAdapterFactory(RxJava2CallAdapterFactory.create())
       }

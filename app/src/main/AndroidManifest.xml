@@ -25,10 +25,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".PageStateActivity"></activity>
+        <activity android:name=".complex.PageStateActivity"></activity>
         <activity android:name=".ListActivity" />
         <activity android:name=".moshi.MoshiActivity">
         </activity>
+      <activity android:name=".webview.WebViewActivity" />
     </application>
 
 </manifest>

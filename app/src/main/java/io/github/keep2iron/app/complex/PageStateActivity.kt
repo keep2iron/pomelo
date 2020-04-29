@@ -1,4 +1,4 @@
-package io.github.keep2iron.app
+package io.github.keep2iron.app.complex
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,6 +10,11 @@ import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.orhanobut.logger.Logger
+import io.github.keep2iron.app.ApiService
+import io.github.keep2iron.app.CustomLoadMore
+import io.github.keep2iron.app.R
+import io.github.keep2iron.app.Recommend
+import io.github.keep2iron.app.moshi.Movie
 import io.github.keep2iron.pineapple.ImageLoaderManager
 import io.github.keep2iron.pomelo.AndroidSubscriber
 import io.github.keep2iron.pomelo.collections.AsyncDiffObservableList
@@ -79,7 +84,9 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
     val refreshLayout =
       findViewById<SwipeRefreshLayout>(R.id.refreshLayout)
     val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-    pageStateLayout.setPageStateView(PageState.NETWORK_ERROR, R.layout.item_page_error)
+    pageStateLayout.setPageStateView(PageState.NETWORK_ERROR,
+      R.layout.item_page_error
+    )
     pageStateLayout.setPageStateReloadListener(PageState.NETWORK_ERROR) { state, view ->
       pageState.setPageState(PageState.LOADING)
       binder.load()
@@ -87,25 +94,30 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
 
     pageState.setupWithPageStateLayout(pageStateLayout)
 
-    binder = ListBinder(recyclerView, SwipeRefreshAble(refreshLayout), CustomLoadMore())
+    binder = ListBinder(recyclerView, SwipeRefreshAble(refreshLayout),
+      CustomLoadMore()
+    )
       .setSpanCount(2)
       .addSubAdapter(object :
         AbstractSubAdapter(viewType = 1, layoutHelper = LinearLayoutHelper()) {
-        override fun onInflateLayoutId(parent: ViewGroup, viewType: Int): Int = R.layout.item_header
+        override fun onInflateLayoutId(parent: ViewGroup, viewType: Int): Int =
+          R.layout.item_header
 
         override fun render(holder: RecyclerViewHolder, position: Int) {
         }
       })
       .addSubAdapter(object :
         AbstractSubAdapter(viewType = 2, layoutHelper = LinearLayoutHelper()) {
-        override fun onInflateLayoutId(parent: ViewGroup, viewType: Int): Int = R.layout.item_header
+        override fun onInflateLayoutId(parent: ViewGroup, viewType: Int): Int =
+          R.layout.item_header
 
         override fun render(holder: RecyclerViewHolder, position: Int) {
         }
       })
       .addSubAdapter(object :
         AbstractSubAdapter(viewType = 3, layoutHelper = LinearLayoutHelper()) {
-        override fun onInflateLayoutId(parent: ViewGroup, viewType: Int): Int = R.layout.item_header
+        override fun onInflateLayoutId(parent: ViewGroup, viewType: Int): Int =
+          R.layout.item_header
 
         override fun render(holder: RecyclerViewHolder, position: Int) {
         }
@@ -147,7 +159,7 @@ class PageStateActivity : AppCompatActivity(), LoadListener {
             viewType: Int
           ): Int = R.layout.item_list
         })
-        registerAdapter<Recommend>(object : AbstractSubAdapter(5, LinearLayoutHelper(), 30) {
+        registerAdapter<Recommend>(object : AbstractSubAdapter(5,30, layoutHelper = LinearLayoutHelper()) {
           init {
             setOnItemClickListener { position, view, _ ->
               Toast.makeText(

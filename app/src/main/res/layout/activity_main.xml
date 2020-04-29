@@ -1,35 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/tvComplexPageState"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:text="Complex PageState"
-        android:textColor="#ffffff"
-        android:textSize="18sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+      android:id="@+id/tvComplexPageState"
+      android:layout_width="match_parent"
+      android:layout_height="250dp"
+      android:background="@color/colorPrimary"
+      android:gravity="center"
+      android:text="Complex PageState"
+      android:textColor="#ffffff"
+      android:textSize="18sp"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvListPageState"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:textColor="#ffffff"
-        android:background="@color/colorAccent"
-        android:gravity="center"
-        android:text="List PageState"
-        android:textSize="18sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvComplexPageState" />
+      android:id="@+id/tvListPageState"
+      android:layout_width="match_parent"
+      android:layout_height="250dp"
+      android:background="@color/colorAccent"
+      android:gravity="center"
+      android:text="List PageState"
+      android:textColor="#ffffff"
+      android:textSize="18sp"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/tvComplexPageState" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+      android:id="@+id/tvWebViewList"
+      android:layout_width="match_parent"
+      android:layout_height="250dp"
+      android:background="@android:color/holo_blue_dark"
+      android:gravity="center"
+      android:text="WebView List"
+      android:textColor="#ffffff"
+      android:textSize="18sp"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/tvComplexPageState" />
+
+  </LinearLayout>
+</ScrollView>

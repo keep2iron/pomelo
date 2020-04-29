@@ -1,12 +1,26 @@
-package io.github.keep2iron.app
+package io.github.keep2iron.app.moshi
 
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 class Movie {
-
+  @Json(name = "id")
   var id: Int = 0
+
+  @Json(name = "movieName")
   var movieName: String = ""
+
+  @Json(name = "movieImage")
   var movieImage: String = ""
+
+  @Json(name = "description")
   var description: String = ""
+
+  @Json(name = "year")
   var year: Int = 0
+
+  @Json(name = "local")
   var local: String = ""
 
   override fun equals(other: Any?): Boolean {
