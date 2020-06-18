@@ -1,6 +1,24 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'maven'
+
+group = rootProject.ext.version_group
+version = rootProject.ext.version_pomelo_extra
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      // 唯一标识
+      pom.groupId = rootProject.ext.version_group
+      // 项目名称
+      pom.artifactId = "pomelo-extra"
+      repository(url: uri('../../../../maven-local'))
+      // 版本号
+      pom.version = rootProject.ext.version_pomelo_extra
+    }
+  }
+}
 
 android {
   compileSdkVersion versions.build.target_sdk
@@ -47,9 +65,9 @@ dependencies {
 
 publish {
   userOrg = 'keep2iron'
-  groupId = 'io.github.keep2iron'
+  groupId = rootProject.ext.version_group
   artifactId = 'pomelo-extra'
-  publishVersion = '0.0.1'
+  publishVersion = rootProject.ext.version_pomelo_extra
   desc = 'network wrap framewrok'
   website = 'https://keep2iron.github.io'
 }

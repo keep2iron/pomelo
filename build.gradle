@@ -4,6 +4,14 @@ buildscript {
   apply from: './versions/version.gradle'
   addRepos(repositories)
 
+  ext {
+    version_group = 'io.github.keep2iron'
+
+    version_pomelo_core = '0.0.1'
+    version_pomelo_extra = '0.0.1'
+    version_pomelo_log = '0.0.1'
+  }
+
   dependencies {
     classpath deps.android_gradle_plugin
     classpath deps.kotlin_gradle_plugin
