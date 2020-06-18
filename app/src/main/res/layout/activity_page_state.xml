@@ -3,15 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
-  <io.github.keep2iron.pomlo.state.PomeloPageStateLayout
+  <io.github.keep2iron.pomelo.state.PomeloPageStateLayout
       android:id="@+id/pageStateLayout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      app:pomelo_layout_loading="@layout/layout_loading"
-      >
+      app:pomelo_layout_load_error="@layout/layout_loading"
+      app:pomelo_layout_loading="@layout/layout_loading">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -19,6 +18,7 @@
         android:layout_height="match_parent"
         />
 
-  </io.github.keep2iron.pomlo.state.PomeloPageStateLayout>
+  </io.github.keep2iron.pomelo.state.PomeloPageStateLayout>
+
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

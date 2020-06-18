@@ -1,23 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
 
-  <TextView
-      android:id="@+id/tvText"
-      android:layout_width="357dp"
-      android:layout_height="423dp"
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+      android:id="@+id/tvComplexPageState"
+      android:layout_width="match_parent"
+      android:layout_height="250dp"
       android:background="@color/colorPrimary"
-      android:text="Hello World!"
-      app:layout_constraintBottom_toBottomOf="parent"
+      android:gravity="center"
+      android:text="Complex PageState"
+      android:textColor="#ffffff"
+      android:textSize="18sp"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toRightOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      />
+      app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+      android:id="@+id/tvListPageState"
+      android:layout_width="match_parent"
+      android:layout_height="250dp"
+      android:background="@color/colorAccent"
+      android:gravity="center"
+      android:text="List PageState"
+      android:textColor="#ffffff"
+      android:textSize="18sp"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/tvComplexPageState" />
+
+    <TextView
+      android:id="@+id/tvWebViewList"
+      android:layout_width="match_parent"
+      android:layout_height="250dp"
+      android:background="@android:color/holo_blue_dark"
+      android:gravity="center"
+      android:text="WebView List"
+      android:textColor="#ffffff"
+      android:textSize="18sp"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/tvComplexPageState" />
+
+  </LinearLayout>
+</ScrollView>

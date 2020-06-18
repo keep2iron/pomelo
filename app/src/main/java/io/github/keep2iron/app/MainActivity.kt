@@ -1,40 +1,32 @@
 package io.github.keep2iron.app
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.TextView
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import io.github.keep2iron.pomelo.AndroidSubscriber
-import io.github.keep2iron.pomelo.utilities.FindService
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.github.keep2iron.app.complex.PageStateActivity
+import io.github.keep2iron.app.webview.WebViewActivity
+import io.github.keep2iron.pineapple.ImageLoaderManager
 
 class MainActivity : AppCompatActivity() {
 
-  private val apiService by FindService(ApiService::class.java)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
+        ImageLoaderManager.init(application)
 
-    findViewById<TextView>(R.id.tvText).setOnClickListener {
-      it.alpha = 0f
-      it.alpha = 1f
-//            it.post {
-//                 = View.GONE
-//            }
-//            it.postDelayed( {
-//                it.visibility = View.VISIBLE
-//            },50L)
+        findViewById<View>(R.id.tvComplexPageState).setOnClickListener {
+            startActivity(Intent(this, PageStateActivity::class.java))
+        }
+
+        findViewById<View>(R.id.tvListPageState).setOnClickListener {
+            startActivity(Intent(this, ListActivity::class.java))
+        }
+
+      findViewById<View>(R.id.tvWebViewList).setOnClickListener {
+        startActivity(Intent(this, WebViewActivity::class.java))
+      }
     }
 
-    apiService.indexHome(0)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(AndroidSubscriber {
-          onSuccess = { resp ->
-            Log.d("keep2iron", "onSuccessful .......... ${resp.value}")
-          }
-        })
-  }
 }

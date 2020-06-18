@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
   compileSdkVersion versions.build.target_sdk
@@ -11,13 +12,24 @@ android {
     targetSdkVersion versions.build.target_sdk
     versionCode 1
     versionName "1.0"
+    multiDexEnabled true
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
+
   buildTypes {
     release {
       minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  kotlinOptions {
+    jvmTarget = "1.8"
   }
 }
 
@@ -31,21 +43,28 @@ dependencies {
   implementation project(':core')
   implementation project(':log')
   implementation project(':extra')
+  implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+  implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
-  implementation 'com.airbnb.android:lottie:3.0.7'
+  implementation 'com.airbnb.android:lottie:3.1.0'
 
-  implementation 'io.github.keep2iron:pineapple-fresco:0.0.1-fix2'
+  implementation 'io.github.keep2iron:pineapple-fresco:0.0.2'
 
   implementation deps.fresco
   // if you want to support gif add this
   implementation deps.fresco_gif
 
+  implementation "com.squareup.retrofit2:converter-moshi:2.4.0"
+
   implementation deps.retrofit.scalars
   implementation deps.retrofit.adapter
   implementation deps.logger
 
-  implementation 'com.facebook.stetho:stetho:1.5.1'
-  implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
+  implementation 'com.squareup.moshi:moshi-kotlin:1.9.2'
+  kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
+
+//  implementation 'com.facebook.stetho:stetho:1.5.1'
+//  implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
 
   testImplementation 'junit:junit:4.12'
   androidTestImplementation 'androidx.test:runner:1.1.0'
